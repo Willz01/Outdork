@@ -19,7 +19,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -35,6 +34,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    // change for pr
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()

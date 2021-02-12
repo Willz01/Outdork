@@ -1,7 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-
-    <item android:title="@string/home"/>
+    <!--Menu items-->
+    <item
+        android:id="@+id/discoveries_fragment"
+        android:title="@string/home" />
+    <item
+        android:id="@+id/addNewActivityFragment"
+        android:title="@string/add_activity" />
+    <item
+        android:id="@+id/favouritesFragment"
+        android:title="@string/favouritesMenuItem" />
+    <item
+        android:id="@+id/bookmarksFragment"
+        android:title="@string/bookmarksMenuItem" />
+    <item
+        android:id="@+id/reportFragment"
+        android:title="@string/reportMenuItem" />
+    <item
+        android:id="@+id/settingsFragment"
+        android:title="@string/settingsMenuItem" />
+    <item
+        android:id="@+id/helpFragment"
+        android:title="@string/helpMenuItem" />
+    <item
+        android:id="@+id/aboutFragment"
+        android:title="@string/aboutMenuItem" />
 
 </menu>

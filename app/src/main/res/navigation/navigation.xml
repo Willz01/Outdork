@@ -11,10 +11,10 @@
         android:label="@string/discoveries"
         tools:layout="@layout/discoveries_fragment" />
     <fragment
-        android:id="@+id/friendsFragment"
-        android:name="dev.samuelmcmurray.FriendsFragment"
-        android:label="@string/friends"
-        tools:layout="@layout/fragment_friends" />
+        android:id="@+id/followingFragment"
+        android:name="dev.samuelmcmurray.FollowingFragment"
+        android:label="@string/following"
+        tools:layout="@layout/fragment_following" />
     <fragment
         android:id="@+id/newActivityFragment"
         android:name="dev.samuelmcmurray.NewActivityFragment"

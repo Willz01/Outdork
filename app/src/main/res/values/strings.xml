@@ -8,7 +8,7 @@
 
     <!--Titles/labels-->
     <string name="discoveries">Discoveries</string>
-    <string name="friends">Friends</string>
+    <string name="following">Following</string>
     <string name="newActivity">New Activity</string>
     <string name="add_activity">Add activity</string>
     <string name="settings">Settings</string>

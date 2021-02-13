@@ -3,11 +3,55 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/welcomeFragment">
+    app:startDestination="@id/discoveries_fragment">
 
     <fragment
-        android:id="@+id/welcomeFragment"
+        android:id="@+id/discoveries_fragment"
         android:name="dev.samuelmcmurray.WelcomeFragment"
-        android:label="fragment_welcome"
-        tools:layout="@layout/fragment_welcome" />
+        android:label="@string/discoveries"
+        tools:layout="@layout/discoveries_fragment" />
+    <fragment
+        android:id="@+id/followingFragment"
+        android:name="dev.samuelmcmurray.FollowingFragment"
+        android:label="@string/following"
+        tools:layout="@layout/fragment_following" />
+    <fragment
+        android:id="@+id/newActivityFragment"
+        android:name="dev.samuelmcmurray.NewActivityFragment"
+        android:label="@string/newActivity"
+        tools:layout="@layout/fragment_new_activity" />
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="dev.samuelmcmurray.AboutFragment"
+        android:label="About"
+        tools:layout="@layout/fragment_about" />
+    <fragment
+        android:id="@+id/favouritesFragment"
+        android:name="dev.samuelmcmurray.FavouritesFragment"
+        android:label="Favourites"
+        tools:layout="@layout/fragment_favourites" />
+    <fragment
+        android:id="@+id/bookmarksFragment"
+        android:name="dev.samuelmcmurray.BookmarksFragment"
+        android:label="Bookmarks"
+        tools:layout="@layout/fragment_bookmarks" />
+    <fragment
+        android:id="@+id/helpFragment"
+        android:name="dev.samuelmcmurray.HelpFragment"
+        android:label="Help"
+        tools:layout="@layout/fragment_help" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="dev.samuelmcmurray.SettingsFragment"
+        android:label="Settings" />
+    <fragment
+        android:id="@+id/reportFragment"
+        android:name="dev.samuelmcmurray.ReportFragment"
+        android:label="Report"
+        tools:layout="@layout/fragment_report" />
+    <fragment
+        android:id="@+id/addNewActivityFragment"
+        android:name="dev.samuelmcmurray.AddNewActivityFragment"
+        android:label="Add new activity"
+        tools:layout="@layout/fragment_add_new" />
 </navigation>

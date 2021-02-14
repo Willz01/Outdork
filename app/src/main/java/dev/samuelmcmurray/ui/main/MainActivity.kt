@@ -1,4 +1,4 @@
-package dev.samuelmcmurray
+package dev.samuelmcmurray.ui.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,6 +10,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import dev.samuelmcmurray.R
 import dev.samuelmcmurray.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

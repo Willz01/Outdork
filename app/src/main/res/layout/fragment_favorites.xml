@@ -7,30 +7,31 @@
     <data>
         <variable
             name="viewModel"
-            type="dev.samuelmcmurray.ui.report.ReportViewModel" />
+            type="dev.samuelmcmurray.ui.favorites.FavoritesViewModel" />
         <variable
             name="uiController"
-            type="dev.samuelmcmurray.ui.report.ReportFragment" />
+            type="dev.samuelmcmurray.ui.favorites.FavoritesFragment" />
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/fannyGreen"
+        android:orientation="vertical"
         android:layout_gravity="center"
-        tools:context=".ReportFragment">
+        tools:context=".FavoritesFragment">
 
         <!-- TODO: Update blank fragment layout -->
         <TextView
             android:id="@+id/description_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/report"
+            android:layout_gravity="center"
+            android:text="@string/favorites"
+            android:textAppearance="@style/titlefont"
             android:textColor="@color/white"
             android:textSize="30sp"
             android:textStyle="bold"
-            android:layout_gravity="center"
-            android:textAppearance="@style/titlefont"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

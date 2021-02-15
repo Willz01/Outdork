@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="green_B14">#467B14</color>
-    <color name="green_61F">#35661F</color>
-    <color name="brown_A1D">#3A3A1D</color>
-    <color name="orange_E04">#ED8E04</color>
-    <color name="orange_403">#A76403</color>
+    <color name="green_light">#A5A58D</color>
+    <color name="green_dark">#6B705C</color>
+    <color name="beige_dark">#CB997E</color>
+    <color name="beige_ligher">#FFE8D6</color>
+    <color name="beige_light">#DDBEA9</color>
+
+    <color name="green_dark_light">#7E7E63</color>
+    <color name="green_dark_dark">#414337</color>
+    <color name="beige_dark_dark">#B97550</color>
+    <color name="beige_dark_light">#C5906D</color>
+    <color name="beige_dark_lighter">#FFBA85</color>
+
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="fannyGreen">#12380D</color>
 </resources>

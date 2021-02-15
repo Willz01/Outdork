@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import dev.samuelmcmurray.R
-import dev.samuelmcmurray.databinding.FragmentNewActivityBinding
+import dev.samuelmcmurray.databinding.FragmentAddNewBinding
 import dev.samuelmcmurray.utilities.InjectorUtils
 
 class AddNewActivityFragment : Fragment() {
@@ -17,7 +17,7 @@ class AddNewActivityFragment : Fragment() {
         fun newInstance() = AddNewActivityFragment()
     }
 
-    private lateinit var binding : FragmentNewActivityBinding
+    private lateinit var binding : FragmentAddNewBinding
     private lateinit var viewModelProvider : AddNewActivityViewModel
     private lateinit var viewModel: AddNewActivityViewModel
 

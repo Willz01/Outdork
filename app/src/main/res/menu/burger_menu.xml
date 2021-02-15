@@ -10,7 +10,7 @@
         android:title="@string/add_activity" />
     <item
         android:id="@+id/favouritesFragment"
-        android:title="@string/favouritesMenuItem" />
+        android:title="@string/favoritesMenuItem" />
     <item
         android:id="@+id/bookmarksFragment"
         android:title="@string/bookmarksMenuItem" />

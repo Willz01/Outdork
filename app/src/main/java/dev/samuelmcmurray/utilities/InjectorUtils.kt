@@ -3,8 +3,8 @@ package dev.samuelmcmurray.utilities
 import dev.samuelmcmurray.data.repository.*
 import dev.samuelmcmurray.ui.about.AboutViewModelFactory
 import dev.samuelmcmurray.ui.add_new_activity.AddNewActivityViewModelFactory
+import dev.samuelmcmurray.ui.auth.LoginViewModelFactory
 import dev.samuelmcmurray.ui.bookmarks.BookmarksViewModelFactory
-import dev.samuelmcmurray.ui.discoveries.DiscoveriesViewModel
 import dev.samuelmcmurray.ui.discoveries.DiscoveriesViewModelFactory
 import dev.samuelmcmurray.ui.favorites.FavoritesViewModelFactory
 import dev.samuelmcmurray.ui.following.FollowingViewModelFactory
@@ -57,5 +57,10 @@ object InjectorUtils {
     fun provideDiscoveriesViewModelFactory() : DiscoveriesViewModelFactory {
         val discoveriesRepository = DiscoveriesRepository.getInstance("database.getInstance().DiscoveriesDAO")
         return DiscoveriesViewModelFactory(discoveriesRepository)
+    }
+
+    fun provideLoginViewModelFactory() : LoginViewModelFactory {
+        val loginRepository = LoginRepository.getInstance("database.getInstance().LoginDAO")
+        return LoginViewModelFactory(loginRepository)
     }
 }

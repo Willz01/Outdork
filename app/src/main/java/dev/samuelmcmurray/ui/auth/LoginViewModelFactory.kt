@@ -8,6 +8,6 @@ class LoginViewModelFactory(private val loginRepository: LoginRepository) : View
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return LoginViewModel(loginRepository) as T
+        return LoginViewModel() as T
     }
 }

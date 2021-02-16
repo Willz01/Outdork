@@ -6,11 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dev.samuelmcmurray.R
@@ -33,6 +35,8 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val factory = InjectorUtils.provideLoginViewModelFactory()
+        viewModel = ViewModelProvider(this, factory).get(LoginViewModel::class.java)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
 
 
@@ -42,6 +46,14 @@ class LoginFragment : Fragment() {
         bottomNavigationView.visibility = View.GONE
         (requireActivity() as AppCompatActivity).supportActionBar?.hide()
         binding.setLifecycleOwner(this)
+
+        viewModel.userLiveData.observe(viewLifecycleOwner, Observer{
+                fireBaseUser ->
+            if (fireBaseUser != null) {
+                Navigation.findNavController(binding.root).navigate(R.id.action_loginFragment_to_welcomeFragment)
+            }
+        })
+
         return binding.root
     }
 
@@ -53,11 +65,18 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val factory = InjectorUtils.provideLoginViewModelFactory()
-        viewModel = ViewModelProvider(this, factory).get(LoginViewModel::class.java)
+        val editTextEmail = binding.editTextEmailAddress
+        val editTextPassword = binding.editTextPassword
+        val registerText = binding.textViewSignUp
+        val loginButton = binding.buttonLogin
 
-
-        //viewModel.getAbout().observe(this, Observer {what ever we do})
-
+        loginButton.setOnClickListener {
+            val email : String = editTextEmail.text.toString().trim()
+            val password : String = editTextPassword.text.toString()
+            if (email.isNotBlank() && password.isNotBlank()) {
+                viewModel.login(email, password)
+            } else {
+                Toast.makeText(context, "Email and Password must be entered", Toast.LENGTH_SHORT).show()
+            }
     }
 }

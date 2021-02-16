@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/discoveries_fragment">
 
     <fragment
         android:id="@+id/discoveries_fragment"
@@ -57,7 +57,7 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="dev.samuelmcmurray.ui.auth.LoginFragment"
-        android:label="fragment_login"
+        android:label="Login"
         tools:layout="@layout/fragment_login" />
 
 </navigation>

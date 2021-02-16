@@ -2,6 +2,7 @@ package dev.samuelmcmurray.ui.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.customview.widget.Openable
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -31,19 +32,38 @@ class MainActivity : AppCompatActivity() {
 
         navController = findNavController(R.id.fragment)
         drawerLayout = binding.drawerLayout
-        appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
+        // add all new fragments here!
+        appBarConfiguration = AppBarConfiguration.Builder(
+            setOf(
+                R.id.followingFragment,
+                R.id.discoveries_fragment,
+                R.id.aboutFragment,
+                R.id.addNewActivityFragment,
+                R.id.bookmarksFragment,
+                R.id.favouritesFragment,
+                R.id.helpFragment,
+                R.id.newActivityFragment,
+                R.id.reportFragment,
+                R.id.settingsFragment
+            )
+        ).setOpenableLayout(drawerLayout as Openable).build()
 
-        bottomNavigationView =  findViewById(R.id.nav)
+        bottomNavigationView = findViewById(R.id.nav)
+
 
         binding.navView.setupWithNavController(navController)
         setupActionBarWithNavController(navController, appBarConfiguration)
         bottomNavigationView.setupWithNavController(navController)
-
     }
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    override fun onBackPressed() {
+        fragmentManager?.popBackStack()
+        super.onBackPressed()
     }
 
 }

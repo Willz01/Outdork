@@ -56,6 +56,7 @@
     <!-- Facebook -->
     <string name="facebook_application_id" translatable="false">YOUR_APP_ID</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fbYOUR_APP_ID</string>
+    <string name="sign_out">Sign out</string>
 
 
 </resources>

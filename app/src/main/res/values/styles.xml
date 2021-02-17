@@ -8,6 +8,10 @@
         <item name="android:fontFamily">@font/quattrocento</item>
 
     </style>
+    <style name="funfont" parent="@android:style/TextAppearance.Small">
+        <item name="android:fontFamily">@font/amatic</item>
+
+    </style>
 
     <style name="ActionBarLight" parent="@style/Widget.AppCompat.Light.ActionBar">
         <item name="android:background">@color/green_dark </item>

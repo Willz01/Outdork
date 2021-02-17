@@ -17,6 +17,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
@@ -45,19 +46,47 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="16dp"
+                    android:fontFamily="cursive"
+                    android:text="@string/app_name"
+                    android:textAlignment="center"
+                    android:textColor="@color/green_light"
+                    android:textSize="45sp"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/welcome_message"
+                    android:textAlignment="center"
+                    android:textColor="@color/green_light"
+                    android:textSize="18sp" />
+
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="20dp"
                     android:layout_marginBottom="8dp"
                     android:textColorHint="@color/black">
 
 
                     <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/user_name"
+                        android:id="@+id/editTextEmailAddress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="username"
                         android:inputType="text"
                         android:textAppearance="@style/bodyfont"
                         android:textColorHint="@color/black"
@@ -69,49 +98,58 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="20dp"
                     android:layout_marginBottom="8dp"
                     android:textColorHint="@color/black">
 
 
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/password"
+                  <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/editTextPassword"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="password"
-                        android:textAppearance="@style/bodyfont"
+                        android:hint="@string/password_hint"
                         android:inputType="textPassword"
                         android:textColorHint="@color/black"
                         android:textSize="16sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <Button
+                    android:id="@+id/buttonLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:text="@string/login" />
+
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textViewForgotPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_margin="8dp"
                     android:gravity="center"
                     android:clickable="true"
-                    android:textAppearance="@style/bodyfont"
-                    android:text="Forgot password?"
-                    android:focusable="true" />
+                    android:text="@string/forgot_password"
+                    android:focusable="true"
+                    android:textSize="18sp"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textViewSignUp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:text="@string/sign_up"
+                    android:textSize="18sp" />
+
             </LinearLayout>
+
         </androidx.cardview.widget.CardView>
-
-        <TextView
-
-            android:id="@+id/textView"
-            android:layout_width="281dp"
-            android:layout_height="83dp"
-            android:text="@string/welcome"
-            android:textAppearance="@style/titlefont"
-            android:textColor="@color/green_dark_dark"
-            android:textSize="35sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.192"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.327" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

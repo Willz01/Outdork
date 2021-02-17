@@ -8,8 +8,10 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
-private const val TAG = "LoginRepository"
-class LoginRepository {
+private const val TAG = "RegisterRepository"
+
+class RegisterRepository {
+
     private var application: Application
     private var firebaseAuth: FirebaseAuth
     var userLiveData: MutableLiveData<FirebaseUser>
@@ -17,9 +19,9 @@ class LoginRepository {
 
     constructor(application: Application) {
         this.application = application
-        this.firebaseAuth = FirebaseAuth.getInstance()
-        this.userLiveData = MutableLiveData()
-        this.loggedOutLiveData = MutableLiveData()
+        firebaseAuth = FirebaseAuth.getInstance()
+        userLiveData = MutableLiveData()
+        loggedOutLiveData = MutableLiveData()
 
         if (firebaseAuth.currentUser != null) {
             userLiveData.postValue(firebaseAuth.currentUser);
@@ -27,9 +29,8 @@ class LoginRepository {
         }
     }
 
-
-    fun login(email: String, password: String) {
-        firebaseAuth.signInWithEmailAndPassword(email, password)
+    fun registerEmail(email: String, password: String) {
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(
                 ContextCompat.getMainExecutor(application),
                 { task ->
@@ -40,7 +41,7 @@ class LoginRepository {
                     } else {
                         Toast.makeText(
                             application.applicationContext,
-                            "Login Failure: " + (task.exception?.message
+                            "Registration Failure: " + (task.exception?.message
                                 ?: "failed"),
                             Toast.LENGTH_SHORT
                         ).show()

@@ -39,7 +39,7 @@ class HelpFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_help, container, false)
         binding.setLifecycleOwner(this)
         // test
-        navController = requireActivity().findNavController(R.id.fragment)
+        navController = requireActivity().findNavController(R.id.fragmentContainer)
         bottomNavigationView = requireActivity().findViewById(R.id.nav)
         bottomNavigationView.visibility = View.GONE
         return binding.root

@@ -1,6 +1,6 @@
 package dev.samuelmcmurray.data.repository
 
-class ReportRepository private constructor(private val database : String) {
+class ReportRepository(private val database : String) {
 
 
 

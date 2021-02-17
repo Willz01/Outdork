@@ -21,6 +21,7 @@
     <string name="login">Login</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="sign_up">Sign Up</string>
+    <string name="cancel">Cancel</string>
 
     <!--Menu items-->
     <string name="favoritesMenuItem">Favorites</string>
@@ -30,6 +31,10 @@
     <string name="settingsMenuItem">Setting</string>
     <string name="aboutMenuItem">About</string>
 
+    <!-- Bottom Nav -->
+    <string name="following_nav">Following</string>
+    <string name="new_activity">New activity</string>
+    <string name="home_nav">Home</string>
 
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>
@@ -49,6 +54,15 @@
     <!-- Hints -->
     <string name="email_hint">Email Address</string>
     <string name="password_hint">Password</string>
+    <string name="password_hint2">Confirm Password</string>
+    <string name="first_name_hint">First Name</string>
+    <string name="last_name_hint">Last Name</string>
+    <string name="user_name_hint">User Name</string>
+    <string name="dob_hint">Date of Birth YYYY/MM/DD</string>
+    <string name="location_hint">City</string>
+    <string name="country_hint">Country</string>
+    <string name="state_hint">State/Providence</string>
+
 
     <!-- Messages -->
     <string name="welcome_message">Get Outside and Be Dorky!</string>
@@ -57,6 +71,8 @@
     <string name="facebook_application_id" translatable="false">YOUR_APP_ID</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fbYOUR_APP_ID</string>
     <string name="sign_out">Sign out</string>
+
+
 
 
 </resources>

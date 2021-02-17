@@ -33,7 +33,7 @@
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp"
             android:layout_margin="15dp"
-            android:background="@color/white"
+            android:background="@color/beige_ligher"
             app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
@@ -87,8 +87,8 @@
                         android:id="@+id/editTextEmailAddress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/email_hint"
                         android:inputType="text"
+                        android:textAppearance="@style/bodyfont"
                         android:textColorHint="@color/black"
                         android:textSize="16sp" />
 
@@ -105,7 +105,7 @@
                     android:textColorHint="@color/black">
 
 
-                    <androidx.appcompat.widget.AppCompatEditText
+                  <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/editTextPassword"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -150,6 +150,7 @@
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

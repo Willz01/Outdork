@@ -17,7 +17,6 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.databinding.FragmentLoginBinding
-import dev.samuelmcmurray.ui.discoveries.DiscoveriesFragment
 
 private const val TAG = "LoginFragment"
 

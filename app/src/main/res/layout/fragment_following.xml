@@ -7,10 +7,10 @@
     <data>
         <variable
             name="viewModel"
-            type="dev.samuelmcmurray.ui.following.FollowingViewModel" />
+            type="dev.samuelmcmurray.ui.following.feeds.FollowingFeedsViewModel" />
         <variable
             name="uiController"
-            type="dev.samuelmcmurray.ui.following.FollowingFragment" />
+            type="dev.samuelmcmurray.ui.following.feeds.FollowingFeedsFragment" />
     </data>
 
     <androidx.recyclerview.widget.RecyclerView

@@ -6,7 +6,7 @@
         android:icon="@drawable/home_icon"
         android:title="@string/home_nav" />
     <item
-        android:id="@+id/followingFragment"
+        android:id="@+id/followingHolder"
         android:icon="@drawable/ic_baseline_group_24"
         android:title="@string/following_nav" />
     <item

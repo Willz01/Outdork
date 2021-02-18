@@ -1,4 +1,4 @@
-package dev.samuelmcmurray.ui.following
+package dev.samuelmcmurray.ui.post
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,18 +8,18 @@ import dev.samuelmcmurray.R
 
 class PostViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
     RecyclerView.ViewHolder(inflater.inflate(R.layout.post_item, parent, false)) {
-    private var mPosteeView: TextView? = null
+    private var mPosterView: TextView? = null
     private var mDateView: TextView? = null
     private var mContentView: TextView? = null
 
     init {
-        mPosteeView = itemView.findViewById(R.id.postee_text)
+        mPosterView = itemView.findViewById(R.id.postee_text)
         mDateView = itemView.findViewById(R.id.date_text)
         mContentView = itemView.findViewById(R.id.content_text)
     }
 
     fun bind(post: Post) {
-        mPosteeView?.text = post.postee
+        mPosterView?.text = post.poster
         mDateView?.text = post.date
         mContentView?.text = post.content
     }

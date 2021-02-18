@@ -1,4 +1,4 @@
-package dev.samuelmcmurray.ui.following
+package dev.samuelmcmurray.ui.post
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

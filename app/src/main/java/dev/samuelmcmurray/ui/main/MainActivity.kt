@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.customview.widget.Openable
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -16,8 +18,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.databinding.ActivityMainBinding
+import dev.samuelmcmurray.ui.discoveries.DiscoveriesFragment
 
-class  MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var drawerLayout: DrawerLayout
@@ -35,7 +38,8 @@ class  MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer) as NavHostFragment
+        navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.fragmentContainer) as NavHostFragment
         navController = navHostFragment.navController
         drawerLayout = binding.drawerLayout
         // add all new fragments here!
@@ -50,7 +54,9 @@ class  MainActivity : AppCompatActivity() {
                 R.id.helpFragment,
                 R.id.newActivityFragment,
                 R.id.reportFragment,
-                R.id.settingsFragment
+                R.id.settingsFragment,
+                R.id.followingHolder,
+                R.id.followingListFragment
             )
         ).setOpenableLayout(drawerLayout as Openable).build()
 
@@ -62,8 +68,9 @@ class  MainActivity : AppCompatActivity() {
         bottomNavigationView.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if(destination.id == R.id.loginFragment || destination.id == R.id.welcomeFragment
-                || destination.id == R.id.registerFragment) {
+            if (destination.id == R.id.loginFragment || destination.id == R.id.welcomeFragment
+                || destination.id == R.id.registerFragment
+            ) {
                 supportActionBar?.hide()
                 bottomNavigationView.visibility = View.GONE
             } else {

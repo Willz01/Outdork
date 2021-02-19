@@ -12,7 +12,7 @@
         tools:layout="@layout/discoveries_fragment" />
     <fragment
         android:id="@+id/followingFragment"
-        android:name="dev.samuelmcmurray.ui.following.FollowingFragment"
+        android:name="dev.samuelmcmurray.ui.following.feeds.FollowingFeedsFragment"
         android:label="@string/following"
         tools:layout="@layout/fragment_following" />
     <fragment
@@ -80,5 +80,15 @@
         android:name="dev.samuelmcmurray.ui.auth.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" />
+    <fragment
+        android:id="@+id/followingHolder"
+        android:name="dev.samuelmcmurray.ui.following.FollowingHolder"
+        android:label="@string/following"
+        tools:layout="@layout/fragment_following_holder" />
+    <fragment
+        android:id="@+id/followingListFragment"
+        android:name="dev.samuelmcmurray.ui.following.followinglist.FollowingListFragment"
+        android:label="fragment_following_list"
+        tools:layout="@layout/fragment_following_list" />
 
 </navigation>

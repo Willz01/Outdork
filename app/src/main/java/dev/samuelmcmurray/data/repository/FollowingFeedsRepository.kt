@@ -1,10 +1,10 @@
 package dev.samuelmcmurray.data.repository
 
-class FollowingRepository private constructor(private val database : String) {
+class FollowingFeedsRepository private constructor(private val database : String) {
 
 
     companion object {
-        @Volatile private var instance : FollowingRepository? = null
+        @Volatile private var instance : FollowingFeedsRepository? = null
 
         /**
          * Creating a Singleton to pass information from database to
@@ -13,7 +13,7 @@ class FollowingRepository private constructor(private val database : String) {
          */
         fun getInstance(database: String) =
             instance ?: synchronized(this) {
-                instance ?: FollowingRepository(database).also { instance = it }
+                instance ?: FollowingFeedsRepository(database).also { instance = it }
             }
     }
 }

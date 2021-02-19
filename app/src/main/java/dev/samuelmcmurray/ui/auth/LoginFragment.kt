@@ -30,7 +30,7 @@ class LoginFragment : Fragment() {
     private lateinit var viewModel: LoginViewModel
     private lateinit var savedStateHandle: SavedStateHandle
 
-    private lateinit var navHostFragment : NavHostFragment
+    private lateinit var navHostFragment: NavHostFragment
     private lateinit var navController: NavController
 
     override fun onCreateView(
@@ -40,7 +40,8 @@ class LoginFragment : Fragment() {
         binding = inflate(inflater, R.layout.fragment_login, container, false)
         binding.lifecycleOwner = this
 
-        navHostFragment = requireActivity().supportFragmentManager.findFragmentById(R.id.fragmentContainer) as NavHostFragment
+        navHostFragment =
+            requireActivity().supportFragmentManager.findFragmentById(R.id.fragmentContainer) as NavHostFragment
         navController = navHostFragment.navController
 
 
@@ -80,7 +81,7 @@ class LoginFragment : Fragment() {
                         requireContext().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(requireView().windowToken, 0)
                 }
-                Log.d(TAG, "login: " + fireBaseUser.toString())
+                Log.d(TAG, "login: $fireBaseUser ")
             })
         } else {
             Toast.makeText(context, "Email and Password must be entered", Toast.LENGTH_SHORT)

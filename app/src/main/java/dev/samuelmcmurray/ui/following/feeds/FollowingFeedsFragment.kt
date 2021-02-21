@@ -1,14 +1,21 @@
 package dev.samuelmcmurray.ui.following.feeds
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.facebook.AccessToken
+import com.facebook.CallbackManager
+import com.facebook.share.model.ShareHashtag
+import com.facebook.share.model.ShareLinkContent
+import com.facebook.share.widget.ShareButton
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.databinding.FragmentFollowingBinding
 import dev.samuelmcmurray.ui.post.Post
@@ -17,6 +24,9 @@ import dev.samuelmcmurray.utilities.InjectorUtils
 
 
 class FollowingFeedsFragment : Fragment() {
+
+    private var shareButton: ShareButton? = null
+    private lateinit var callbackManager: CallbackManager
 
     private val posts = listOf(
         Post("Mr Darcy", "21/20/11", "this is a post"),
@@ -28,15 +38,27 @@ class FollowingFeedsFragment : Fragment() {
     companion object {
         fun newInstance() = FollowingFeedsFragment()
     }
-    private lateinit var binding : FragmentFollowingBinding
-    private lateinit var viewModel : FollowingFeedsViewModel
+
+    private lateinit var binding: FragmentFollowingBinding
+    private lateinit var viewModel: FollowingFeedsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_following, container, false)
-        binding.setLifecycleOwner(this)
+        binding.lifecycleOwner = this
+
+        shareButton?.fragment = this
+        // used is logged in
+        val loggedIn = AccessToken.getCurrentAccessToken() != null
+        println(loggedIn)
+
+        shareButton = requireActivity().findViewById(R.id.share_button)
+        callbackManager = CallbackManager.Factory.create()
+
+
+
         return binding.root
     }
 
@@ -54,6 +76,20 @@ class FollowingFeedsFragment : Fragment() {
             adapter = PostAdapter(posts)
         }
     }
-        //viewModel.getAbout().observe(this, Observer {what ever we do})
+    //viewModel.getAbout().observe(this, Observer {what ever we do})
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        callbackManager.onActivityResult(requestCode, resultCode, data)
+
+        // test case with a link
+        val shareLinkContent = ShareLinkContent.Builder()
+            .setContentUrl(Uri.parse("https://www.youtube.com/c/MichaelSambol/videos"))
+            .setShareHashtag(ShareHashtag.Builder().setHashtag("#TEST").build()).build()
+
+        shareButton!!.shareContent = shareLinkContent
+
 
     }
+}

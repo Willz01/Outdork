@@ -2,7 +2,11 @@ package dev.samuelmcmurray.ui.post
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
+import com.facebook.share.widget.ShareButton
+import dev.samuelmcmurray.R
 
 class PostAdapter(private val list: List<Post>) : RecyclerView.Adapter<PostViewHolder>() {
 

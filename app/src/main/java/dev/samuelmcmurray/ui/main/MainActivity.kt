@@ -1,7 +1,10 @@
 package dev.samuelmcmurray.ui.main
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.customview.widget.Openable
 import androidx.drawerlayout.widget.DrawerLayout
@@ -12,10 +15,15 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.facebook.CallbackManager
+import com.facebook.share.model.ShareHashtag
+import com.facebook.share.model.ShareLinkContent
+import com.facebook.share.widget.ShareButton
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.databinding.ActivityMainBinding
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -28,6 +36,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var firebaseAuth: FirebaseAuth
 
     private lateinit var bottomNavigationView: BottomNavigationView
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

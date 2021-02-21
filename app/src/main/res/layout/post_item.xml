@@ -1,42 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:scrollbars="vertical"
     android:layout_gravity="center_horizontal"
-    android:padding="16dp"
-    android:background="@color/beige_ligher"
     android:layout_marginBottom="10sp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:background="@color/beige_ligher"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:scrollbars="vertical">
 
-        <TextView
-            android:id="@+id/postee_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:paddingLeft="16dp"
-            android:textSize="20sp"
-            android:textAppearance="@style/titlefont"
-            android:textStyle="bold"/>
+    <TextView
+        android:id="@+id/postee_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:paddingLeft="16dp"
+        android:textAppearance="@style/titlefont"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/date_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:textAppearance="@style/bodyfont"
-            android:textStyle="italic"
-            android:paddingLeft="16dp"
-            />
-        <TextView
-            android:id="@+id/content_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/bodyfont"
-            android:layout_gravity="left"
-            android:paddingLeft="16dp"
-            />
+    <TextView
+        android:id="@+id/date_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:paddingLeft="16dp"
+        android:textAppearance="@style/bodyfont"
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/content_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:paddingLeft="16dp"
+        android:textAppearance="@style/bodyfont" />
+
 
 </LinearLayout>

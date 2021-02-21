@@ -67,12 +67,16 @@
     <!-- Messages -->
     <string name="welcome_message">Get Outside and Be Dorky!</string>
 
-    <!-- Facebook -->
-    <string name="facebook_application_id" translatable="false">YOUR_APP_ID</string>
-    <string name="facebook_login_protocol_scheme" translatable="false">fbYOUR_APP_ID</string>
+
     <string name="sign_out">Sign out</string>
     <string name="feeds">Feeds</string>
     <string name="following_menu_item">Following</string>
+
+    <!-- Facebook -->
+    <string name="facebook_app_id">2780512052212717</string>
+    <string name="fb_login_protocol_scheme">fb2780512052212717</string>
+
+
 
 
 </resources>

@@ -114,4 +114,8 @@ dependencies {
     // Find the latest Facebook SDK releases here: https://goo.gl/Ce5L94
     //implementation 'com.facebook.android:facebook-android-sdk:4.0'
 
+    implementation 'com.facebook.android:facebook-share:5.15.3'
+    implementation 'com.facebook.android:facebook-login:9.0.0'
+
+
 }

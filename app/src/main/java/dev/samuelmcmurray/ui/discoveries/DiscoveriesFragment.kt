@@ -7,10 +7,20 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.databinding.DiscoveriesFragmentBinding
+import dev.samuelmcmurray.ui.post.Post
+import dev.samuelmcmurray.ui.post.PostAdapter
 import dev.samuelmcmurray.utilities.InjectorUtils
 
+private val posts = listOf(
+    Post("Mr Darcy", "21/20/11", "this is a post"),
+    Post("superhiker2324", "19/55/62", "hello another post"),
+    Post("mY dOg", "14/56/95", "another poist"),
+    Post("Superman", "21/15/13", "the last post"),
+)
 
 class DiscoveriesFragment : Fragment() {
 
@@ -35,6 +45,12 @@ class DiscoveriesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val factory = InjectorUtils.provideDiscoveriesViewModelFactory()
         viewModel = ViewModelProvider(this, factory).get(DiscoveriesViewModel::class.java)
+
+        val recyclerview = binding.root.findViewById<RecyclerView>(R.id.recycler_view_discoveries)
+        recyclerview.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = PostAdapter(posts)
+        }
 
 
         //viewModel.getAbout().observe(this, Observer {what ever we do})

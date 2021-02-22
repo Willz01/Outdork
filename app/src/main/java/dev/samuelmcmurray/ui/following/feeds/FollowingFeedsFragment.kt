@@ -1,4 +1,4 @@
-package dev.samuelmcmurray.ui.following
+package dev.samuelmcmurray.ui.following.feeds
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -11,10 +11,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.databinding.FragmentFollowingBinding
+import dev.samuelmcmurray.ui.post.Post
+import dev.samuelmcmurray.ui.post.PostAdapter
 import dev.samuelmcmurray.utilities.InjectorUtils
 
 
-class FollowingFragment : Fragment() {
+class FollowingFeedsFragment : Fragment() {
 
     private val posts = listOf(
         Post("Mr Darcy", "21/20/11", "this is a post"),
@@ -24,10 +26,10 @@ class FollowingFragment : Fragment() {
     )
 
     companion object {
-        fun newInstance() = FollowingFragment()
+        fun newInstance() = FollowingFeedsFragment()
     }
     private lateinit var binding : FragmentFollowingBinding
-    private lateinit var viewModel : FollowingViewModel
+    private lateinit var viewModel : FollowingFeedsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +43,7 @@ class FollowingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val factory = InjectorUtils.provideFollowingViewModelFactory()
-        viewModel = ViewModelProvider(this, factory).get(FollowingViewModel::class.java)
+        viewModel = ViewModelProvider(this, factory).get(FollowingFeedsViewModel::class.java)
 
         val recyclerview = binding.root.findViewById<RecyclerView>(R.id.recycler_view_following)
         recyclerview.apply {

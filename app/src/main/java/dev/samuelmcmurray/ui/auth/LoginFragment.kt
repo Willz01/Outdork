@@ -28,8 +28,10 @@ import com.facebook.share.widget.ShareButton
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.data.repository.RegisterRepository
 import dev.samuelmcmurray.databinding.FragmentLoginBinding
+import dev.samuelmcmurray.ui.discoveries.DiscoveriesFragment
 import org.json.JSONObject
 import java.util.*
+import kotlin.properties.Delegates
 
 
 private const val TAG = "LoginFragment"
@@ -51,8 +53,7 @@ class LoginFragment : Fragment() {
     private lateinit var callbackManager: CallbackManager
     private lateinit var loginButton: LoginButton
 
-
-    private var shareButton: ShareButton? = null
+    private var isUser = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -145,7 +146,6 @@ class LoginFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         callbackManager.onActivityResult(requestCode, resultCode, data)
-        super.onActivityResult(requestCode, resultCode, data)
 
         val graphRequest = GraphRequest.newMeRequest(
             AccessToken.getCurrentAccessToken(),
@@ -160,6 +160,7 @@ class LoginFragment : Fragment() {
         graphRequest.parameters = bundle
 
         graphRequest.executeAsync()
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     /**

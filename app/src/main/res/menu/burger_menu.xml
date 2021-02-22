@@ -9,11 +9,8 @@
         android:id="@+id/addNewActivityFragment"
         android:title="@string/add_activity" />
     <item
-        android:id="@+id/favouritesFragment"
+        android:id="@+id/favouriteFragment"
         android:title="@string/favoritesMenuItem" />
-    <item
-        android:id="@+id/bookmarksFragment"
-        android:title="@string/bookmarksMenuItem" />
     <item
         android:id="@+id/reportFragment"
         android:title="@string/reportMenuItem" />

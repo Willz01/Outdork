@@ -75,8 +75,12 @@
     <!-- Facebook -->
     <string name="facebook_app_id">2780512052212717</string>
     <string name="fb_login_protocol_scheme">fb2780512052212717</string>
-
-
+    <string name="_8942">⋮</string>
+    <string name="favourite_option_menu_item">Favourite</string>
+    <string name="add_to_bookmark_option_menu">Add to bookmark</string>
+    <string name="share_option_menu">Share</string>
+    <string name="report_option_menu">Report</string>
+    <string name="find_activity">Find activity</string>
 
 
 </resources>

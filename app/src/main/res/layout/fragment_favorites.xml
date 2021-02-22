@@ -15,27 +15,61 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:background="@color/green_light"
         android:orientation="vertical"
-        android:layout_gravity="center"
         tools:context=".FavoritesFragment">
 
         <!-- TODO: Update blank fragment layout -->
-        <TextView
-            android:id="@+id/description_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/favorites"
-            android:textAppearance="@style/titlefont"
-            android:textColor="@color/white"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="735dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:src="@color/colorPrimary" />
+
+                        <TextView
+                            android:id="@+id/title1"
+                            android:layout_width="88dp"
+                            android:layout_height="match_parent"
+                            android:text="Sample Title"
+                            android:textAlignment="center"/>
+
+                        <TextView
+                            android:id="@+id/favoriteText"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:onClick="favoriteMethod"
+                            android:text="Unfollow"
+                            android:textColor="#2196F3"
+                            android:textAlignment="center"
+                            />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
     </FrameLayout>
 </layout>

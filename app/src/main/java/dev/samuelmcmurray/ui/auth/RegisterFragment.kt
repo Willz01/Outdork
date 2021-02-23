@@ -51,8 +51,6 @@ class RegisterFragment : Fragment() {
 
         val signUpButton = binding.buttonSignUp
         val cancelButton = binding.buttonCancel
-        val passwordText = binding.editTextPassword
-        val passwordConfirmText = binding.editTextPassword2
 
         signUpButton.setOnClickListener {
             val firstNameText = binding.editTextFirstName
@@ -107,7 +105,7 @@ class RegisterFragment : Fragment() {
                         requireContext().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(requireView().windowToken, 0)
                 }
-                Log.d(TAG, "login: " + fireBaseUser.uid)
+                Log.d(TAG, "login: " + fireBaseUser.toString())
             })
         } else {
             if (password != passwordConfirm) {

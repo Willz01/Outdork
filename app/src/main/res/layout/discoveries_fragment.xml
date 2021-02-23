@@ -13,11 +13,29 @@
             type="dev.samuelmcmurray.ui.discoveries.DiscoveriesFragment" />
     </data>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_discoveries"
-        android:background="@color/green_light"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/green_light"
+        android:layout_gravity="center"
+        tools:context=".DiscoveriesFragment">
 
-    </androidx.recyclerview.widget.RecyclerView>
+
+        <!-- TODO: Update blank fragment layout -->
+        <TextView
+            android:id="@+id/description_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/discoveries"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:textAppearance="@style/titlefont"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </FrameLayout>
 </layout>

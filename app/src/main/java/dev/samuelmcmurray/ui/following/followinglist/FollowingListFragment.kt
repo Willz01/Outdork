@@ -30,6 +30,7 @@ class FollowingListFragment : Fragment() {
             DataBindingUtil.inflate(inflater, R.layout.fragment_following_list, container, false)
         binding.lifecycleOwner = this
 
+
         return binding.root
     }
 

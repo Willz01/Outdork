@@ -1,6 +1,8 @@
 package dev.samuelmcmurray.ui.auth
 
 import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,8 +17,22 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import com.facebook.*
+import com.facebook.appevents.AppEventsLogger
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
+import com.facebook.login.widget.LoginButton
+import com.facebook.share.model.ShareHashtag
+import com.facebook.share.model.ShareLinkContent
+import com.facebook.share.widget.ShareButton
 import dev.samuelmcmurray.R
+import dev.samuelmcmurray.data.repository.RegisterRepository
 import dev.samuelmcmurray.databinding.FragmentLoginBinding
+import dev.samuelmcmurray.ui.discoveries.DiscoveriesFragment
+import org.json.JSONObject
+import java.util.*
+import kotlin.properties.Delegates
+
 
 private const val TAG = "LoginFragment"
 
@@ -33,6 +49,12 @@ class LoginFragment : Fragment() {
     private lateinit var navHostFragment: NavHostFragment
     private lateinit var navController: NavController
 
+    // login handler variables
+    private lateinit var callbackManager: CallbackManager
+    private lateinit var loginButton: LoginButton
+
+    private var isUser = false
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,10 +62,41 @@ class LoginFragment : Fragment() {
         binding = inflate(inflater, R.layout.fragment_login, container, false)
         binding.lifecycleOwner = this
 
+        FacebookSdk.sdkInitialize(requireContext());
+        AppEventsLogger.activateApp(requireActivity().application);
+
         navHostFragment =
             requireActivity().supportFragmentManager.findFragmentById(R.id.fragmentContainer) as NavHostFragment
         navController = navHostFragment.navController
 
+
+        callbackManager = CallbackManager.Factory.create()
+        loginButton = binding.loginButton
+        loginButton.setPermissions(listOf("email", "public_profile", "user_gender"))
+        loginButton.fragment = this
+        // If you are using in a fragment, call loginButton.setFragment(this);
+
+        // Callback registration
+        // If you are using in a fragment, call loginButton.setFragment(this);
+        loginButton.fragment = this
+
+        // Callback registration
+        loginButton.registerCallback(callbackManager, object : FacebookCallback<LoginResult?> {
+            override fun onSuccess(loginResult: LoginResult?) {
+                // App code
+                Log.d("LOGIN", "Login successful")
+            }
+
+            override fun onCancel() {
+                // App code
+                Log.d("LOGIN", "Login cancelled")
+            }
+
+            override fun onError(exception: FacebookException) {
+                // App code
+                Log.d("LOGIN", "Login failed")
+            }
+        })
 
         return binding.root
     }
@@ -87,5 +140,45 @@ class LoginFragment : Fragment() {
             Toast.makeText(context, "Email and Password must be entered", Toast.LENGTH_SHORT)
                 .show()
         }
+    }
+
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        callbackManager.onActivityResult(requestCode, resultCode, data)
+
+        val graphRequest = GraphRequest.newMeRequest(
+            AccessToken.getCurrentAccessToken(),
+            object : GraphRequest.GraphJSONObjectCallback {
+                override fun onCompleted(`object`: JSONObject?, response: GraphResponse?) {
+                    Log.d("LOGIN", `object`.toString())
+                }
+            })
+
+        val bundle = Bundle()
+        bundle.putString("fields", "gender, name, id, first_name, last_name")
+        graphRequest.parameters = bundle
+
+        graphRequest.executeAsync()
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    /**
+     * Logout from device on access token change (User logged out)
+     */
+    object accessTokenTracker : AccessTokenTracker() {
+        override fun onCurrentAccessTokenChanged(
+            oldAccessToken: AccessToken?,
+            currentAccessToken: AccessToken?
+        ) {
+           if (currentAccessToken == null){
+               LoginManager.getInstance().logOut()
+           }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        accessTokenTracker.stopTracking()
     }
 }

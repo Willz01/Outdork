@@ -11,7 +11,7 @@
         android:title="@string/following_nav" />
     <item
         android:id="@+id/newActivityFragment"
-        android:icon="@drawable/new_activity"
-        android:title="@string/new_activity" />
+        android:icon="@drawable/ic_find_activity"
+        android:title="@string/find_activity" />
 
 </menu>

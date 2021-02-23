@@ -1,16 +1,27 @@
 package dev.samuelmcmurray.ui.favourite
 
+import android.app.Application
+import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.RatingBar
 import android.widget.TextView
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.ui.post.Post
+import java.lang.NullPointerException
 
-class FavouriteAdapter : RecyclerView.Adapter<FavouriteAdapter.MyViewHolder>() {
 
-    private var favourites = emptyList<Post>()
+class FavouriteAdapter(val context: Context) :
+    RecyclerView.Adapter<FavouriteAdapter.MyViewHolder>() {
+
+    private var favourites = mutableListOf<Post>()
+    private lateinit var favouriteViewModel: FavouriteViewModel
+
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -27,9 +38,16 @@ class FavouriteAdapter : RecyclerView.Adapter<FavouriteAdapter.MyViewHolder>() {
         // TODO - currently making the option menu invisible, but might have to create a separate card item for the bookmarks fragment
         holder.itemView.findViewById<TextView>(R.id.option_menu_txt).visibility = View.INVISIBLE
 
-        holder.itemView.findViewById<TextView>(R.id.postee_text).text = currentItem.poster.toString()
-        holder.itemView.findViewById<TextView>(R.id.content_text).text = currentItem.content.toString()
+        favouriteViewModel = FavouriteViewModel(context.applicationContext as Application)
+
+        holder.itemView.findViewById<TextView>(R.id.postee_text).text =
+            currentItem.poster.toString()
+        holder.itemView.findViewById<TextView>(R.id.content_text).text =
+            currentItem.content.toString()
         holder.itemView.findViewById<TextView>(R.id.date_text).text = currentItem.date
+        holder.itemView.findViewById<ImageView>(R.id.profile_image).setImageResource(currentItem.profilePicture)
+        holder.itemView.findViewById<ImageView>(R.id.image_post).setImageResource(currentItem.image_post)
+        holder.itemView.findViewById<RatingBar>(R.id.rating).rating = currentItem.rating.toFloat()
 
     }
 
@@ -37,8 +55,33 @@ class FavouriteAdapter : RecyclerView.Adapter<FavouriteAdapter.MyViewHolder>() {
         return favourites.size
     }
 
-    fun setFavourites(bookmarks : List<Post>){
-        this.favourites = bookmarks
+    fun setFavourites(bookmarks: List<Post>) {
+        this.favourites = bookmarks as MutableList<Post>
         notifyDataSetChanged()
+    }
+
+    inner class ItemHelper(context: Context) :
+        ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+
+        // for move operation -> moving the card in the rv
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ): Boolean {
+            TODO("Not yet implemented")
+        }
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            val position = viewHolder.adapterPosition
+            Log.d("Adapter", position.toString())
+            val post = favourites[0]
+            deleteFromFavourites(post)
+            notifyDataSetChanged()
+        }
+    }
+
+    fun deleteFromFavourites(post: Post) {
+        favouriteViewModel.removePost(post)
     }
 }

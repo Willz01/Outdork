@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import dev.samuelmcmurray.data.dao.FollowingDao
 import dev.samuelmcmurray.ui.post.Post
 
-@Database(entities = [Post::class], version = 1, exportSchema = false)
+@Database(entities = [Post::class], version = 2, exportSchema = false)
 abstract class FollowingDatabase : RoomDatabase() {
 
     abstract fun bookmarkDao(): FollowingDao
@@ -27,7 +27,7 @@ abstract class FollowingDatabase : RoomDatabase() {
                     context.applicationContext,
                     FollowingDatabase::class.java,
                     "favourite_database"
-                ).build()
+                ).fallbackToDestructiveMigration().build()
                 INSTANCE = instance
                 return instance
             }

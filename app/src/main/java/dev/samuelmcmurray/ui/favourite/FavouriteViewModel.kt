@@ -26,4 +26,10 @@ class FavouriteViewModel(application: Application) : AndroidViewModel(applicatio
         }
     }
 
+    fun removePost(post: Post){
+        viewModelScope.launch {
+            repository.removePost(post)
+        }
+    }
+
 }

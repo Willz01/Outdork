@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.databinding.FragmentFavouriteBinding
@@ -30,10 +31,11 @@ class FavouriteFragment : Fragment() {
         binding.lifecycleOwner = this
 
 
-        val adapter = FavouriteAdapter()
+        val adapter = FavouriteAdapter(requireContext())
         val recyclerView = binding.bookmarksRv
-        recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        ItemTouchHelper(FavouriteAdapter(requireContext()).ItemHelper(requireContext())).attachToRecyclerView(recyclerView)
+        recyclerView.adapter = adapter
 
         // view model
         viewModel = ViewModelProvider(this).get(FavouriteViewModel::class.java)

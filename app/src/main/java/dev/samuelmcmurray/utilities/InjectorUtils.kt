@@ -3,9 +3,7 @@ package dev.samuelmcmurray.utilities
 import dev.samuelmcmurray.data.repository.*
 import dev.samuelmcmurray.ui.about.AboutViewModelFactory
 import dev.samuelmcmurray.ui.add_new_activity.AddNewActivityViewModelFactory
-import dev.samuelmcmurray.ui.bookmarks.BookmarksViewModelFactory
 import dev.samuelmcmurray.ui.discoveries.DiscoveriesViewModelFactory
-import dev.samuelmcmurray.ui.favorites.FavoritesViewModelFactory
 import dev.samuelmcmurray.ui.following.feeds.FollowingFeedsViewModelFactory
 import dev.samuelmcmurray.ui.help.HelpViewModelFactory
 import dev.samuelmcmurray.ui.new_activity.NewActivityViewModelFactory
@@ -23,15 +21,10 @@ object InjectorUtils {
         return AddNewActivityViewModelFactory(newActivityRepository)
     }
 
-    fun provideBookmarksViewModelFactory() : BookmarksViewModelFactory {
-        val bookmarksRepository = BookmarksRepository.getInstance("database.getInstance().BookmarksDAO")
-        return BookmarksViewModelFactory(bookmarksRepository)
-    }
-
-    fun provideFavoritesViewModelFactory() : FavoritesViewModelFactory {
-        val favoritesRepository = FavoritesRepository.getInstance("database.getInstance().FavoritesDAO")
-        return FavoritesViewModelFactory(favoritesRepository)
-    }
+   /* fun provideBookmarksViewModelFactory() : FavouriteViewModelFactory {
+        val bookmarksRepository = FavouritesRepository.getInstance("database.getInstance().BookmarksDAO")
+        return FavouriteViewModelFactory(bookmarksRepository)
+    }*/
 
     fun provideFollowingViewModelFactory() : FollowingFeedsViewModelFactory {
         val followingRepository = FollowingFeedsRepository.getInstance("database.getInstance().FollowingDAO")

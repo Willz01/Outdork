@@ -21,15 +21,10 @@
         android:label="@string/newActivity"
         tools:layout="@layout/fragment_new_activity" />
     <fragment
-        android:id="@+id/favouritesFragment"
-        android:name="dev.samuelmcmurray.ui.favorites.FavoritesFragment"
+        android:id="@+id/favouriteFragment"
+        android:name="dev.samuelmcmurray.ui.favourite.FavouriteFragment"
         android:label="Favourites"
-        tools:layout="@layout/fragment_favorites" />
-    <fragment
-        android:id="@+id/bookmarksFragment"
-        android:name="dev.samuelmcmurray.ui.bookmarks.BookmarksFragment"
-        android:label="Bookmarks"
-        tools:layout="@layout/fragment_bookmarks" />
+        tools:layout="@layout/fragment_favourite" />
     <fragment
         android:id="@+id/helpFragment"
         android:name="dev.samuelmcmurray.ui.help.HelpFragment"
@@ -66,6 +61,9 @@
             android:id="@+id/action_loginFragment_pop_including_welcomeFragment"
             app:popUpTo="@id/welcomeFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_loginFragment_to_forgotPasswordFragment"
+            app:destination="@id/forgotPasswordFragment" />
     </fragment>
     <fragment
         android:id="@+id/welcomeFragment"
@@ -90,5 +88,14 @@
         android:name="dev.samuelmcmurray.ui.following.followinglist.FollowingListFragment"
         android:label="fragment_following_list"
         tools:layout="@layout/fragment_following_list" />
+    <fragment
+        android:id="@+id/forgotPasswordFragment"
+        android:name="dev.samuelmcmurray.ui.auth.ForgotPasswordFragment"
+        android:label="fragment_forgot_password"
+        tools:layout="@layout/fragment_forgot_password" >
+        <action
+            android:id="@+id/action_forgotPasswordFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
 
 </navigation>

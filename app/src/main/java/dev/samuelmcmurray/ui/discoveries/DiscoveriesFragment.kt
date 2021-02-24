@@ -16,10 +16,42 @@ import dev.samuelmcmurray.ui.post.PostAdapter
 import dev.samuelmcmurray.utilities.InjectorUtils
 
 private val posts = listOf(
-    Post("Mr Darcy", "21/20/11", "this is a post"),
-    Post("superhiker2324", "19/55/62", "hello another post"),
-    Post("mY dOg", "14/56/95", "another poist"),
-    Post("Superman", "21/15/13", "the last post"),
+    Post(
+        0,
+        R.drawable.hiker_pp1,
+        R.drawable.hike_image1,
+        5.0,
+        "Mr Darcy",
+        "21/20/11",
+        "Great work at Hammar today,"
+    ),
+    Post(
+        0,
+        R.drawable.hiker_pp2,
+        R.drawable.hike_image2,
+        3.7,
+        "superhiker2324",
+        "19/55/62",
+        "hello another post"
+    ),
+    Post(
+        0,
+        R.drawable.hiker_pp3,
+        R.drawable.hike_image3,
+        3.3,
+        "mY dOg",
+        "14/56/95",
+        "another poist"
+    ),
+    Post(
+        0,
+        R.drawable.hiker_pp4,
+        R.drawable.hike_image4,
+        2.6,
+        "Superman",
+        "21/15/13",
+        "the last post"
+    )
 )
 
 class DiscoveriesFragment : Fragment() {
@@ -37,7 +69,7 @@ class DiscoveriesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.discoveries_fragment, container, false)
-        binding.setLifecycleOwner(this)
+        binding.lifecycleOwner = this
         return binding.root
     }
 
@@ -49,7 +81,7 @@ class DiscoveriesFragment : Fragment() {
         val recyclerview = binding.root.findViewById<RecyclerView>(R.id.recycler_view_discoveries)
         recyclerview.apply {
             layoutManager = LinearLayoutManager(activity)
-            adapter = PostAdapter(posts)
+            adapter = PostAdapter(posts, requireContext())
         }
 
 

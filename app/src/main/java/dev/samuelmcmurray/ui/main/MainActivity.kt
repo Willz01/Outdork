@@ -1,6 +1,8 @@
 package dev.samuelmcmurray.ui.main
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.customview.widget.Openable
@@ -19,7 +21,6 @@ import dev.samuelmcmurray.databinding.ActivityMainBinding
 
 
 class MainActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityMainBinding
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navController: NavController
@@ -28,6 +29,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var firebaseAuth: FirebaseAuth
 
     private lateinit var bottomNavigationView: BottomNavigationView
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,8 +50,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.discoveries_fragment,
                 R.id.aboutFragment,
                 R.id.addNewActivityFragment,
-                R.id.bookmarksFragment,
-                R.id.favouritesFragment,
+                R.id.favouriteFragment,
                 R.id.helpFragment,
                 R.id.newActivityFragment,
                 R.id.reportFragment,
@@ -67,7 +69,7 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if (destination.id == R.id.loginFragment || destination.id == R.id.welcomeFragment
-                || destination.id == R.id.registerFragment
+                || destination.id == R.id.registerFragment || destination.id == R.id.forgotPasswordFragment
             ) {
                 supportActionBar?.hide()
                 bottomNavigationView.visibility = View.GONE
@@ -95,6 +97,19 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         supportFragmentManager.popBackStack()
         super.onBackPressed()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        //super.onActivityResult(requestCode, resultCode, data);
+        try {
+            for (fragment in supportFragmentManager.fragments) {
+                fragment.onActivityResult(requestCode, resultCode, data)
+                Log.d("Activity", "ON RESULT CALLED")
+            }
+        } catch (e: Exception) {
+            Log.d("ERROR", e.toString())
+        }
     }
 
 }

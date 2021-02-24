@@ -14,12 +14,14 @@ class LoginRepository {
     private var firebaseAuth: FirebaseAuth
     var userLiveData: MutableLiveData<FirebaseUser>
     var loggedOutLiveData: MutableLiveData<Boolean>
+    var resetEmailLiveData: MutableLiveData<Boolean>
 
     constructor(application: Application) {
         this.application = application
         this.firebaseAuth = FirebaseAuth.getInstance()
         this.userLiveData = MutableLiveData()
         this.loggedOutLiveData = MutableLiveData()
+        this.resetEmailLiveData = MutableLiveData()
 
         if (firebaseAuth.currentUser != null) {
             userLiveData.postValue(firebaseAuth.currentUser);
@@ -49,4 +51,17 @@ class LoginRepository {
                 })
     }
 
+    fun resetPassword(email: String) {
+        firebaseAuth.sendPasswordResetEmail(email)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    resetEmailLiveData.postValue(true)
+                    Log.d(TAG, "Email sent.")
+                } else {
+                    resetEmailLiveData.postValue(false)
+                    Log.d(TAG, "Email failed.")
+                }
+
+            }
+    }
 }

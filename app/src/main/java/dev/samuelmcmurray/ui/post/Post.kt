@@ -9,6 +9,14 @@ import androidx.room.PrimaryKey
  */
 
 @Entity(tableName = "favourite_table")
-data class Post(@PrimaryKey(autoGenerate = true) @ColumnInfo(name = "post_id") val id : Int = 0, val poster: String, val date : String, val content: String) {
+data class Post(
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "post_id") val id: Int = 0,
+    val profilePicture: Int,
+    val image_post: Int,
+    var rating: Double,
+    val poster: String,
+    val date: String,
+    val content: String
+) {
 
 }

@@ -12,4 +12,8 @@ class FavouritesRepository(private val followingDao: FollowingDao){
         followingDao.add(post)
     }
 
+    suspend fun removePost(post: Post){
+        followingDao.remove(post)
+    }
+
 }

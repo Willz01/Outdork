@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -29,10 +28,42 @@ class FollowingFeedsFragment : Fragment() {
     private lateinit var callbackManager: CallbackManager
 
     private val posts = listOf(
-        Post(0,"Mr Darcy", "21/20/11", "this is a post"),
-        Post(0,"superhiker2324", "19/55/62", "hello another post"),
-        Post(0,"mY dOg", "14/56/95", "another poist"),
-        Post(0,"Superman", "21/15/13", "the last post"),
+        Post(
+            0,
+            R.drawable.hiker_pp1,
+            R.drawable.hike_image1,
+            5.0,
+            "Mr Darcy",
+            "21/20/11",
+            "this is a post"
+        ),
+        Post(
+            0,
+            R.drawable.hiker_pp2,
+            R.drawable.hike_image2,
+            3.7,
+            "superhiker2324",
+            "19/55/62",
+            "hello another post"
+        ),
+        Post(
+            0,
+            R.drawable.hiker_pp3,
+            R.drawable.hike_image3,
+            3.3,
+            "mY dOg",
+            "14/56/95",
+            "another poist"
+        ),
+        Post(
+            0,
+            R.drawable.hiker_pp4,
+            R.drawable.hike_image4,
+            2.6,
+            "Superman",
+            "21/15/13",
+            "the last post"
+        )
     )
 
     companion object {

@@ -18,4 +18,7 @@ interface FollowingDao {
     @Ignore
     @Query("select * from favourite_table order by post_id asc")
     fun readAllFavourites(): LiveData<List<Post>>
+
+    @Delete
+    fun remove(post: Post)
 }

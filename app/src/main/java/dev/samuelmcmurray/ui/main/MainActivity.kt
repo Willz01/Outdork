@@ -1,6 +1,8 @@
 package dev.samuelmcmurray.ui.main
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.customview.widget.Openable
@@ -30,6 +32,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bottomNavigationView: BottomNavigationView
 
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -47,8 +51,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.discoveries_fragment,
                 R.id.aboutFragment,
                 R.id.addNewActivityFragment,
-                R.id.bookmarksFragment,
-                R.id.favouritesFragment,
+                R.id.favouriteFragment,
                 R.id.helpFragment,
                 R.id.newActivityFragment,
                 R.id.reportFragment,
@@ -95,6 +98,19 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         supportFragmentManager.popBackStack()
         super.onBackPressed()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        //super.onActivityResult(requestCode, resultCode, data);
+        try {
+            for (fragment in supportFragmentManager.fragments) {
+                fragment.onActivityResult(requestCode, resultCode, data)
+                Log.d("Activity", "ON RESULT CALLED")
+            }
+        } catch (e: Exception) {
+            Log.d("ERROR", e.toString())
+        }
     }
 
 }

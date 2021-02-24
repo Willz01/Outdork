@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/favourite"
+        android:title="@string/favourite_option_menu_item" />
+    <item
+        android:id="@+id/share"
+        android:title="@string/share_option_menu" />
+    <item
+        android:id="@+id/report"
+        android:title="@string/report_option_menu" />
+
+</menu>

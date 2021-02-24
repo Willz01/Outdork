@@ -2,7 +2,6 @@ package dev.samuelmcmurray.ui.auth
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,7 +12,6 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil.inflate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -22,16 +20,9 @@ import com.facebook.appevents.AppEventsLogger
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.facebook.login.widget.LoginButton
-import com.facebook.share.model.ShareHashtag
-import com.facebook.share.model.ShareLinkContent
-import com.facebook.share.widget.ShareButton
 import dev.samuelmcmurray.R
-import dev.samuelmcmurray.data.repository.RegisterRepository
 import dev.samuelmcmurray.databinding.FragmentLoginBinding
-import dev.samuelmcmurray.ui.discoveries.DiscoveriesFragment
 import org.json.JSONObject
-import java.util.*
-import kotlin.properties.Delegates
 
 
 private const val TAG = "LoginFragment"
@@ -44,7 +35,6 @@ class LoginFragment : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
     private lateinit var viewModel: LoginViewModel
-    private lateinit var savedStateHandle: SavedStateHandle
 
     private lateinit var navHostFragment: NavHostFragment
     private lateinit var navController: NavController
@@ -121,6 +111,10 @@ class LoginFragment : Fragment() {
 
         registerText.setOnClickListener {
             navController.navigate(R.id.action_loginFragment_to_registerFragment)
+        }
+
+        forgotPasswordText.setOnClickListener {
+            navController.navigate(R.id.action_loginFragment_to_forgotPasswordFragment)
         }
     }
 

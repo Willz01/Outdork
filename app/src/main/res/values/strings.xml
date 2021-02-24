@@ -74,5 +74,9 @@
     <string name="feeds">Feeds</string>
     <string name="following_menu_item">Following</string>
 
+    <!-- Settings -->
+    <string name="settings_layout" translatable="false">Layout</string>
+    <string name="settings_theme" translatable="false">Dark theme</string>
+
 
 </resources>

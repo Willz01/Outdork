@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.databinding.FragmentFavouriteBinding
+import dev.samuelmcmurray.ui.post.Post
 
 
 class FavouriteFragment : Fragment() {
@@ -41,7 +42,7 @@ class FavouriteFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(FavouriteViewModel::class.java)
         viewModel.readAllFavourites.observe(
             viewLifecycleOwner,
-            Observer { posts -> adapter.setFavourites(posts) })
+            Observer { posts -> adapter.setFavourites(posts as ArrayList<Post>) })
 
         return binding.root
     }

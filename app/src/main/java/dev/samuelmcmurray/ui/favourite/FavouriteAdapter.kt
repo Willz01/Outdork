@@ -19,12 +19,11 @@ import java.lang.NullPointerException
 class FavouriteAdapter(val context: Context) :
     RecyclerView.Adapter<FavouriteAdapter.MyViewHolder>() {
 
-    private var favourites = mutableListOf<Post>()
+    private var favourites = ArrayList<Post>()
     private lateinit var favouriteViewModel: FavouriteViewModel
 
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -55,8 +54,8 @@ class FavouriteAdapter(val context: Context) :
         return favourites.size
     }
 
-    fun setFavourites(bookmarks: List<Post>) {
-        this.favourites = bookmarks as MutableList<Post>
+    fun setFavourites(bookmarks: ArrayList<Post>) {
+        this.favourites = bookmarks
         notifyDataSetChanged()
     }
 

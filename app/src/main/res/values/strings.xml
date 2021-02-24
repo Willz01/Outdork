@@ -22,6 +22,7 @@
     <string name="forgot_password">Forgot Password?</string>
     <string name="sign_up">Sign Up</string>
     <string name="cancel">Cancel</string>
+    <string name="reset">Reset Password</string>
 
     <!--Menu items-->
     <string name="favoritesMenuItem">Favorites</string>
@@ -58,7 +59,7 @@
     <string name="first_name_hint">First Name</string>
     <string name="last_name_hint">Last Name</string>
     <string name="user_name_hint">User Name</string>
-    <string name="dob_hint">Date of Birth YYYY/MM/DD</string>
+    <string name="dob_hint">Date of Birth MM/DD/YYYY</string>
     <string name="location_hint">City</string>
     <string name="country_hint">Country</string>
     <string name="state_hint">State/Providence</string>

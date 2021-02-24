@@ -1,19 +1,17 @@
 package dev.samuelmcmurray.ui.welcome
 
+import android.media.Image
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil.inflate
-import androidx.lifecycle.*
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
+import androidx.fragment.app.Fragment
+import com.google.android.material.navigation.NavigationView
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.databinding.FragmentWelcomeBinding
-import dev.samuelmcmurray.ui.auth.LoginViewModel
 
 
 private const val TAG = "WelcomeFragment"
@@ -30,10 +28,28 @@ class WelcomeFragment : Fragment() {
 
         val progressBar = binding.progressBar
         progressBar.progress
-
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val navigationView = view.findViewById(R.id.nav_view) as NavigationView
+        val headerView = navigationView.getHeaderView(0)
+        val navPicture =
+            headerView.findViewById<View>(R.id.profilePicture) as ImageView
+        // future when I can get profile picture
+        //navPicture.setImageResource()
+        val navUsername =
+            headerView.findViewById<View>(R.id.profileName) as TextView
+        // future when I can get profile data
+        navUsername.text = "Username"
+        val navEmail =
+            headerView.findViewById<View>(R.id.profileEmail) as TextView
+        navEmail.text = "Email"
+        // future when I can get profile data
+
+
+    }
 }
 
 

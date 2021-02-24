@@ -14,7 +14,7 @@
             android:icon="@drawable/ic_search_24"
             android:title="@string/find_activity" />
         <item
-            android:id="@+id/favouritesFragment"
+            android:id="@+id/favouriteFragment"
             android:icon="@drawable/ic_baseline_favorite_24"
             android:title="@string/favoritesMenuItem" />
         <item

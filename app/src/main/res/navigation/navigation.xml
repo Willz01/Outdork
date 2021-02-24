@@ -17,7 +17,7 @@
         tools:layout="@layout/fragment_following" />
     <fragment
         android:id="@+id/newActivityFragment"
-        android:name="dev.samuelmcmurray.ui.new_activity.NewActivityFragment"
+        android:name="dev.samuelmcmurray.ui.find_new_activity.NewActivityFragment"
         android:label="@string/newActivity"
         tools:layout="@layout/fragment_new_activity" />
     <fragment

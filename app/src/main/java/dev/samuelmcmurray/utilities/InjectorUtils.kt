@@ -6,7 +6,7 @@ import dev.samuelmcmurray.ui.add_new_activity.AddNewActivityViewModelFactory
 import dev.samuelmcmurray.ui.discoveries.DiscoveriesViewModelFactory
 import dev.samuelmcmurray.ui.following.feeds.FollowingFeedsViewModelFactory
 import dev.samuelmcmurray.ui.help.HelpViewModelFactory
-import dev.samuelmcmurray.ui.new_activity.NewActivityViewModelFactory
+import dev.samuelmcmurray.ui.find_new_activity.NewActivityViewModelFactory
 import dev.samuelmcmurray.ui.report.ReportViewModelFactory
 
 object InjectorUtils {

@@ -35,7 +35,7 @@ class FavouriteFragment : Fragment() {
         val adapter = FavouriteAdapter(requireContext())
         val recyclerView = binding.bookmarksRv
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        ItemTouchHelper(FavouriteAdapter(requireContext()).ItemHelper(requireContext())).attachToRecyclerView(recyclerView)
+        ItemTouchHelper(FavouriteAdapter(requireContext()).itemTouchHelper).attachToRecyclerView(recyclerView)
         recyclerView.adapter = adapter
 
         // view model

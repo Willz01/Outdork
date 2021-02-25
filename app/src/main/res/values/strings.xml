@@ -73,6 +73,11 @@
     <string name="feeds">Feeds</string>
     <string name="following_menu_item">Following</string>
 
+
+    <!-- Settings -->
+    <string name="settings_layout" translatable="false">Layout</string>
+    <string name="settings_theme" translatable="false">Dark theme</string>
+  
     <!-- Facebook -->
     <string name="facebook_app_id">2780512052212717</string>
     <string name="fb_login_protocol_scheme">fb2780512052212717</string>

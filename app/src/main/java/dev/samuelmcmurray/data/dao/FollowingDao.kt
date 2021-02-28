@@ -12,7 +12,7 @@ interface FollowingDao {
      * On duplicate abort, don't add to db
      * hmm - didn't work as expected, have an idea, will fix later
      */
-    @Insert(onConflict = OnConflictStrategy.ABORT)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun add(post: Post)
 
     @Ignore

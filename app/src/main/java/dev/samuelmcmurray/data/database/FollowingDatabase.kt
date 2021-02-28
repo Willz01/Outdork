@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import dev.samuelmcmurray.data.dao.FollowingDao
 import dev.samuelmcmurray.ui.post.Post
 
-@Database(entities = [Post::class], version = 2, exportSchema = false)
+@Database(entities = [Post::class], version = 5, exportSchema = false)
 abstract class FollowingDatabase : RoomDatabase() {
 
     abstract fun bookmarkDao(): FollowingDao

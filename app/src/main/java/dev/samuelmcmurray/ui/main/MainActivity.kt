@@ -14,6 +14,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.facebook.AccessToken
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import dev.samuelmcmurray.R
@@ -87,6 +88,9 @@ class MainActivity : AppCompatActivity() {
                 navController.navigate(R.id.discoveries_fragment)
             }
         }
+
+        val loggedIn = AccessToken.getCurrentAccessToken() != null
+        println(loggedIn)
     }
 
     override fun onSupportNavigateUp(): Boolean {

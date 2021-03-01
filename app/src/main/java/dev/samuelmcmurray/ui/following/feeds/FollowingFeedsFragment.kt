@@ -24,9 +24,6 @@ import dev.samuelmcmurray.utilities.InjectorUtils
 
 class FollowingFeedsFragment : Fragment() {
 
-    private var shareButton: ShareButton? = null
-    private lateinit var callbackManager: CallbackManager
-
     private val posts = listOf(
         Post(
             0,
@@ -36,7 +33,7 @@ class FollowingFeedsFragment : Fragment() {
             5.0,
             "Mr Darcy",
             "21/20/11",
-            "this is a post"
+            "Great hike today at the high hill sides, with my great hiking partner @superhiker2324"
         ),
         Post(
             0,
@@ -92,8 +89,6 @@ class FollowingFeedsFragment : Fragment() {
         val loggedIn = AccessToken.getCurrentAccessToken() != null
         println(loggedIn)
 
-        /*shareButton = requireActivity().findViewById(R.id.share_button)
-        callbackManager = CallbackManager.Factory.create()*/
 
 
         return binding.root
@@ -115,18 +110,4 @@ class FollowingFeedsFragment : Fragment() {
     }
     //viewModel.getAbout().observe(this, Observer {what ever we do})
 
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        /*callbackManager.onActivityResult(requestCode, resultCode, data)
-
-        // test case with a link
-        val shareLinkContent = ShareLinkContent.Builder()
-            .setContentUrl(Uri.parse("https://www.youtube.com/c/MichaelSambol/videos"))
-            .setShareHashtag(ShareHashtag.Builder().setHashtag("#TEST").build()).build()
-
-        shareButton!!.shareContent = shareLinkContent*/
-
-
-    }
 }

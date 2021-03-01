@@ -8,13 +8,17 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.databinding.FragmentFavouriteBinding
+import dev.samuelmcmurray.ui.post.Post
 
 
 class FavouriteFragment : Fragment() {
+
 
     companion object {
         fun newInstance() = FavouriteFragment()
@@ -30,18 +34,17 @@ class FavouriteFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_favourite, container, false)
         binding.lifecycleOwner = this
 
-
         val adapter = FavouriteAdapter(requireContext())
         val recyclerView = binding.bookmarksRv
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        ItemTouchHelper(FavouriteAdapter(requireContext()).ItemHelper(requireContext())).attachToRecyclerView(recyclerView)
+        ItemTouchHelper(FavouriteAdapter(requireContext()).itemTouchHelper).attachToRecyclerView(recyclerView)
         recyclerView.adapter = adapter
 
         // view model
         viewModel = ViewModelProvider(this).get(FavouriteViewModel::class.java)
         viewModel.readAllFavourites.observe(
             viewLifecycleOwner,
-            Observer { posts -> adapter.setFavourites(posts) })
+            Observer { posts -> adapter.setFavourites(posts as ArrayList<Post>) })
 
         return binding.root
     }

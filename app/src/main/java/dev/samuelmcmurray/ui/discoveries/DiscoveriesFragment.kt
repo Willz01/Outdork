@@ -18,15 +18,17 @@ import dev.samuelmcmurray.utilities.InjectorUtils
 private val posts = listOf(
     Post(
         0,
+        "45444f4f",
         R.drawable.hiker_pp1,
         R.drawable.hike_image1,
         5.0,
         "Mr Darcy",
         "21/20/11",
-        "Great work at Hammar today,"
+        "this is a post"
     ),
     Post(
         0,
+        "erefe22e",
         R.drawable.hiker_pp2,
         R.drawable.hike_image2,
         3.7,
@@ -36,6 +38,7 @@ private val posts = listOf(
     ),
     Post(
         0,
+        "er3e3d3e",
         R.drawable.hiker_pp3,
         R.drawable.hike_image3,
         3.3,
@@ -45,6 +48,7 @@ private val posts = listOf(
     ),
     Post(
         0,
+        "efr3d3d33",
         R.drawable.hiker_pp4,
         R.drawable.hike_image4,
         2.6,
@@ -53,6 +57,7 @@ private val posts = listOf(
         "the last post"
     )
 )
+
 
 class DiscoveriesFragment : Fragment() {
 

@@ -30,6 +30,7 @@ class FollowingFeedsFragment : Fragment() {
     private val posts = listOf(
         Post(
             0,
+            "45444f4f",
             R.drawable.hiker_pp1,
             R.drawable.hike_image1,
             5.0,
@@ -39,6 +40,7 @@ class FollowingFeedsFragment : Fragment() {
         ),
         Post(
             0,
+            "erefe22e",
             R.drawable.hiker_pp2,
             R.drawable.hike_image2,
             3.7,
@@ -48,6 +50,7 @@ class FollowingFeedsFragment : Fragment() {
         ),
         Post(
             0,
+            "er3e3d3e",
             R.drawable.hiker_pp3,
             R.drawable.hike_image3,
             3.3,
@@ -57,6 +60,7 @@ class FollowingFeedsFragment : Fragment() {
         ),
         Post(
             0,
+            "efr3d3d33",
             R.drawable.hiker_pp4,
             R.drawable.hike_image4,
             2.6,

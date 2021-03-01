@@ -89,6 +89,8 @@
     <string name="date_sample">11/04/21</string>
     <string name="image">IMAGE</string>
     <string name="comment">COMMENT</string>
+    <string name="select_button">Select</string>
+    <string name="activity_content">Activity content</string>
 
 
 </resources>

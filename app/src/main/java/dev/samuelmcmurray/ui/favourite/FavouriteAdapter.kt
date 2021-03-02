@@ -9,8 +9,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
-import androidx.core.graphics.component1
-import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import dev.samuelmcmurray.R
@@ -24,6 +22,7 @@ class FavouriteAdapter(val context: Context) :
 
     private var favourites = ArrayList<Post>()
     private lateinit var favouriteViewModel: FavouriteViewModel
+    private var currentItem: Post? = null
 
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -36,32 +35,32 @@ class FavouriteAdapter(val context: Context) :
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val currentItem = favourites[position]
+        currentItem = favourites[position]
+        Log.d(TAG, currentItem.toString())
+
         // TODO - currently making the option menu invisible, but might have to create a separate card item for the bookmarks fragment
         holder.itemView.findViewById<TextView>(R.id.option_menu_txt).visibility = View.INVISIBLE
 
         favouriteViewModel = FavouriteViewModel(context.applicationContext as Application)
 
         holder.itemView.findViewById<TextView>(R.id.postee_text).text =
-            currentItem.poster.toString()
+            currentItem!!.poster.toString()
         holder.itemView.findViewById<TextView>(R.id.content_text).text =
-            currentItem.content.toString()
-        holder.itemView.findViewById<TextView>(R.id.date_text).text = currentItem.date
+            currentItem!!.content.toString()
+        holder.itemView.findViewById<TextView>(R.id.date_text).text = currentItem!!.date
         holder.itemView.findViewById<ImageView>(R.id.profile_image)
-            .setImageResource(currentItem.profilePicture)
+            .setImageResource(currentItem!!.profilePicture)
         holder.itemView.findViewById<ImageView>(R.id.image_post)
-            .setImageResource(currentItem.image_post)
-        holder.itemView.findViewById<RatingBar>(R.id.rating).rating = currentItem.rating.toFloat()
-
+            .setImageResource(currentItem!!.image_post)
+        holder.itemView.findViewById<RatingBar>(R.id.rating).rating = currentItem!!.rating.toFloat()
     }
-
 
 
     override fun getItemCount(): Int {
         return favourites.size
     }
 
-    fun setFavourites(bookmarks: ArrayList<Post>) : List<Post> {
+    fun setFavourites(bookmarks: ArrayList<Post>): List<Post> {
         this.favourites = bookmarks
         notifyDataSetChanged()
         return bookmarks
@@ -78,8 +77,20 @@ class FavouriteAdapter(val context: Context) :
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
             Log.d(TAG, "onSwiped: ${viewHolder.adapterPosition}")
-            val post = this@FavouriteAdapter.setFavourites(favourites)[viewHolder.adapterPosition]
-            deleteFromFavourites(post)
+            Log.d(TAG, currentItem.toString())
+            val post = Post(
+                0,
+                "45444f4f",
+                R.drawable.hiker_pp1,
+                R.drawable.hike_image1,
+                5.0,
+                "Mr Darcy",
+                "21/20/11",
+                "this is a post"
+            )
+            favouriteViewModel = FavouriteViewModel(context.applicationContext as Application)
+
+            deleteFromFavourites(favourites[viewHolder.bindingAdapterPosition])
             notifyDataSetChanged()
         }
 
@@ -109,4 +120,5 @@ class FavouriteAdapter(val context: Context) :
     fun deleteFromFavourites(post: Post) {
         favouriteViewModel.removePost(post)
     }
+
 }

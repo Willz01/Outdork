@@ -12,7 +12,6 @@ import androidx.room.PrimaryKey
  * Another field postID exist to have only distinct post in the favourite database
  */
 
-@kotlinx.parcelize.Parcelize
 @Entity(tableName = "favourite_table", indices = [Index(value = ["postID"], unique = true)])
 data class Post(
     @PrimaryKey(autoGenerate = true)
@@ -25,4 +24,4 @@ data class Post(
     val poster: String,
     val date: String,
     val content: String
-) : Parcelable
+)

@@ -1,16 +1,13 @@
 package dev.samuelmcmurray.ui.favourite
 
 import android.app.Application
-import android.app.Service
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import dev.samuelmcmurray.data.database.FollowingDatabase
+import dev.samuelmcmurray.data.database.FavoriteDatabase
 import dev.samuelmcmurray.data.repository.FavouritesRepository
 import dev.samuelmcmurray.ui.post.Post
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class FavouriteViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -20,7 +17,7 @@ class FavouriteViewModel(application: Application) : AndroidViewModel(applicatio
 
 
     init {
-        val followingDao = FollowingDatabase.getDatabase(application).bookmarkDao()
+        val followingDao = FavoriteDatabase.getDatabase(application).bookmarkDao()
         repository = FavouritesRepository(followingDao)
         readAllFavourites = repository.readAllFavourites
     }
@@ -36,8 +33,5 @@ class FavouriteViewModel(application: Application) : AndroidViewModel(applicatio
             repository.removePost(post)
         }
     }
-
-
-
 
 }

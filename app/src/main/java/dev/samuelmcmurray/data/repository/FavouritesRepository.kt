@@ -1,20 +1,19 @@
 package dev.samuelmcmurray.data.repository
 
 import androidx.lifecycle.LiveData
-import dev.samuelmcmurray.data.dao.FollowingDao
+import dev.samuelmcmurray.data.dao.FavoriteDao
 import dev.samuelmcmurray.ui.post.Post
-import retrofit2.http.POST
 
-class FavouritesRepository(private val followingDao: FollowingDao) {
+class FavouritesRepository(private val favoriteDao: FavoriteDao) {
 
-    val readAllFavourites: LiveData<List<Post>> = followingDao.readAllFavourites()
+    val readAllFavourites: LiveData<List<Post>> = favoriteDao.readAllFavourites()
 
     suspend fun addPost(post: Post) {
-        followingDao.add(post)
+        favoriteDao.add(post)
     }
 
     suspend fun removePost(post: Post) {
-        followingDao.remove(post)
+        favoriteDao.removePost(post.postID)
     }
 
 }

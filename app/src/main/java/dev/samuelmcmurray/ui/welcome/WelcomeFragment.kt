@@ -31,7 +31,7 @@ class WelcomeFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    fun onViewCrea(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val navigationView = view.findViewById(R.id.nav_view) as NavigationView
         val headerView = navigationView.getHeaderView(0)
@@ -50,6 +50,7 @@ class WelcomeFragment : Fragment() {
 
 
     }
+
 }
 
 

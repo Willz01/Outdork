@@ -5,7 +5,7 @@ import androidx.room.*
 import dev.samuelmcmurray.ui.post.Post
 
 @Dao
-interface FollowingDao {
+interface FavoriteDao {
 
     /**
      * TODO
@@ -19,6 +19,8 @@ interface FollowingDao {
     @Query("select * from favourite_table order by post_id asc")
     fun readAllFavourites(): LiveData<List<Post>>
 
-    @Delete
-    fun remove(post: Post)
+
+    @Query("Delete from favourite_table where postID = :postID")
+    suspend fun removePost(postID: String)
+
 }

@@ -24,7 +24,7 @@ private val posts = listOf(
         5.0,
         "Mr Darcy",
         "21/20/11",
-        "this is a post"
+        "Great hike today at the high hill sides, with my great hiking partner @superhiker2324"
     ),
     Post(
         0,

@@ -1,4 +1,4 @@
-package dev.samuelmcmurray.ui.favourite
+package dev.samuelmcmurray.ui.favorite
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,38 +13,38 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dev.samuelmcmurray.R
-import dev.samuelmcmurray.databinding.FragmentFavouriteBinding
+import dev.samuelmcmurray.databinding.FragmentFavoriteBinding
 import dev.samuelmcmurray.ui.post.Post
 
 
-class FavouriteFragment : Fragment() {
+class FavoriteFragment : Fragment() {
 
 
     companion object {
-        fun newInstance() = FavouriteFragment()
+        fun newInstance() = FavoriteFragment()
     }
 
-    private lateinit var binding: FragmentFavouriteBinding
-    private lateinit var viewModel: FavouriteViewModel
+    private lateinit var binding: FragmentFavoriteBinding
+    private lateinit var viewModel: FavoriteViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_favourite, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_favorite, container, false)
         binding.lifecycleOwner = this
 
-        val adapter = FavouriteAdapter(requireContext())
+        val adapter = FavoriteAdapter(requireContext())
         val recyclerView = binding.bookmarksRv
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         recyclerView.adapter = adapter
 
         // view model
-        viewModel = ViewModelProvider(this).get(FavouriteViewModel::class.java)
-        viewModel.readAllFavourites.observe(
+        viewModel = ViewModelProvider(this).get(FavoriteViewModel::class.java)
+        viewModel.readAllFavorites.observe(
             viewLifecycleOwner,
-            Observer { posts -> adapter.setFavourites(posts as ArrayList<Post>) })
+            Observer { posts -> adapter.setFavorites(posts as ArrayList<Post>) })
 
         // item swipe helper : swipe to un favorite
         val touchHelper = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
@@ -69,6 +69,6 @@ class FavouriteFragment : Fragment() {
     /*  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
           super.onViewCreated(view, savedInstanceState)
           val factory = InjectorUtils.provideBookmarksViewModelFactory()
-          viewModel = ViewModelProvider(this, factory).get(FavouriteViewModel::class.java)
+          viewModel = ViewModelProvider(this, factory).get(FavoriteViewModel::class.java)
       }*/
 }

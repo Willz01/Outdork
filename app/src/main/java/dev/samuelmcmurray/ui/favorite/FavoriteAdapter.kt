@@ -1,4 +1,4 @@
-package dev.samuelmcmurray.ui.favourite
+package dev.samuelmcmurray.ui.favorite
 
 import android.app.Application
 import android.content.Context
@@ -13,14 +13,14 @@ import androidx.recyclerview.widget.RecyclerView
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.ui.post.Post
 
-private const val TAG = "FavouriteAdapter"
+private const val TAG = "FavoriteAdapter"
 
-class FavouriteAdapter(val context: Context) :
-    RecyclerView.Adapter<FavouriteAdapter.MyViewHolder>() {
+class FavoriteAdapter(val context: Context) :
+    RecyclerView.Adapter<FavoriteAdapter.MyViewHolder>() {
 
 
-    private var favourites = ArrayList<Post>()
-    private lateinit var favouriteViewModel: FavouriteViewModel
+    private var favorites = ArrayList<Post>()
+    private lateinit var favoriteViewModel: FavoriteViewModel
     private var currentItem: Post? = null
 
 
@@ -34,13 +34,13 @@ class FavouriteAdapter(val context: Context) :
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        currentItem = favourites[position]
+        currentItem = favorites[position]
         Log.d(TAG, currentItem.toString())
 
         // TODO - currently making the option menu invisible, but might have to create a separate card item for the bookmarks fragment
         holder.itemView.findViewById<TextView>(R.id.option_menu_txt).visibility = View.INVISIBLE
 
-        favouriteViewModel = FavouriteViewModel(context.applicationContext as Application)
+        favoriteViewModel = FavoriteViewModel(context.applicationContext as Application)
 
         holder.itemView.findViewById<TextView>(R.id.postee_text).text =
             currentItem!!.poster.toString()
@@ -56,17 +56,17 @@ class FavouriteAdapter(val context: Context) :
 
 
     override fun getItemCount(): Int {
-        return favourites.size
+        return favorites.size
     }
 
-    fun setFavourites(bookmarks: ArrayList<Post>): List<Post> {
-        this.favourites = bookmarks
+    fun setFavorites(bookmarks: ArrayList<Post>): List<Post> {
+        this.favorites = bookmarks
         notifyDataSetChanged()
         return bookmarks
     }
 
     fun getPostAt(position: Int) : Post{
-        return favourites[position]
+        return favorites[position]
     }
 
 }

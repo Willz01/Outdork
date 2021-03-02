@@ -55,6 +55,13 @@
                 android:layout_gravity="end"
                 android:text="@string/_8942"
                 android:textAppearance="?android:textAppearanceLarge" />
+
+            <com.facebook.share.widget.ShareButton
+                android:id="@+id/share_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/com_facebook_share_button_text"
+                android:visibility="gone"/>
         </LinearLayout>
 
         <LinearLayout

@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.ui.post.Post
@@ -66,59 +65,9 @@ class FavouriteAdapter(val context: Context) :
         return bookmarks
     }
 
-    val itemTouchHelper = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-        override fun onMove(
-            recyclerView: RecyclerView,
-            viewHolder: RecyclerView.ViewHolder,
-            target: RecyclerView.ViewHolder
-        ): Boolean {
-            TODO("Not yet implemented")
-        }
-
-        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-            Log.d(TAG, "onSwiped: ${viewHolder.adapterPosition}")
-            Log.d(TAG, currentItem.toString())
-            val post = Post(
-                0,
-                "45444f4f",
-                R.drawable.hiker_pp1,
-                R.drawable.hike_image1,
-                5.0,
-                "Mr Darcy",
-                "21/20/11",
-                "this is a post"
-            )
-            favouriteViewModel = FavouriteViewModel(context.applicationContext as Application)
-
-            deleteFromFavourites(favourites[viewHolder.bindingAdapterPosition])
-            notifyDataSetChanged()
-        }
-
-    }
-
-    /* inner class ItemHelper(context: Context) :
-         ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-
-         // for move operation -> moving the card in the rv
-         override fun onMove(
-             recyclerView: RecyclerView,
-             viewHolder: RecyclerView.ViewHolder,
-             target: RecyclerView.ViewHolder
-         ): Boolean {
-             TODO("Not yet implemented")
-         }
-
-         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-             val position = viewHolder.adapterPosition
-             Log.d("Adapter", position.toString())
-             val post = favourites[0]
-             deleteFromFavourites(post)
-             notifyDataSetChanged()
-         }
-     }*/
-
-    fun deleteFromFavourites(post: Post) {
-        favouriteViewModel.removePost(post)
+    fun getPostAt(position: Int) : Post{
+        return favourites[position]
     }
 
 }
+

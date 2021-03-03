@@ -7,9 +7,12 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import dev.samuelmcmurray.data.model.CurrentUser
+import dev.samuelmcmurray.data.singelton.CurrentUserSingleton
+import dev.samuelmcmurray.data.singelton.MutexLock
+import kotlinx.coroutines.delay
+
 
 
 private const val TAG = "RegisterRepository"
@@ -17,6 +20,9 @@ private const val TAG = "RegisterRepository"
 class RegisterRepository {
     private var application: Application
     private var firebaseAuth: FirebaseAuth
+    private lateinit var db : FirebaseFirestore
+    //var storage = FirebaseStorage.getInstance("gs://outdork-788e0.appspot.com")
+    var storeImageLiveData: MutableLiveData<Boolean>
     var userLiveData: MutableLiveData<FirebaseUser>
     var loggedOutLiveData: MutableLiveData<Boolean>
     var userCreatedLiveData: MutableLiveData<Boolean>
@@ -29,6 +35,7 @@ class RegisterRepository {
         loggedOutLiveData = MutableLiveData()
         userCreatedLiveData = MutableLiveData()
         emailSentLiveData = MutableLiveData()
+        storeImageLiveData = MutableLiveData()
 
         if (firebaseAuth.currentUser != null) {
             userLiveData.postValue(firebaseAuth.currentUser);
@@ -55,18 +62,20 @@ class RegisterRepository {
                         loggedOutLiveData.postValue(true)
                     }
                 })
+
     }
 
-    fun createUser(
+    suspend fun createUser(
         firstName: String, lastName: String, userName: String, email: String,
         city: String, state: String, country: String, dob: Long
     ) {
-        var uid = firebaseAuth.currentUser?.uid
-        while (uid == null) {
-            //TODO: fix so it cant go into an infinite loop
-            uid = firebaseAuth.currentUser?.uid
+        Log.d(TAG, "createUser: Beginning")
+
+        while ( MutexLock.getInstance.locked) {
+            delay(250)
         }
-        val db: DocumentReference = FirebaseFirestore.getInstance().document("Users/${uid}")
+
+        val uid = this.firebaseAuth.currentUser?.uid
         val currentUser = uid?.let {
             CurrentUser(
                 it,
@@ -78,44 +87,46 @@ class RegisterRepository {
                 state,
                 city,
                 dob
-            )
-        }
+            )}
+        CurrentUserSingleton.getInstance.currentUser = currentUser
+        Log.d(TAG, "createUser: Middle " + currentUser.toString())
         val user = hashMapOf(
-            "firstName" to firstName,
-            "lastName" to lastName,
-            "userName" to userName,
-            "email" to email,
-            "country" to country,
-            "state" to state,
-            "city" to city,
-            "dateOfBirth" to dob,
-            "about" to currentUser?.about,
-            "activities" to listOf(currentUser?.activities)
+            "userID" to currentUser?.id,
+            "firstName" to currentUser?.firstName,
+            "lastName" to currentUser?.lastName,
+            "userName" to currentUser?.userName,
+            "email" to currentUser?.email,
+            "hasImage" to currentUser?.hasImage,
+            "country" to currentUser?.country,
+            "state" to currentUser?.state,
+            "city" to currentUser?.city,
+            "dateOfBirth" to currentUser?.dob,
+            "about" to CurrentUserSingleton.getInstance.currentUser!!.about,
+            "activities" to listOf(CurrentUserSingleton.getInstance.currentUser!!.activities)
         )
-
-
-        db.set(user)
-            .addOnSuccessListener (ContextCompat.getMainExecutor(application), { void ->
+        Log.d(TAG, "createUser: Before set $user")
+        db = FirebaseFirestore.getInstance()
+        db.collection("Users")
+            .add(user)
+            .addOnSuccessListener (ContextCompat.getMainExecutor(application), { _ ->
                 Log.d(
                     TAG,
                     "DocumentSnapshot added with ID: $uid"
                 )
                 userCreatedLiveData.postValue(true)
             })
-            .addOnFailureListener { e -> Log.w(TAG, "Error adding document", e)
+            .addOnFailureListener { e -> Log.w(TAG, "Error adding document ${e.localizedMessage}")
                 userCreatedLiveData.postValue(false)}
-
-
     }
 
-    fun emailVerification() {
-        var user = firebaseAuth.currentUser
-        while (user == null) {
-            //TODO: fix so it cant go into an infinite loop
-            user = firebaseAuth.currentUser
+    suspend fun emailVerification() {
+
+        while (MutexLock.getInstance.locked && MutexLock.getInstance.flag) {
+            delay(500)
         }
-        user!!.sendEmailVerification()
-            .addOnCompleteListener (ContextCompat.getMainExecutor(application), { task ->
+        val user = firebaseAuth.currentUser
+        user?.sendEmailVerification()
+            ?.addOnCompleteListener (ContextCompat.getMainExecutor(application), { task ->
                 if (task.isSuccessful) {
                     Log.d(TAG, "Email sent.")
                     emailSentLiveData.postValue(true)
@@ -124,5 +135,16 @@ class RegisterRepository {
                 }
             })
     }
+
+//    private fun storeImage(uid: String, image: Uri) {
+//        val storageReference = storage.reference
+//        storageReference.child("UserPhotos/$uid/profileImage.jpg")
+//        val uploadTask = storageReference.putFile(image)
+//        uploadTask.addOnFailureListener {
+//            storeImageLiveData.postValue(false)
+//        }.addOnSuccessListener {
+//            storeImageLiveData.postValue(true)
+//        }
+//    }
 
 }

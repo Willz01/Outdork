@@ -3,7 +3,6 @@ package dev.samuelmcmurray.utilities
 import dev.samuelmcmurray.data.repository.*
 import dev.samuelmcmurray.ui.about.AboutViewModelFactory
 import dev.samuelmcmurray.ui.add_new_activity.AddNewActivityViewModelFactory
-import dev.samuelmcmurray.ui.discoveries.DiscoveriesViewModelFactory
 import dev.samuelmcmurray.ui.following.feeds.FollowingFeedsViewModelFactory
 import dev.samuelmcmurray.ui.help.HelpViewModelFactory
 import dev.samuelmcmurray.ui.new_activity.NewActivityViewModelFactory
@@ -46,10 +45,6 @@ object InjectorUtils {
         return ReportViewModelFactory(reportRepository)
     }
 
-    fun provideDiscoveriesViewModelFactory() : DiscoveriesViewModelFactory {
-        val discoveriesRepository = DiscoveriesRepository.getInstance("database.getInstance().DiscoveriesDAO")
-        return DiscoveriesViewModelFactory(discoveriesRepository)
-    }
 
 
 }

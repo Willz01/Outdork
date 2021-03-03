@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "391368501096",
+    "firebase_url": "https://outdork-788e0-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "outdork-788e0",
     "storage_bucket": "outdork-788e0.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "391368501096-bdbovr2r2vglvp2c0kh83tnt07i38vuh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dev.samuelmcmurray",
+            "certificate_hash": "47977d9d8d2180cbce157f29a34b362a10c08a5a"
+          }
+        },
         {
           "client_id": "391368501096-urunmeork6l29bopnqctfprqboiogd19.apps.googleusercontent.com",
           "client_type": 3

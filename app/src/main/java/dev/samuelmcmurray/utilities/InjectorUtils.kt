@@ -21,9 +21,9 @@ object InjectorUtils {
         return AddNewActivityViewModelFactory(newActivityRepository)
     }
 
-   /* fun provideBookmarksViewModelFactory() : FavouriteViewModelFactory {
-        val bookmarksRepository = FavouritesRepository.getInstance("database.getInstance().BookmarksDAO")
-        return FavouriteViewModelFactory(bookmarksRepository)
+   /* fun provideBookmarksViewModelFactory() : FavoriteViewModelFactory {
+        val bookmarksRepository = FavoritesRepository.getInstance("database.getInstance().BookmarksDAO")
+        return FavoriteViewModelFactory(bookmarksRepository)
     }*/
 
     fun provideFollowingViewModelFactory() : FollowingFeedsViewModelFactory {

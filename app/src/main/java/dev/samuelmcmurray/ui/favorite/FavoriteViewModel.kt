@@ -1,25 +1,26 @@
-package dev.samuelmcmurray.ui.favourite
+package dev.samuelmcmurray.ui.favorite
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import dev.samuelmcmurray.data.database.FavoriteDatabase
-import dev.samuelmcmurray.data.repository.FavouritesRepository
+import dev.samuelmcmurray.data.repository.FavoritesRepository
 import dev.samuelmcmurray.ui.post.Post
 import kotlinx.coroutines.launch
 
-class FavouriteViewModel(application: Application) : AndroidViewModel(application) {
+class FavoriteViewModel(application: Application) : AndroidViewModel(application) {
 
-    val readAllFavourites: LiveData<List<Post>>
-    private val repository: FavouritesRepository
-
+    val readAllFavorites: LiveData<List<Post>>
+    val readAllPost: List<Post>
+    private val repository: FavoritesRepository
 
 
     init {
         val followingDao = FavoriteDatabase.getDatabase(application).bookmarkDao()
-        repository = FavouritesRepository(followingDao)
-        readAllFavourites = repository.readAllFavourites
+        repository = FavoritesRepository(followingDao)
+        readAllFavorites = repository.readAllFavorites
+        readAllPost = repository.readAllPost
     }
 
     fun addPost(post: Post) {

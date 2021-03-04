@@ -12,7 +12,7 @@ import androidx.room.PrimaryKey
  * Another field postID exist to have only distinct post in the favourite database
  */
 
-@Entity(tableName = "favourite_table", indices = [Index(value = ["postID"], unique = true)])
+@Entity(tableName = "favorite_table", indices = [Index(value = ["postID"], unique = true)])
 data class Post(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "post_id")

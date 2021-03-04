@@ -22,9 +22,9 @@
         tools:layout="@layout/fragment_new_activity" />
     <fragment
         android:id="@+id/favouriteFragment"
-        android:name="dev.samuelmcmurray.ui.favourite.FavouriteFragment"
+        android:name="dev.samuelmcmurray.ui.favorite.FavoriteFragment"
         android:label="Favourites"
-        tools:layout="@layout/fragment_favourite" />
+        tools:layout="@layout/fragment_favorite" />
     <fragment
         android:id="@+id/helpFragment"
         android:name="dev.samuelmcmurray.ui.help.HelpFragment"

@@ -26,8 +26,8 @@ abstract class FavoriteDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     FavoriteDatabase::class.java,
-                    "favourite_database"
-                ).fallbackToDestructiveMigration().build()
+                    "favorite_database"
+                ).allowMainThreadQueries().fallbackToDestructiveMigration().build()
                 INSTANCE = instance
                 return instance
             }

@@ -31,7 +31,13 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var bottomNavigationView: BottomNavigationView
 
-
+    /**
+     * Used to keep track of selected filter options in {@link NewActivityFragment}
+     */
+    companion object{
+        fun newInstance() = MainActivity()
+        var selectedFilter = ArrayList<String>()
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,7 +63,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.reportFragment,
                 R.id.settingsFragment,
                 R.id.followingHolder,
-                R.id.followingListFragment
+                R.id.followingListFragment, R.id.mapsFragment
             )
         ).setOpenableLayout(drawerLayout as Openable).build()
 

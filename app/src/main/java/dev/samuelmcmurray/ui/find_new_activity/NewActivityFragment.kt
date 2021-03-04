@@ -1,20 +1,24 @@
 package dev.samuelmcmurray.ui.find_new_activity
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.databinding.FragmentNewActivityBinding
 import dev.samuelmcmurray.sampleactivities.Activities
+import dev.samuelmcmurray.ui.find_new_activity.location.MapsFragmentDirections
+import dev.samuelmcmurray.ui.main.MainActivity
 import dev.samuelmcmurray.utilities.InjectorUtils
 
-
+private const val TAG = "NewActivityFragment"
 class NewActivityFragment : Fragment() {
 
     companion object {
@@ -22,6 +26,17 @@ class NewActivityFragment : Fragment() {
     }
     private lateinit var binding : FragmentNewActivityBinding
     private lateinit var viewModel : NewActivityViewModel
+
+    val list = ArrayList<String>()
+
+    /**
+     * Inflate list with selected filter options
+     */
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        list.addAll(MainActivity.selectedFilter)
+        Log.d(TAG, "onCreate: $list")
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,10 +60,11 @@ class NewActivityFragment : Fragment() {
             adapter = concatAdapter
         }
 
-        /*binding.selectFilters.setOnClickListener {
-            val filterItems = ContentExpandableAdapter(activities[0]).filterItemsReturn()
-            println(filterItems)
-        }*/
+        binding.selectFilters.setOnClickListener {
+            println(list)
+            val action = NewActivityFragmentDirections.selectBtnPressed()
+            Navigation.findNavController(binding.root).navigate(action)
+        }
 
         return binding.root
     }

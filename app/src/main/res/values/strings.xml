@@ -92,5 +92,9 @@
     <string name="select_button">Select</string>
     <string name="activity_content">Activity content</string>
 
+    <!-- places sdk -->
+    <string name="places_api">AIzaSyD5j72Gj-fVrhakRcmVZkEevRgAqdQtggE</string>
+    <string name="search_location">Search location</string>
+
 
 </resources>

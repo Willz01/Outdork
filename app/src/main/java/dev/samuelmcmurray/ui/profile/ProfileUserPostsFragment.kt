@@ -7,17 +7,15 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import dev.samuelmcmurray.R
-import dev.samuelmcmurray.databinding.FragmentProfileMenuBinding
+import dev.samuelmcmurray.databinding.FragmentOtherProfileBinding
 
-
-class ProfileFragment : Fragment() {
+class ProfileUserPostsFragment : Fragment() {
 
     companion object {
         fun newInstance() = ProfileFragment()
     }
 
-    private lateinit var viewModel: ProfileViewModel
-    private lateinit var binding: FragmentProfileMenuBinding
+    private lateinit var binding: FragmentOtherProfileBinding
 
 
     override fun onCreateView(
@@ -25,16 +23,8 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_profile_menu, container, false)
+            DataBindingUtil.inflate(inflater, R.layout.fragment_other_profile, container, false)
         binding.lifecycleOwner = this
         return binding.root
     }
-/*
-    fun addFragment(fragment: Fragment, string: String) {
-        fragmentList.add(fragment)
-        stringList.add(string)
-    }
-*/
-
-
 }

@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import dev.samuelmcmurray.R
@@ -26,7 +27,22 @@ class AboutFragment : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_about, container, false)
         binding.setLifecycleOwner(this)
-        return binding.root
+        val view = binding.root
+
+
+        val aboutText = view.findViewById<TextView>(R.id.aboutText)
+
+        aboutText.text= """We are dorks about the adventures waiting for us outdoors.
+            |This app allows you to make it easier for you to find the correct activity. 
+            |
+            |An active outdoor life is healthy for both heart, mind and body. No matter if you walk with your dog, looking for a good hunting place
+            |or if you just want a walk in a nice forest - your active choice to be active is an investment in yourself. 
+            |  
+            |When the world is turned upside down, the wild life is the same, waiting for your next adventure!
+            """.trimMargin()
+
+
+        return view
     }
 
 

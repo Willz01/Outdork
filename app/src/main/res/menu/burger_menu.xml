@@ -26,10 +26,6 @@
             android:icon="@drawable/ic_report_24"
             android:title="@string/reportMenuItem" />
         <item
-            android:id="@+id/helpFragment"
-            android:icon="@drawable/ic_help_24"
-            android:title="@string/helpMenuItem" />
-        <item
             android:id="@+id/aboutFragment"
             android:icon="@drawable/ic_baseline_error_24"
             android:title="@string/aboutMenuItem" />

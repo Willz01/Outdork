@@ -1,5 +1,6 @@
 package dev.samuelmcmurray.ui.auth
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
 import android.util.Log
@@ -18,6 +19,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.google.firebase.auth.FirebaseUser
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.databinding.FragmentRegisterBinding
+import java.util.concurrent.Executors
 
 private const val TAG = "RegisterFragment"
 
@@ -52,13 +54,14 @@ class RegisterFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("SimpleDateFormat")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(RegisterViewModel::class.java)
 
         val signUpButton = binding.buttonSignUp
         val cancelButton = binding.buttonCancel
-        val dob = binding.editTextDOB
+        val dateOfBirth = binding.editTextDOB
 
         signUpButton.setOnClickListener {
             val firstNameText = binding.editTextFirstName
@@ -80,48 +83,55 @@ class RegisterFragment : Fragment() {
             val country = countryText.text.toString()
             val password = passwordText.text.toString()
             val passwordConfirm = passwordConfirmText.text.toString()
-            val dob : Long = calendarView.date
+            val dob = dateOfBirth.text.toString()
 
             register(firstName, lastName, userName, email, city, state, country,
                 password, passwordConfirm, dob)
-            createUser(firstName, lastName, userName, email,
-                city, state, country, dob)
-            emailVerification()
-            val imm: InputMethodManager =
-                requireContext().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(requireView().windowToken, 0)
+            hideKeyboard()
         }
 
         cancelButton.setOnClickListener {
             navController.navigate(R.id.loginFragment)
         }
 
-        dob.setOnClickListener {
+        dateOfBirth.setOnClickListener {
             showHide(calendarView)
         }
 
         calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
             val theMonth = month + 1
-            dob.text = "$theMonth/$dayOfMonth/$year"
+            dateOfBirth.text = "$theMonth-$dayOfMonth-$year"
         }
 
     }
 
-    private fun register(firstName: String, lastName: String, userName: String, email: String,
-                         city: String, state: String, country: String, password: String, passwordConfirm: String, dob: Long) {
+    private fun register(
+        firstName: String, lastName: String, userName: String, email: String,
+        city: String, state: String, country: String, password: String, passwordConfirm: String, dob: String
+    ) {
         if (firstName.isNotBlank() && lastName.isNotBlank() && userName.isNotBlank() &&
-                email.isNotBlank() && city.isNotBlank() && state.isNotBlank() && country.isNotBlank() &&
-                password.isNotBlank() && passwordConfirm.isNotBlank() && (password == passwordConfirm) &&
-                dob > 0) {
-            viewModel.register(email, password)
+            email.isNotBlank() && city.isNotBlank() && state.isNotBlank() && country.isNotBlank() &&
+            password.isNotBlank() && passwordConfirm.isNotBlank() && (password == passwordConfirm)) {
+            val executor = Executors.newSingleThreadExecutor()
+            executor.execute {
+                viewModel.register(
+                    firstName,
+                    lastName,
+                    userName,
+                    email,
+                    city,
+                    state,
+                    country,
+                    password,
+                    dob
+                )
+            }
             viewModel.userLiveData.observe(viewLifecycleOwner, Observer {
                 val firebaseUser = it
                 if (firebaseUser != null) {
                     user = firebaseUser
                     userID = user.uid
-                    val imm: InputMethodManager =
-                        requireContext().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.hideSoftInputFromWindow(requireView().windowToken, 0)
+                    hideKeyboard()
                 }
                 Log.d(TAG, "login: " + firebaseUser.uid)
             })
@@ -134,31 +144,19 @@ class RegisterFragment : Fragment() {
                     .show()
             }
         }
-    }
-
-    private fun createUser(firstName: String, lastName: String, userName: String, email: String,
-                           city: String, state: String, country: String, dob: Long){
-        viewModel.createUser(firstName, lastName, userName, email,
-            city, state, country, dob)
         viewModel.userCreatedLiveData.observe(viewLifecycleOwner, Observer {
             val userCreated = it
             if (userCreated) {
-                val imm: InputMethodManager =
-                    requireContext().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(requireView().windowToken, 0)
-                Log.d(TAG, "UserCreated: " )
+                hideKeyboard()
+                Log.d(TAG, "UserCreated: ")
+            } else {
+                Log.d(TAG, "UserCreated: failure")
             }
         })
-    }
-
-    private fun emailVerification() {
-        viewModel.emailVerification()
         viewModel.emailSentLiveData.observe(viewLifecycleOwner, Observer {
             val emailSent = it
             if (emailSent) {
-                val imm: InputMethodManager =
-                    requireContext().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(requireView().windowToken, 0)
+                hideKeyboard()
                 Log.d(TAG, "EmailSent: " )
             }
         })
@@ -171,4 +169,11 @@ class RegisterFragment : Fragment() {
             view.visibility = View.GONE
         }
     }
+
+    private fun hideKeyboard() {
+        val imm: InputMethodManager =
+            requireContext().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(requireView().windowToken, 0)
+    }
+
 }

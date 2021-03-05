@@ -1,10 +1,11 @@
 package dev.samuelmcmurray.data.model
 
 import android.net.Uri
+import java.time.LocalDate
 
 class Post {
     var message: String
-    var id : Long
+    var id : LocalDate
     var image: Uri
     var hasImage: Boolean
     var user: String
@@ -12,8 +13,9 @@ class Post {
     var comments: List<String>
     var likes: Int
 
-    constructor(message: String, id: Long, image: Uri, hasImage: Boolean,
-                user: String, likes: Int, userName: String) {
+    constructor(
+        message: String, id: LocalDate, image: Uri, hasImage: Boolean,
+        user: String, likes: Int, userName: String) {
         this.message = message
         this.id = id
         this.image = image

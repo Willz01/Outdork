@@ -3,7 +3,6 @@ package dev.samuelmcmurray.utilities
 import dev.samuelmcmurray.data.repository.*
 import dev.samuelmcmurray.ui.about.AboutViewModelFactory
 import dev.samuelmcmurray.ui.add_new_activity.AddNewActivityViewModelFactory
-import dev.samuelmcmurray.ui.discoveries.DiscoveriesViewModelFactory
 import dev.samuelmcmurray.ui.following.feeds.FollowingFeedsViewModelFactory
 import dev.samuelmcmurray.ui.help.HelpViewModelFactory
 import dev.samuelmcmurray.ui.find_new_activity.NewActivityViewModelFactory
@@ -21,10 +20,10 @@ object InjectorUtils {
         return AddNewActivityViewModelFactory(newActivityRepository)
     }
 
-   /* fun provideBookmarksViewModelFactory() : FavouriteViewModelFactory {
-        val bookmarksRepository = FavouritesRepository.getInstance("database.getInstance().BookmarksDAO")
-        return FavouriteViewModelFactory(bookmarksRepository)
-    }*/
+    /* fun provideBookmarksViewModelFactory() : FavouriteViewModelFactory {
+         val bookmarksRepository = FavouritesRepository.getInstance("database.getInstance().BookmarksDAO")
+         return FavouriteViewModelFactory(bookmarksRepository)
+     }*/
 
     fun provideFollowingViewModelFactory() : FollowingFeedsViewModelFactory {
         val followingRepository = FollowingFeedsRepository.getInstance("database.getInstance().FollowingDAO")
@@ -44,11 +43,6 @@ object InjectorUtils {
     fun provideReportViewModelFactory() : ReportViewModelFactory {
         val reportRepository = ReportRepository.getInstance("database.getInstance().ReportDAO")
         return ReportViewModelFactory(reportRepository)
-    }
-
-    fun provideDiscoveriesViewModelFactory() : DiscoveriesViewModelFactory {
-        val discoveriesRepository = DiscoveriesRepository.getInstance("database.getInstance().DiscoveriesDAO")
-        return DiscoveriesViewModelFactory(discoveriesRepository)
     }
 
 

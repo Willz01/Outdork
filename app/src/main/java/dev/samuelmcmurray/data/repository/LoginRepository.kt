@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import dev.samuelmcmurray.data.singelton.CurrentUserSingleton
 
 private const val TAG = "LoginRepository"
 class LoginRepository {
@@ -37,6 +38,7 @@ class LoginRepository {
                 { task ->
                     Log.d(TAG, "onComplete: ")
                     if (task.isSuccessful) {
+                        CurrentUserSingleton.getInstance.firstTimeRegister = false
                         val firebaseUser = firebaseAuth.currentUser
                         userLiveData.postValue(firebaseUser)
                     } else {

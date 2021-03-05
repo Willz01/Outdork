@@ -34,6 +34,7 @@ import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
+import com.google.android.material.snackbar.Snackbar
 import dev.samuelmcmurray.R
 
 private const val AUTOCOMPLETE_REQUEST_CODE = 100
@@ -255,11 +256,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
                             override fun onStopTrackingTouch(seekBar: SeekBar?) {
                                 if (seekBar != null) {
-                                    Toast.makeText(
-                                        requireContext(),
-                                        "Distance range: ${seekBar.progress}",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                    Snackbar.make(requireView(),"Distance range: ${seekBar.progress}",Snackbar.LENGTH_SHORT).show()
                                 };
                             }
 

@@ -16,11 +16,48 @@ import dev.samuelmcmurray.ui.post.PostAdapter
 import dev.samuelmcmurray.utilities.InjectorUtils
 
 private val posts = listOf(
-    Post(0, "Mr Darcy", "21/20/11", "this is a post"),
-    Post(0, "superhiker2324", "19/55/62", "hello another post"),
-    Post(0, "mY dOg", "14/56/95", "another poist"),
-    Post(0, "Superman", "21/15/13", "the last post"),
+    Post(
+        0,
+        "45444f4f",
+        R.drawable.hiker_pp1,
+        R.drawable.hike_image1,
+        5.0,
+        "Mr Darcy",
+        "21/20/11",
+        "Great hike today at the high hill sides, with my great hiking partner @superhiker2324"
+    ),
+    Post(
+        0,
+        "erefe22e",
+        R.drawable.hiker_pp2,
+        R.drawable.hike_image2,
+        3.7,
+        "superhiker2324",
+        "19/55/62",
+        "hello another post"
+    ),
+    Post(
+        0,
+        "er3e3d3e",
+        R.drawable.hiker_pp3,
+        R.drawable.hike_image3,
+        3.3,
+        "mY dOg",
+        "14/56/95",
+        "another poist"
+    ),
+    Post(
+        0,
+        "efr3d3d33",
+        R.drawable.hiker_pp4,
+        R.drawable.hike_image4,
+        2.6,
+        "Superman",
+        "21/15/13",
+        "the last post"
+    )
 )
+
 
 class DiscoveriesFragment : Fragment() {
 

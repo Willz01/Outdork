@@ -6,7 +6,7 @@ import dev.samuelmcmurray.ui.add_new_activity.AddNewActivityViewModelFactory
 import dev.samuelmcmurray.ui.discoveries.DiscoveriesViewModelFactory
 import dev.samuelmcmurray.ui.following.feeds.FollowingFeedsViewModelFactory
 import dev.samuelmcmurray.ui.help.HelpViewModelFactory
-import dev.samuelmcmurray.ui.new_activity.NewActivityViewModelFactory
+import dev.samuelmcmurray.ui.find_new_activity.NewActivityViewModelFactory
 import dev.samuelmcmurray.ui.report.ReportViewModelFactory
 
 object InjectorUtils {
@@ -21,9 +21,9 @@ object InjectorUtils {
         return AddNewActivityViewModelFactory(newActivityRepository)
     }
 
-   /* fun provideBookmarksViewModelFactory() : FavouriteViewModelFactory {
-        val bookmarksRepository = FavouritesRepository.getInstance("database.getInstance().BookmarksDAO")
-        return FavouriteViewModelFactory(bookmarksRepository)
+   /* fun provideBookmarksViewModelFactory() : FavoriteViewModelFactory {
+        val bookmarksRepository = FavoritesRepository.getInstance("database.getInstance().BookmarksDAO")
+        return FavoriteViewModelFactory(bookmarksRepository)
     }*/
 
     fun provideFollowingViewModelFactory() : FollowingFeedsViewModelFactory {

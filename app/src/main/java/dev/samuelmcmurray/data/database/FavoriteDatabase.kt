@@ -4,20 +4,20 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import dev.samuelmcmurray.data.dao.FollowingDao
+import dev.samuelmcmurray.data.dao.FavoriteDao
 import dev.samuelmcmurray.ui.post.Post
 
-@Database(entities = [Post::class], version = 1, exportSchema = false)
-abstract class FollowingDatabase : RoomDatabase() {
+@Database(entities = [Post::class], version = 5, exportSchema = false)
+abstract class FavoriteDatabase : RoomDatabase() {
 
-    abstract fun bookmarkDao(): FollowingDao
+    abstract fun bookmarkDao(): FavoriteDao
 
 
     companion object {
         @Volatile
-        private var INSTANCE: FollowingDatabase? = null
+        private var INSTANCE: FavoriteDatabase? = null
 
-        fun getDatabase(context: Context): FollowingDatabase {
+        fun getDatabase(context: Context): FavoriteDatabase {
             val tmpInstance = INSTANCE
             if (tmpInstance != null) {
                 return tmpInstance
@@ -25,9 +25,9 @@ abstract class FollowingDatabase : RoomDatabase() {
             synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    FollowingDatabase::class.java,
-                    "favourite_database"
-                ).build()
+                    FavoriteDatabase::class.java,
+                    "favorite_database"
+                ).allowMainThreadQueries().fallbackToDestructiveMigration().build()
                 INSTANCE = instance
                 return instance
             }

@@ -18,6 +18,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.facebook.AccessToken
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -26,7 +27,6 @@ import dev.samuelmcmurray.databinding.ActivityMainBinding
 
 
 class MainActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityMainBinding
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navController: NavController
@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if (destination.id == R.id.loginFragment || destination.id == R.id.welcomeFragment
-                || destination.id == R.id.registerFragment
+                || destination.id == R.id.registerFragment || destination.id == R.id.forgotPasswordFragment
             ) {
                 supportActionBar?.hide()
                 bottomNavigationView.visibility = View.GONE
@@ -99,6 +99,9 @@ class MainActivity : AppCompatActivity() {
                 navController.navigate(R.id.discoveries_fragment)
             }
         }
+
+        val loggedIn = AccessToken.getCurrentAccessToken() != null
+        println(loggedIn)
     }
 
     override fun onSupportNavigateUp(): Boolean {

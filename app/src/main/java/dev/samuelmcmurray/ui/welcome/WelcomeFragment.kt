@@ -33,7 +33,7 @@ class WelcomeFragment : Fragment() {
 
     fun onViewCrea(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val navigationView = view.findViewById(R.id.nav_view) as NavigationView
+        val navigationView = requireActivity().findViewById(R.id.nav_view) as NavigationView
         val headerView = navigationView.getHeaderView(0)
         val navPicture =
             headerView.findViewById<View>(R.id.profilePicture) as ImageView

@@ -22,6 +22,7 @@
     <string name="forgot_password">Forgot Password?</string>
     <string name="sign_up">Sign Up</string>
     <string name="cancel">Cancel</string>
+    <string name="reset">Reset Password</string>
 
     <!--Menu items-->
     <string name="favoritesMenuItem">Favorites</string>
@@ -58,7 +59,7 @@
     <string name="first_name_hint">First Name</string>
     <string name="last_name_hint">Last Name</string>
     <string name="user_name_hint">User Name</string>
-    <string name="dob_hint">Date of Birth YYYY/MM/DD</string>
+    <string name="dob_hint">Date of Birth MM/DD/YYYY</string>
     <string name="location_hint">City</string>
     <string name="country_hint">Country</string>
     <string name="state_hint">State/Providence</string>
@@ -72,6 +73,11 @@
     <string name="feeds">Feeds</string>
     <string name="following_menu_item">Following</string>
 
+
+    <!-- Settings -->
+    <string name="settings_layout" translatable="false">Layout</string>
+    <string name="settings_theme" translatable="false">Dark theme</string>
+  
     <!-- Facebook -->
     <string name="facebook_app_id">2780512052212717</string>
     <string name="fb_login_protocol_scheme">fb2780512052212717</string>
@@ -80,7 +86,11 @@
     <string name="add_to_bookmark_option_menu">Add to bookmark</string>
     <string name="share_option_menu">Share</string>
     <string name="report_option_menu">Report</string>
-    <string name="find_activity">Find activity</string>
+    <string name="date_sample">11/04/21</string>
+    <string name="image">IMAGE</string>
+    <string name="comment">COMMENT</string>
+    <string name="select_button">Select</string>
+    <string name="activity_content">Activity content</string>
 
 
 </resources>

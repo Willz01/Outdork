@@ -13,24 +13,37 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/settings_layout">
+
+    <PreferenceCategory app:title="App settings">
 
         <SwitchPreferenceCompat
             app:key="theme"
             android:defaultValue="false"
             app:title="@string/settings_theme" />
 
-        <ListPreference
-            app:defaultValue="language"
-            app:entries="@array/language"
-            app:entryValues="@array/language_list"
-            app:key="reply"
-            app:title="App language"
-            android:defaultValue="1"
-            app:useSimpleSummaryProvider="true" />
+        <Preference
+            android:selectable="true"
+            android:key="help"
+            android:title="How to Outdork"
+            android:summary="Get help" />
 
     </PreferenceCategory>
 
+
+    <PreferenceCategory app:title="Account">
+
+        <CheckBoxPreference
+            app:key="showName"
+            android:defaultValue="false"
+            app:title="Show my name" />
+
+
+        <EditTextPreference
+            app:key="passwordDelete"
+            app:title="Delete Account"
+            android:hint="Enter your password"/>
+
+    </PreferenceCategory>
 
 
 </PreferenceScreen>

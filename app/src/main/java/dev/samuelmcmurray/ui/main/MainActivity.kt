@@ -4,9 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ImageButton
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.customview.widget.Openable
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -16,6 +20,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.facebook.AccessToken
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.databinding.ActivityMainBinding
@@ -30,8 +35,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var firebaseAuth: FirebaseAuth
 
     private lateinit var bottomNavigationView: BottomNavigationView
-
-
+    private lateinit var mNavView: NavigationView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,12 +61,12 @@ class MainActivity : AppCompatActivity() {
                 R.id.reportFragment,
                 R.id.settingsFragment,
                 R.id.followingHolder,
-                R.id.followingListFragment
+                R.id.followingListFragment,
+                R.id.profileFragment
             )
         ).setOpenableLayout(drawerLayout as Openable).build()
 
         bottomNavigationView = findViewById(R.id.nav)
-
 
         binding.navView.setupWithNavController(navController)
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -78,6 +82,13 @@ class MainActivity : AppCompatActivity() {
                 supportActionBar?.show()
                 bottomNavigationView.visibility = View.VISIBLE
             }
+        }
+
+        mNavView = findViewById(R.id.nav_view)
+        val header = mNavView.getHeaderView(0)
+        val profilePic: ImageButton = header.findViewById(R.id.profilePicture)
+        profilePic.setOnClickListener {
+            
         }
 
         firebaseAuth = FirebaseAuth.getInstance()
@@ -115,5 +126,6 @@ class MainActivity : AppCompatActivity() {
             Log.d("ERROR", e.toString())
         }
     }
+
 
 }

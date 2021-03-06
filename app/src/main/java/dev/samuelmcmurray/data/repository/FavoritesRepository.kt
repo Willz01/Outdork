@@ -4,9 +4,11 @@ import androidx.lifecycle.LiveData
 import dev.samuelmcmurray.data.dao.FavoriteDao
 import dev.samuelmcmurray.ui.post.Post
 
-class FavouritesRepository(private val favoriteDao: FavoriteDao) {
+class FavoritesRepository(private val favoriteDao: FavoriteDao) {
 
-    val readAllFavourites: LiveData<List<Post>> = favoriteDao.readAllFavourites()
+    val readAllFavorites: LiveData<List<Post>> = favoriteDao.readAllFavorites()
+
+    val readAllPost : List<Post> = favoriteDao.getPosts()
 
     suspend fun addPost(post: Post) {
         favoriteDao.add(post)

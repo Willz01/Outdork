@@ -5,22 +5,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.viewpager2.widget.ViewPager2
 import dev.samuelmcmurray.R
 
 class OtherProfileFragment : Fragment() {
-/*
+
+    private lateinit var viewPagerAdapter: ViewPagerAdapter
+    private lateinit var viewPager: ViewPager2
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(R.layout., container, false)
+    ): View? {
+        return inflater.inflate(R.layout.fragment_other_profile, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        arguments?.takeIf { it.containsKey(ARG_OBJECT) }?.apply {
-            val textView: TextView = view.findViewById(android.R.id.text1)
-            textView.text = getInt(ARG_OBJECT).toString()
-        }
-    }*/
+        viewPagerAdapter = ViewPagerAdapter(this)
+        viewPager = view.findViewById(R.id.view_pager)
+        viewPager.adapter = viewPagerAdapter
+    }
 }

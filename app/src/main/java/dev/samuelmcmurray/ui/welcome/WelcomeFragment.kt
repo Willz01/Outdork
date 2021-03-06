@@ -30,8 +30,8 @@ class WelcomeFragment : Fragment() {
         progressBar.progress
         return binding.root
     }
-
-    fun onViewCrea(view: View, savedInstanceState: Bundle?) {
+    /*
+    overide fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val navigationView = requireActivity().findViewById(R.id.nav_view) as NavigationView
         val headerView = navigationView.getHeaderView(0)
@@ -48,7 +48,7 @@ class WelcomeFragment : Fragment() {
         navEmail.text = "Email"
         // future when I can get profile data
 
-
+*/
     }
 
 }

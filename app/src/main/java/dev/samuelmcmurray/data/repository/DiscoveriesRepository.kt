@@ -7,25 +7,28 @@ import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
-import com.google.firebase.FirebaseApp
+import com.google.android.gms.tasks.Continuation
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
 import dev.samuelmcmurray.data.model.CurrentUser
 import dev.samuelmcmurray.data.model.Post
 import dev.samuelmcmurray.data.singelton.CurrentUserSingleton
+import dev.samuelmcmurray.data.singelton.NewPostSingleton
 import java.time.LocalDate
 import java.time.Period
+import java.util.*
 
 
 private const val TAG = "DiscoveriesRepository"
 class DiscoveriesRepository {
     private var application: Application
-    val firebaseApplication = FirebaseApp.getInstance()
-    var storage = FirebaseStorage.getInstance(firebaseApplication, "gs://outdork-788e0.appspot.com")
-    var firebaseAuth = FirebaseAuth.getInstance()
+    private var storage: FirebaseStorage? = null
+    private var storageRef: StorageReference? = null
     var postCreatedLiveData: MutableLiveData<Boolean>
     var storeImageLiveData: MutableLiveData<Boolean>
     var userLiveData: MutableLiveData<CurrentUser>
@@ -40,32 +43,46 @@ class DiscoveriesRepository {
 
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun newPost(message: String, hasImage: Boolean, likes: Int) {
+    fun newPost(message: String, image: Uri, hasImage: Boolean, likes: Int) {
+        if (image != Uri.EMPTY) {
+            uploadImageToFirebase(image)
+        }
         Log.d(TAG, "newPost: top ${CurrentUserSingleton.getInstance.currentUser}")
-        val id = LocalDate.now()
+        var downloadURL = NewPostSingleton.getInstance.downloadURL
+        var imageId = NewPostSingleton.getInstance.imageId
+        while (downloadURL == null || imageId == null) {
+            downloadURL = NewPostSingleton.getInstance.downloadURL
+            imageId = NewPostSingleton.getInstance.imageId
+        }
+        val id = System.currentTimeMillis().toString()
+        val date = LocalDate.now()
         val uid = CurrentUserSingleton.getInstance.currentUser!!.id
         val userName = CurrentUserSingleton.getInstance.currentUser!!.userName
-        val db: DocumentReference = FirebaseFirestore.getInstance().document("Posts/${uid}")
+        val db: DocumentReference = FirebaseFirestore.getInstance().document("Posts/${uid}${id}")
         val userPost = Post(
             message,
+            date,
             id,
-            Uri.EMPTY,
+            image,
             hasImage,
             uid,
             likes,
-            userName
+            userName,
+            downloadURL!!,
+            imageId
         )
         Log.d(TAG, "newPost: ${userPost.toString()}")
-//        if (image != Uri.EMPTY || image != null ) {
-//            uploadImageToFirebase(uid, id.toString(), image)
-//        }
+
 
         val post = hashMapOf(
             "message" to message,
-            "id" to id.toString(),
+            "date" to date.toString(),
+            "id" to id,
             "userID" to uid,
             "userName" to userName,
+            "imageId" to imageId,
             "hasImage" to hasImage,
+            "downloadURL" to downloadURL,
             "likes" to likes
         )
         db.set(post)
@@ -83,19 +100,36 @@ class DiscoveriesRepository {
 
     }
 
-    private fun uploadImageToFirebase(uid: String, id: String, contentUri: Uri) {
-        val image: StorageReference = storage.reference.child("UserPhotos/$uid/$id")
-        image.putFile(contentUri).addOnSuccessListener {
-            image.downloadUrl.addOnSuccessListener { uri ->
-                Log.d("tag", "onSuccess: Uploaded Image URl is $uri")
+    private fun uploadImageToFirebase(contentUri: Uri) {
+        storage = FirebaseStorage.getInstance()
+        storageRef = FirebaseStorage.getInstance().reference
+        NewPostSingleton.getInstance.imageId = UUID.randomUUID().toString()
+        val imageId = NewPostSingleton.getInstance.imageId
+        val image = storageRef!!.child("UserPhotos/$imageId" )
+        val uploadTask = image.putFile(contentUri)
+        val urlTask = uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
+            if (!task.isSuccessful) {
+                Log.d("tag", "Failure: Uploaded Image URi is $contentUri")
+                Toast.makeText(
+                    application.applicationContext,
+                    "Upload Failed.",
+                    Toast.LENGTH_SHORT
+                ).show()
+                task.exception?.let {
+                    throw it
+                }
             }
-            Toast.makeText(application.applicationContext, "Image Is Uploaded.", Toast.LENGTH_SHORT).show()
-        }.addOnFailureListener {
-            Toast.makeText(
-                application.applicationContext,
-                "Upload Failed.",
-                Toast.LENGTH_SHORT
-            ).show()
+            return@Continuation image.downloadUrl
+        }).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Toast.makeText(
+                    application.applicationContext,
+                    "Image Is Uploaded.",
+                    Toast.LENGTH_SHORT
+                ).show()
+                val downloadUri = task.result
+                NewPostSingleton.getInstance.downloadURL = downloadUri.toString()
+            }
         }
     }
 

@@ -13,30 +13,28 @@ import dev.samuelmcmurray.data.model.CurrentUser
 import dev.samuelmcmurray.data.repository.DiscoveriesRepository
 import dev.samuelmcmurray.data.singelton.CurrentUserSingleton
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.Default
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 private const val TAG = "DiscoveriesViewModel"
 class DiscoveriesViewModel : AndroidViewModel {
     private var discoveriesRepository : DiscoveriesRepository
-    private var imageLiveData = MutableLiveData<Uri>()
+
     private val newPostVisibilityLiveData = MutableLiveData<Boolean>()
     var postCreatedLiveData: MutableLiveData<Boolean>
     var userLiveData: MutableLiveData<CurrentUser>
     val hideBoolean: LiveData<Boolean> get() = newPostVisibilityLiveData
-    var image: Uri = Uri.EMPTY
+    private val filePath: MutableLiveData<Uri>
 
     constructor(application: Application) : super(application) {
         discoveriesRepository = DiscoveriesRepository(application)
         postCreatedLiveData = discoveriesRepository.postCreatedLiveData
         userLiveData = discoveriesRepository.userLiveData
+        filePath = MutableLiveData()
     }
 
-    private fun getImage(): LiveData<Uri> = imageLiveData
-
-    fun onGetImage(result: Uri) {
-        imageLiveData.postValue(result)
-        image = result
+    fun onGetImage(path: Uri) {
+        filePath.value = path
     }
 
 
@@ -44,14 +42,16 @@ class DiscoveriesViewModel : AndroidViewModel {
     fun newPost(message: String) {
         var hasImage : Boolean = false
         val likes = 0
+        var imageUri = Uri.EMPTY
         val comments : List<String> = emptyList()
-//        if (image != Uri.EMPTY || image != null) {
-//            hasImage = true
-//        }
+        if (filePath.value != null) {
+            hasImage = true
+            imageUri = filePath.value
+        }
         Log.d(TAG, "newPost: $message $likes $hasImage")
-        CoroutineScope(Default).launch {
+        CoroutineScope(Dispatchers.IO).launch {
             try {
-                discoveriesRepository.newPost(message, hasImage, likes)
+                discoveriesRepository.newPost(message, imageUri, hasImage, likes)
             } catch (e: Exception) {
                 Log.d(TAG, "newPost: $e")
             }

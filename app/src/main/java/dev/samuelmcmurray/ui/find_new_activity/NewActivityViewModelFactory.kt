@@ -1,4 +1,4 @@
-package dev.samuelmcmurray.ui.new_activity
+package dev.samuelmcmurray.ui.find_new_activity
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

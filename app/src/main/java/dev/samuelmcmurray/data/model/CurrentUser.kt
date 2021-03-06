@@ -1,8 +1,7 @@
 package dev.samuelmcmurray.data.model
 
 import android.net.Uri
-
-
+import com.google.type.Date
 
 data class CurrentUser(
     val id: String,
@@ -13,7 +12,7 @@ data class CurrentUser(
     val country: String,
     val state: String,
     val city: String,
-    val dob: Long
+    val dob: String
 ) : User(id, firstName, lastName, userName, email, country, state, city, dob) {
 
     var hasImage = false

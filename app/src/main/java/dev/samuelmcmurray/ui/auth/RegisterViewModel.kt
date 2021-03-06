@@ -1,22 +1,28 @@
 package dev.samuelmcmurray.ui.auth
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
 import dev.samuelmcmurray.data.repository.RegisterRepository
 import dev.samuelmcmurray.data.singelton.CurrentUserSingleton
-import dev.samuelmcmurray.data.singelton.MutexLock
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class RegisterViewModel : AndroidViewModel {
+private const val TAG = "RegisterViewModel"
+class RegisterViewModel : AndroidViewModel{
 
-    private var registerRepository: RegisterRepository
-    var userLiveData: MutableLiveData<FirebaseUser>
-    var loggedOutLiveData: MutableLiveData<Boolean>
+    private var registerRepository : RegisterRepository
+    private val myCoroutineScope = CoroutineScope(Dispatchers.IO)
+    var userLiveData : MutableLiveData<FirebaseUser>
+    var loggedOutLiveData : MutableLiveData<Boolean>
     var userCreatedLiveData: MutableLiveData<Boolean>
     var emailSentLiveData: MutableLiveData<Boolean>
+    val channel = Channel<FirebaseUser>()
 
     constructor(application: Application) : super(application) {
         this.registerRepository = RegisterRepository(application)
@@ -26,49 +32,47 @@ class RegisterViewModel : AndroidViewModel {
         emailSentLiveData = registerRepository.emailSentLiveData
     }
 
-    fun register(email: String, password: String) {
-        viewModelScope.launch {
+    fun register(firstName: String, lastName: String, userName: String, email: String,
+                 city: String, state: String, country: String, password: String, dob: String) {
+        myCoroutineScope.launch {
             try {
-                CurrentUserSingleton.getInstance.firstTimeRegister = true
-                registerRepository.registerEmail(email, password)
+                registerUser(email, password)
             } catch (e: Exception) {
 
+            }
+        }
+        myCoroutineScope.launch {
+            try {
+                createUser(firstName, lastName, userName, email, city, state, country, dob)
+            } catch(e: Exception) {
+                Log.d(TAG, "register: $e")
+            }
+        }
+
+        myCoroutineScope.launch {
+            try {
+                emailVerification()
+            } catch(e: Exception) {
+                Log.d(TAG, "register: $e")
             }
         }
     }
 
-    fun emailVerification() {
-        viewModelScope.launch {
-            try {
-                registerRepository.emailVerification()
-            } catch (e: Exception) {
+    private fun registerUser(email: String, password: String)  {
 
-            }
-        }
+        registerRepository.registerEmail(email, password)
+        CurrentUserSingleton.getInstance.firstTimeRegister = true
     }
 
-    fun createUser(
-        firstName: String, lastName: String, userName: String, email: String,
-        city: String, state: String, country: String, dob: Long
-    ) {
-        viewModelScope.launch {
-            try {
-                registerRepository.createUser(
-                    firstName,
-                    lastName,
-                    userName,
-                    email,
-                    city,
-                    state,
-                    country,
-                    dob
-                )
-            } catch (e: Exception) {
+    private suspend fun emailVerification() {
+        delay(500)
+        registerRepository.emailVerification()
+    }
 
-            } finally {
-                MutexLock.getInstance.flag = false
-            }
-        }
+    private suspend fun createUser(firstName: String, lastName: String, userName: String, email: String,
+                                   city: String, state: String, country: String, dob: String) {
+        delay(500)
+        registerRepository.createUser(firstName, lastName, userName, email, city, state, country, dob)
     }
 }
 

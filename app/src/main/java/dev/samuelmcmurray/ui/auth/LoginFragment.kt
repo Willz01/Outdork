@@ -124,9 +124,7 @@ class LoginFragment : Fragment() {
             viewModel.userLiveData.observe(viewLifecycleOwner, Observer {
                 val fireBaseUser = it
                 if (fireBaseUser != null) {
-                    val imm: InputMethodManager =
-                        requireContext().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.hideSoftInputFromWindow(requireView().windowToken, 0)
+                    hideKeyboard()
                 }
                 Log.d(TAG, "login: $fireBaseUser ")
             })
@@ -174,5 +172,11 @@ class LoginFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         accessTokenTracker.stopTracking()
+    }
+
+    private fun hideKeyboard() {
+        val imm: InputMethodManager =
+            requireContext().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(requireView().windowToken, 0)
     }
 }

@@ -5,13 +5,12 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import dev.samuelmcmurray.data.model.CurrentUser
 import dev.samuelmcmurray.data.singelton.CurrentUserSingleton
-import dev.samuelmcmurray.data.singelton.MutexLock
-import kotlinx.coroutines.delay
 
 
 
@@ -20,13 +19,12 @@ private const val TAG = "RegisterRepository"
 class RegisterRepository {
     private var application: Application
     private var firebaseAuth: FirebaseAuth
-    private lateinit var db : FirebaseFirestore
-    //var storage = FirebaseStorage.getInstance("gs://outdork-788e0.appspot.com")
-    var storeImageLiveData: MutableLiveData<Boolean>
+    private val firebaseApplication = FirebaseApp.getInstance()
     var userLiveData: MutableLiveData<FirebaseUser>
     var loggedOutLiveData: MutableLiveData<Boolean>
     var userCreatedLiveData: MutableLiveData<Boolean>
     var emailSentLiveData: MutableLiveData<Boolean>
+
 
     constructor(application: Application) {
         this.application = application
@@ -35,7 +33,6 @@ class RegisterRepository {
         loggedOutLiveData = MutableLiveData()
         userCreatedLiveData = MutableLiveData()
         emailSentLiveData = MutableLiveData()
-        storeImageLiveData = MutableLiveData()
 
         if (firebaseAuth.currentUser != null) {
             userLiveData.postValue(firebaseAuth.currentUser);
@@ -62,23 +59,21 @@ class RegisterRepository {
                         loggedOutLiveData.postValue(true)
                     }
                 })
-
     }
 
-    suspend fun createUser(
+    fun createUser(
         firstName: String, lastName: String, userName: String, email: String,
-        city: String, state: String, country: String, dob: Long
+        city: String, state: String, country: String, dob: String
     ) {
-        Log.d(TAG, "createUser: Beginning")
-
-        while ( MutexLock.getInstance.locked) {
-            delay(250)
+        var uid = firebaseAuth.currentUser?.uid
+        while (uid == null) {
+            //TODO: fix so it cant go into an infinite loop
+            uid = firebaseAuth.currentUser?.uid
         }
 
-        val uid = this.firebaseAuth.currentUser?.uid
-        val currentUser = uid?.let {
+        val currentUser =
             CurrentUser(
-                it,
+                uid,
                 firstName,
                 lastName,
                 userName,
@@ -87,46 +82,48 @@ class RegisterRepository {
                 state,
                 city,
                 dob
-            )}
-        CurrentUserSingleton.getInstance.currentUser = currentUser
-        Log.d(TAG, "createUser: Middle " + currentUser.toString())
+            )
+
         val user = hashMapOf(
-            "userID" to currentUser?.id,
-            "firstName" to currentUser?.firstName,
-            "lastName" to currentUser?.lastName,
-            "userName" to currentUser?.userName,
-            "email" to currentUser?.email,
-            "hasImage" to currentUser?.hasImage,
-            "country" to currentUser?.country,
-            "state" to currentUser?.state,
-            "city" to currentUser?.city,
-            "dateOfBirth" to currentUser?.dob,
-            "about" to CurrentUserSingleton.getInstance.currentUser!!.about,
-            "activities" to listOf(CurrentUserSingleton.getInstance.currentUser!!.activities)
+            "firstName" to firstName,
+            "lastName" to lastName,
+            "userName" to userName,
+            "email" to email,
+            "country" to country,
+            "state" to state,
+            "city" to city,
+            "dateOfBirth" to dob,
+            "about" to currentUser.about,
+            "hasImage" to currentUser.hasImage
         )
-        Log.d(TAG, "createUser: Before set $user")
-        db = FirebaseFirestore.getInstance()
+        Log.d(TAG, "createUser: $user")
+
+        val db = FirebaseFirestore.getInstance(firebaseApplication)
         db.collection("Users")
-            .add(user)
-            .addOnSuccessListener (ContextCompat.getMainExecutor(application), { _ ->
+            .document("$uid")
+            .set(user)
+            .addOnSuccessListener {
                 Log.d(
                     TAG,
                     "DocumentSnapshot added with ID: $uid"
                 )
+                CurrentUserSingleton.getInstance.currentUser = currentUser
                 userCreatedLiveData.postValue(true)
-            })
-            .addOnFailureListener { e -> Log.w(TAG, "Error adding document ${e.localizedMessage}")
+            }
+            .addOnFailureListener { e -> Log.i(TAG, "Error adding document $e", e)
                 userCreatedLiveData.postValue(false)}
+
+
     }
 
-    suspend fun emailVerification() {
-
-        while (MutexLock.getInstance.locked && MutexLock.getInstance.flag) {
-            delay(500)
+    fun emailVerification() {
+        var user = firebaseAuth.currentUser
+        while (user == null) {
+            //TODO: fix so it cant go into an infinite loop
+            user = firebaseAuth.currentUser
         }
-        val user = firebaseAuth.currentUser
-        user?.sendEmailVerification()
-            ?.addOnCompleteListener (ContextCompat.getMainExecutor(application), { task ->
+        user.sendEmailVerification()
+            .addOnCompleteListener (ContextCompat.getMainExecutor(application), { task ->
                 if (task.isSuccessful) {
                     Log.d(TAG, "Email sent.")
                     emailSentLiveData.postValue(true)
@@ -135,16 +132,5 @@ class RegisterRepository {
                 }
             })
     }
-
-//    private fun storeImage(uid: String, image: Uri) {
-//        val storageReference = storage.reference
-//        storageReference.child("UserPhotos/$uid/profileImage.jpg")
-//        val uploadTask = storageReference.putFile(image)
-//        uploadTask.addOnFailureListener {
-//            storeImageLiveData.postValue(false)
-//        }.addOnSuccessListener {
-//            storeImageLiveData.postValue(true)
-//        }
-//    }
 
 }

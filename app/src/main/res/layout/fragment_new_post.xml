@@ -18,84 +18,93 @@
         android:layout_height="wrap_content"
         android:background="@color/fui_transparent">
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:orientation="vertical"
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColorHint="@color/black">
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/editTextPost"
-                    android:layout_width="match_parent"
-                    android:layout_height="254dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:gravity="top"
-                    android:hint="@string/post_hint"
-                    android:inputType="text"
-                    android:lineSpacingExtra="8sp"
-                    android:singleLine="false"
-                    android:textColorHint="@color/black"
-                    android:textSize="16sp" />
-            </com.google.android.material.textfield.TextInputLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="fill_horizontal"
-                android:orientation="horizontal">
+                android:layout_margin="8dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
-                    android:id="@+id/imageCamera"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:src="@android:drawable/ic_menu_camera" />
-
-                <ImageView
-                    android:id="@+id/imageGallery"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:src="@android:drawable/ic_menu_gallery" />
-
-                <ImageView
-                    android:id="@+id/imagePrivate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:src="@android:drawable/ic_lock_lock" />
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/buttonCancel"
-                    android:layout_width="wrap_content"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:layout_weight="1"
-                    android:text="@string/cancel" />
+                    android:textColorHint="@color/black">
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/buttonPost"
-                    android:layout_width="wrap_content"
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/editTextPost"
+                        android:layout_width="384dp"
+                        android:layout_height="185dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:gravity="top"
+                        android:hint="@string/post_hint"
+                        android:inputType="text"
+                        android:lineSpacingExtra="8sp"
+                        android:singleLine="false"
+                        android:textColorHint="@color/black"
+                        android:textSize="16sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:layout_weight="1"
-                    android:text="@string/post_hint" />
+                    android:gravity="fill_horizontal"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imageCamera"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:src="@android:drawable/ic_menu_camera" />
+
+                    <ImageView
+                        android:id="@+id/imageGallery"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:src="@android:drawable/ic_menu_gallery" />
+
+                    <ImageView
+                        android:id="@+id/imagePrivate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:src="@android:drawable/ic_lock_lock" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/buttonCancel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:layout_weight="1"
+                        android:text="@string/cancel" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/buttonPost"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:layout_weight="1"
+                        android:text="@string/post_hint" />
+                </LinearLayout>
+
             </LinearLayout>
-
-        </LinearLayout>
+        </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

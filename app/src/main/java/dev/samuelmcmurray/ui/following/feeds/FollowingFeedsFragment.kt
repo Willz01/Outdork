@@ -24,21 +24,20 @@ import dev.samuelmcmurray.utilities.InjectorUtils
 
 class FollowingFeedsFragment : Fragment() {
 
-    private var shareButton: ShareButton? = null
-    private lateinit var callbackManager: CallbackManager
-
     private val posts = listOf(
         Post(
             0,
+            "45444f4f",
             R.drawable.hiker_pp1,
             R.drawable.hike_image1,
             5.0,
             "Mr Darcy",
             "21/20/11",
-            "this is a post"
+            "Great hike today at the high hill sides, with my great hiking partner @superhiker2324"
         ),
         Post(
             0,
+            "erefe22e",
             R.drawable.hiker_pp2,
             R.drawable.hike_image2,
             3.7,
@@ -48,6 +47,7 @@ class FollowingFeedsFragment : Fragment() {
         ),
         Post(
             0,
+            "er3e3d3e",
             R.drawable.hiker_pp3,
             R.drawable.hike_image3,
             3.3,
@@ -57,6 +57,7 @@ class FollowingFeedsFragment : Fragment() {
         ),
         Post(
             0,
+            "efr3d3d33",
             R.drawable.hiker_pp4,
             R.drawable.hike_image4,
             2.6,
@@ -88,8 +89,6 @@ class FollowingFeedsFragment : Fragment() {
         val loggedIn = AccessToken.getCurrentAccessToken() != null
         println(loggedIn)
 
-        /*shareButton = requireActivity().findViewById(R.id.share_button)
-        callbackManager = CallbackManager.Factory.create()*/
 
 
         return binding.root
@@ -111,18 +110,4 @@ class FollowingFeedsFragment : Fragment() {
     }
     //viewModel.getAbout().observe(this, Observer {what ever we do})
 
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        /*callbackManager.onActivityResult(requestCode, resultCode, data)
-
-        // test case with a link
-        val shareLinkContent = ShareLinkContent.Builder()
-            .setContentUrl(Uri.parse("https://www.youtube.com/c/MichaelSambol/videos"))
-            .setShareHashtag(ShareHashtag.Builder().setHashtag("#TEST").build()).build()
-
-        shareButton!!.shareContent = shareLinkContent*/
-
-
-    }
 }

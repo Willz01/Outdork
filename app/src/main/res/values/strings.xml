@@ -29,7 +29,7 @@
     <string name="bookmarksMenuItem">Bookmarks</string>
     <string name="helpMenuItem">Help</string>
     <string name="reportMenuItem">Report</string>
-    <string name="settingsMenuItem">Setting</string>
+    <string name="settingsMenuItem">Settings</string>
     <string name="aboutMenuItem">About</string>
 
     <!-- Bottom Nav -->

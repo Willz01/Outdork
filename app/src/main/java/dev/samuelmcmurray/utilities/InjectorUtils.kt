@@ -20,10 +20,6 @@ object InjectorUtils {
         return AddNewActivityViewModelFactory(newActivityRepository)
     }
 
-    /* fun provideBookmarksViewModelFactory() : FavouriteViewModelFactory {
-         val bookmarksRepository = FavouritesRepository.getInstance("database.getInstance().BookmarksDAO")
-         return FavouriteViewModelFactory(bookmarksRepository)
-     }*/
 
     fun provideFollowingViewModelFactory() : FollowingFeedsViewModelFactory {
         val followingRepository = FollowingFeedsRepository.getInstance("database.getInstance().FollowingDAO")
@@ -44,10 +40,6 @@ object InjectorUtils {
         val reportRepository = ReportRepository.getInstance("database.getInstance().ReportDAO")
         return ReportViewModelFactory(reportRepository)
     }
-
-<<<<<<< HEAD
-
-=======
->>>>>>> postPhoto
+    
 
 }

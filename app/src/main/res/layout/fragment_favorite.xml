@@ -7,10 +7,10 @@
     <data>
         <variable
             name="viewModel"
-            type="dev.samuelmcmurray.ui.favourite.FavouriteViewModel" />
+            type="dev.samuelmcmurray.ui.favorite.FavoriteViewModel" />
         <variable
             name="uiController"
-            type="dev.samuelmcmurray.ui.favourite.FavouriteFragment" />
+            type="dev.samuelmcmurray.ui.favorite.FavoriteFragment" />
     </data>
 
     <FrameLayout

@@ -1,6 +1,7 @@
 package dev.samuelmcmurray.ui.main
 
 import android.content.Intent
+import android.location.Address
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -17,6 +18,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.facebook.AccessToken
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.type.LatLng
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.databinding.ActivityMainBinding
 
@@ -32,11 +34,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bottomNavigationView: BottomNavigationView
 
     /**
-     * Used to keep track of selected filter options in {@link NewActivityFragment}
+     * selectedFilter --> Used to keep track of selected filter options in {@link NewActivityFragment}
+     * startLocation  --> Used for origin location for direction routing in ......
      */
     companion object{
         fun newInstance() = MainActivity()
         var selectedFilter = ArrayList<String>()
+        var startLocation = String()
+        var latLng : Address? = null
     }
 
 

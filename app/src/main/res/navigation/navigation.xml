@@ -104,6 +104,18 @@
     <fragment
         android:id="@+id/mapsFragment"
         android:name="dev.samuelmcmurray.ui.find_new_activity.location.MapsFragment"
-        android:label="MapsFragment" />
+        android:label="Route area" >
+        <action
+            android:id="@+id/action_mapsFragment_to_selectRouteFragment"
+            app:destination="@id/selectRouteFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/selectRouteFragment"
+        android:name="dev.samuelmcmurray.SelectRouteFragment"
+        android:label="Pick route" >
+        <argument
+            android:name="origin"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

@@ -83,7 +83,12 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
         autocomplete.setOnClickListener {
             val list: List<Place.Field> =
-                listOf(Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ID, Place.Field.PHOTO_METADATAS)
+                listOf(
+                    Place.Field.NAME,
+                    Place.Field.LAT_LNG,
+                    Place.Field.ID,
+                    Place.Field.PHOTO_METADATAS
+                )
 
             val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, list)
                 .build(requireContext())
@@ -128,7 +133,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
      * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
+     * we just add a marker near/at the user current location
      * If Google Play services is not installed on the device, the user will be prompted to install
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
@@ -153,6 +158,8 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         )
         mMap?.mapType = GoogleMap.MAP_TYPE_HYBRID
         mMap?.uiSettings?.isMyLocationButtonEnabled = true
+        mMap?.uiSettings?.isIndoorLevelPickerEnabled = true
+
 
         // seek bar handling with default location
         seekBar?.setOnSeekBarChangeListener(object :
@@ -256,7 +263,11 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
                             override fun onStopTrackingTouch(seekBar: SeekBar?) {
                                 if (seekBar != null) {
-                                    Snackbar.make(requireView(),"Distance range: ${seekBar.progress}",Snackbar.LENGTH_SHORT).show()
+                                    Snackbar.make(
+                                        requireView(),
+                                        "Distance range: ${seekBar.progress}",
+                                        Snackbar.LENGTH_SHORT
+                                    ).show()
                                 };
                             }
 

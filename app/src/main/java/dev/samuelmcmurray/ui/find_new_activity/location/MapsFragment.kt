@@ -60,7 +60,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private var fusedLocationProviderClient: FusedLocationProviderClient? = null
     private var seekBar: SeekBar? = null
 
-    private lateinit var circle : Circle
+    private var circle : Circle? = null
 
 
     override fun onCreateView(
@@ -169,7 +169,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
             )
         }
 
-        if (MainActivity.startLocation.isEmpty()){
+        if (MainActivity.startLocation.isNotEmpty()){
             requireView().findViewById<EditText>(R.id.autocomplete_fragment)
                 .setText(MainActivity.startLocation.toString())
         }
@@ -200,7 +200,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
             ) {
                 Log.d(TAG, "onProgressChanged: $progress")
                 if (seekBar != null) {
-                    circle.radius = seekBar.progress.toDouble()
+                    circle?.radius = seekBar.progress.toDouble()
                 }
             }
 
@@ -268,7 +268,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                         mMap?.uiSettings?.isMyLocationButtonEnabled = true
 
                         // radius max = 1000 from seek bar max value
-                        circle.remove()
+                        circle?.remove()
                         circle = mMap?.addCircle(
                             CircleOptions().center(latLng).radius(150.0).strokeColor(
                                 Color.BLUE
@@ -283,7 +283,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                             ) {
                                 Log.d(TAG, "onProgressChanged: $progress")
                                 if (seekBar != null) {
-                                    circle.radius = seekBar.progress.toDouble()
+                                    circle?.radius = seekBar.progress.toDouble()
                                 }
                             }
 
@@ -322,6 +322,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
     override fun onDestroyView() {
         super.onDestroyView()
-       circle.remove()
+       circle?.remove()
     }
 }

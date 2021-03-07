@@ -18,7 +18,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.facebook.AccessToken
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.type.LatLng
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.databinding.ActivityMainBinding
 
@@ -33,9 +32,11 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var bottomNavigationView: BottomNavigationView
 
+
     /**
      * selectedFilter --> Used to keep track of selected filter options in {@link NewActivityFragment}
-     * startLocation  --> Used for origin location for direction routing in ......
+     * startLocation  --> Used for origin location for direction routing in {@link MapsFragment and SelectRouteFragment}
+     * Nav args is also used as well
      */
     companion object{
         fun newInstance() = MainActivity()
@@ -126,5 +127,6 @@ class MainActivity : AppCompatActivity() {
             Log.d("ERROR", e.toString())
         }
     }
+
 
 }

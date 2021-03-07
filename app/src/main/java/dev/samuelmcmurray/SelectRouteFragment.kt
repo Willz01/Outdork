@@ -153,7 +153,7 @@ class SelectRouteFragment : Fragment(), OnMapReadyCallback {
                 place1 = MarkerOptions().position(latLng!!).title(locationFromGeo.featureName)
                 mMap.addMarker(place1)
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng))
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f))
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
                 mMap.mapType = GoogleMap.MAP_TYPE_HYBRID
 
                 mMap.setOnMapClickListener { latLng1 ->

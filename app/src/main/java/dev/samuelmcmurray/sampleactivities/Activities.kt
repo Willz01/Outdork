@@ -20,19 +20,19 @@ object Activities {
             "08-22-1995"
         )
 
-        val hike =
-            Activity("Hike", user, listOf("Long path", "Short trees", "Tall trees", "Short path"))
-        val walk = Activity(
-            "Walk",
+        val trails =
+            Activity("Trails", user, listOf("Dog walking", "Hiking", "Horse riding/trail", "Biking"))
+        val water = Activity(
+            "Water sports",
             user,
-            listOf("Road side", "Busy complex", "Water side", "Quiet resident")
+            listOf("Swimming", "Fishing")
         )
-        val run =
-            Activity("Run", user, listOf("Long run", "Short run", "Bush path", "Residential area"))
+        val passive =
+            Activity("Spotting activities", user, listOf("Bird watching", "Scenic views"))
 
-        activities.add(hike)
-        activities.add(walk)
-        activities.add(run)
+        activities.add(trails)
+        activities.add(water)
+        activities.add(passive)
 
         return activities
     }

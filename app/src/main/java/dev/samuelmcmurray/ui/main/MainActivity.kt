@@ -1,6 +1,7 @@
 package dev.samuelmcmurray.ui.main
 
 import android.content.Intent
+import android.location.Address
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -35,6 +36,19 @@ class MainActivity : AppCompatActivity() {
     private lateinit var firebaseAuth: FirebaseAuth
 
     private lateinit var bottomNavigationView: BottomNavigationView
+
+    /**
+     * selectedFilter --> Used to keep track of selected filter options in {@link NewActivityFragment}
+     * startLocation  --> Used for origin location for direction routing in {@link MapsFragment and SelectRouteFragment}
+     * Nav args is also used as well
+     */
+    companion object{
+        fun newInstance() = MainActivity()
+        var selectedFilter = ArrayList<String>()
+        var startLocation = String()
+        var latLng : Address? = null
+    }
+
     private lateinit var mNavView: NavigationView
 
 
@@ -61,6 +75,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.reportFragment,
                 R.id.settingsFragment,
                 R.id.followingHolder,
+                R.id.followingListFragment, R.id.mapsFragment
                 R.id.followingListFragment,
                 R.id.profileFragment
             )

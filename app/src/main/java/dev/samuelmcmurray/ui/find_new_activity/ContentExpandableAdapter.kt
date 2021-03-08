@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.data.model.Activity
+import dev.samuelmcmurray.ui.main.MainActivity
 import kotlin.properties.Delegates
 import kotlin.reflect.KProperty
 
@@ -16,8 +17,6 @@ class ContentExpandableAdapter(private val activity: Activity) :
     RecyclerView.Adapter<ContentExpandableAdapter.ViewHolder>() {
 
 
-    // list of selected filter items
-    var filterlist = ArrayList<String>()
 
     companion object {
         private const val VIEW_TYPE_ITEM = 1
@@ -98,13 +97,15 @@ class ContentExpandableAdapter(private val activity: Activity) :
                     if (checkText.isChecked) {
                         checkText.checkMarkDrawable = null;
                         checkText.isChecked = false;
-                        filterlist.remove(checkText.text.toString())
+                        MainActivity.selectedFilter.remove(checkText.text.toString())
                     } else {
                         checkText.setCheckMarkDrawable(R.drawable.ic_baseline_check_24)
                         checkText.isChecked = true
                         println(checkText.text.toString())
-                        filterlist.add(checkText.text.toString())
-                        println(filterlist)
+                        if (checkText.text as String !in MainActivity.selectedFilter) {
+                            MainActivity.selectedFilter.add(checkText.text.toString())
+                        }
+                        println(MainActivity.selectedFilter)
                     }
                 }
             }
@@ -113,8 +114,6 @@ class ContentExpandableAdapter(private val activity: Activity) :
             }
         }
     }
-
-    fun filterItemsReturn() : List<String> = filterlist
 
     override fun getItemCount(): Int {
         return if (isExpanded) activity.filter.size + 1 else 1

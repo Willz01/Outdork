@@ -89,9 +89,17 @@
     <string name="date_sample">11/04/21</string>
     <string name="image">IMAGE</string>
     <string name="comment">COMMENT</string>
-    <string name="select_button">Select</string>
+    <string name="search_button">Search</string>
     <string name="activity_content">Activity content</string>
     <string name="post_hint">Post</string>
+
+    <!-- places sdk -->
+    <string name="places_api">AIzaSyD5j72Gj-fVrhakRcmVZkEevRgAqdQtggE</string>
+    <string name="search_location">Search location</string>
+    <string name="seekbar_min">0</string>
+    <string name="seekbar_max">1000</string>
+    <string name="seekbar_mid">500</string>
+    <string name="select_button">Select</string>
 
 
 </resources>

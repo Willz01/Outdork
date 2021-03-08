@@ -1,5 +1,7 @@
 package dev.samuelmcmurray.data.model
 
+import com.google.type.Date
+
 
 open class User {
     private var id: String
@@ -10,10 +12,10 @@ open class User {
     private var country: String
     private var state: String
     private var city: String
-    private var dob: Long
+    private var dob: String
 
     constructor(id: String, firstName: String, lastName: String, userName: String, email: String,
-                country: String, state: String, city: String, dob: Long) {
+                country: String, state: String, city: String, dob: String) {
         this.id = id
         this.firstName = firstName
         this.lastName = lastName

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="dev.samuelmcmurray">
 
+
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -12,6 +13,12 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- express login -->
+
+   
+    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <!-- express login -->
+
     <queries>
         <package android:name="com.facebook.katana" />
     </queries>
@@ -55,8 +62,21 @@
             android:label="@string/app_name" /> <!-- facebook content provider -->
         <provider
             android:name="com.facebook.FacebookContentProvider"
+
             android:authorities="com.facebook.app.FacebookContentProvider2780512052212717"
             android:exported="true" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+
+        </provider>
     </application>
 
 </manifest>

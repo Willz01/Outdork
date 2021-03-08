@@ -17,7 +17,7 @@ object Activities {
             "Sweden",
             "Kristianstad",
             "Nasby",
-            66265326562662
+            "08-22-1995"
         )
 
         val trails =

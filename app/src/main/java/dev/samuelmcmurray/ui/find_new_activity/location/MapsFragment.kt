@@ -179,11 +179,11 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         mMap?.addMarker(MarkerOptions().position(location).title("Location current"))
         mMap?.moveCamera(CameraUpdateFactory.newLatLng(location))
         mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 17f))
-        // radius max = 1000 from seek bar max value
+        // radius max = 5000 from seek bar max value
         circle = mMap?.addCircle(
-            CircleOptions().center(location).radius(150.0).strokeColor(
-                Color.BLUE
-            ).strokeWidth(10.0F).fillColor(Color.TRANSPARENT)
+            CircleOptions().center(location).radius(500.0).strokeColor(
+                Color.RED
+            ).strokeWidth(7.0F).fillColor(Color.argb(70,150,50,50))
         )!!
         mMap?.mapType = GoogleMap.MAP_TYPE_HYBRID
         mMap?.uiSettings?.isMyLocationButtonEnabled = true
@@ -271,8 +271,8 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                         circle?.remove()
                         circle = mMap?.addCircle(
                             CircleOptions().center(latLng).radius(150.0).strokeColor(
-                                Color.BLUE
-                            ).strokeWidth(10.0F).fillColor(Color.TRANSPARENT)
+                                Color.RED
+                            ).strokeWidth(7.0F).fillColor(Color.argb(70,150,50,50))
                         )!!
                         seekBar?.setOnSeekBarChangeListener(object :
                             SeekBar.OnSeekBarChangeListener {

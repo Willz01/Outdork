@@ -44,7 +44,7 @@
 
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/editTextPost"
-                        android:layout_width="384dp"
+                        android:layout_width="match_parent"
                         android:layout_height="185dp"
                         android:layout_marginLeft="8dp"
                         android:layout_marginTop="8dp"
@@ -100,7 +100,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
                         android:layout_weight="1"
-                        android:text="@string/post_hint" />
+                        android:text="@string/post_action" />
                 </LinearLayout>
 
             </LinearLayout>

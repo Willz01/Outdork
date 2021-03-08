@@ -106,13 +106,8 @@ class SelectRouteFragment : Fragment(), OnMapReadyCallback {
         val routeListView = requireView().findViewById<ListView>(R.id.route_options)
         routeListView.adapter = routeAdapter
 
-        routeListView.setOnItemClickListener(object : AdapterView.OnItemClickListener {
-            override fun onItemClick(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
+        routeListView.onItemClickListener =
+            AdapterView.OnItemClickListener { parent, view, position, id ->
                 Log.d(TAG, "onItemClick: $position")
                 val selected = parent?.getItemAtPosition(position)
                 Snackbar.make(
@@ -121,8 +116,6 @@ class SelectRouteFragment : Fragment(), OnMapReadyCallback {
                     Snackbar.LENGTH_SHORT
                 ).show()
             }
-
-        })
 
 
         geocode = Geocoder(requireContext())
@@ -139,7 +132,7 @@ class SelectRouteFragment : Fragment(), OnMapReadyCallback {
 
     private fun updateMap() {
         val location: String = origin
-        println("*******************$location")
+        Log.d(TAG, "updateMap: $location")
         try {
             address = geocode.getFromLocationName(location, 5) as List<Address>
             if (address!!.isNotEmpty()) {

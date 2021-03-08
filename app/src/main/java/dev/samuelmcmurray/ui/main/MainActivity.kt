@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.reportFragment,
                 R.id.settingsFragment,
                 R.id.followingHolder,
-                R.id.followingListFragment, R.id.mapsFragment
+                R.id.followingListFragment, R.id.mapsFragment,
                 R.id.followingListFragment,
                 R.id.profileFragment
             )

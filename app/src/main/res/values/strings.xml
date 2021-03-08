@@ -59,7 +59,7 @@
     <string name="first_name_hint">First Name</string>
     <string name="last_name_hint">Last Name</string>
     <string name="user_name_hint">User Name</string>
-    <string name="dob_hint">Date of Birth MM/DD/YYYY</string>
+    <string name="dob_hint">Date of Birth MM-DD-YYYY</string>
     <string name="location_hint">City</string>
     <string name="country_hint">Country</string>
     <string name="state_hint">State/Providence</string>
@@ -91,14 +91,15 @@
     <string name="comment">COMMENT</string>
     <string name="search_button">Search</string>
     <string name="activity_content">Activity content</string>
-    <string name="post_hint">Post</string>
+    <string name="post_hint">Make a new post</string>
+    <string name="post_action">Post</string>
 
     <!-- places sdk -->
     <string name="places_api">AIzaSyD5j72Gj-fVrhakRcmVZkEevRgAqdQtggE</string>
     <string name="search_location">Search location</string>
-    <string name="seekbar_min">0</string>
-    <string name="seekbar_max">1000</string>
-    <string name="seekbar_mid">500</string>
+    <string name="seekbar_min">500</string>
+    <string name="seekbar_max">5000</string>
+    <string name="seekbar_mid">2750</string>
     <string name="select_button">Select</string>
 
 

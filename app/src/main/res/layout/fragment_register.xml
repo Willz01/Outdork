@@ -57,7 +57,7 @@
                     android:textColorHint="@color/black">
 
 
-                    <androidx.appcompat.widget.AppCompatEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextFirstName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
                     android:textColorHint="@color/black">
 
 
-                    <androidx.appcompat.widget.AppCompatEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextLastName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -132,7 +132,7 @@
                     android:textColorHint="@color/black">
 
 
-                    <androidx.appcompat.widget.AppCompatEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextUserName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -154,12 +154,12 @@
                     android:textColorHint="@color/black">
 
 
-                    <androidx.appcompat.widget.AppCompatEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextEmailAddress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/email_hint"
-                        android:inputType="text"
+                        android:inputType="textEmailAddress"
                         android:textColorHint="@color/black"
                         android:textSize="16sp" />
 
@@ -176,7 +176,7 @@
                     android:textColorHint="@color/black">
 
 
-                    <androidx.appcompat.widget.AppCompatEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextCity"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -198,14 +198,14 @@
                     android:textColorHint="@color/black">
 
 
-                    <androidx.appcompat.widget.AppCompatEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextState"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/state_hint"
                         android:inputType="text"
                         android:textColorHint="@color/black"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -219,7 +219,7 @@
                     android:layout_marginBottom="8dp"
                     android:textColorHint="@color/black">
 
-                    <androidx.appcompat.widget.AppCompatEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextCountry"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -242,7 +242,7 @@
                     android:textColorHint="@color/black">
 
 
-                    <androidx.appcompat.widget.AppCompatEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextPassword"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -264,7 +264,7 @@
                     app:endIconMode="password_toggle"
                     android:textColorHint="@color/black">
 
-                    <androidx.appcompat.widget.AppCompatEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextPassword2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

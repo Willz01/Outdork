@@ -10,7 +10,7 @@
     <string name="discoveries">Discoveries</string>
     <string name="following">Following</string>
     <string name="newActivity">New Activity</string>
-    <string name="find_activity">Find activity</string>
+    <string name="add_activity">Find activity</string>
     <string name="settings">Settings</string>
     <string name="add_new_activity">Add new activity</string>
     <string name="about">About</string>
@@ -29,7 +29,7 @@
     <string name="bookmarksMenuItem">Bookmarks</string>
     <string name="helpMenuItem">Help</string>
     <string name="reportMenuItem">Report</string>
-    <string name="settingsMenuItem">Setting</string>
+    <string name="settingsMenuItem">Settings</string>
     <string name="aboutMenuItem">About</string>
 
     <!-- Bottom Nav -->

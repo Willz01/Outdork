@@ -12,27 +12,82 @@
             type="dev.samuelmcmurray.ui.about.AboutFragment" />
     </data>
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/green_light"
-        tools:context=".AboutFragment">
+        android:background="?attr/colorPrimary">
 
-        <!-- TODO: Update blank fragment layout -->
         <TextView
-            android:id="@+id/description_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/about"
-            android:textColor="@color/white"
-            android:textSize="30sp"
-            android:textStyle="bold"
+            android:layout_width="200dp"
+            android:layout_height="56dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
             android:layout_gravity="center"
+            android:layout_marginStart="98dp"
+            android:layout_marginLeft="98dp"
+            android:layout_marginTop="86dp"
+            android:gravity="center"
+            android:text="About OutDork"
             android:textAppearance="@style/titlefont"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textColor="?attr/colorAccent"
+            android:textSize="30sp"
+            android:textStyle="bold">
 
-    </FrameLayout>
+        </TextView>
+
+        <TextView
+            android:id="@+id/aboutText"
+            android:layout_width="316dp"
+            android:layout_height="407dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center"
+            android:layout_marginStart="45dp"
+            android:layout_marginLeft="45dp"
+            android:layout_marginTop="144dp"
+            android:gravity="center"
+            android:textAppearance="@style/bodyfont"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="18sp">
+
+        </TextView>
+
+        <ImageView
+            android:layout_width="172dp"
+            android:layout_height="142dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="237dp"
+            android:layout_marginLeft="237dp"
+            android:layout_marginTop="592dp"
+            app:srcCompat="@drawable/forest" />
+
+        <ImageView
+
+            android:layout_width="172dp"
+            android:layout_height="142dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="129dp"
+            android:layout_marginLeft="129dp"
+            android:layout_marginTop="580dp"
+            app:srcCompat="@drawable/forest" />
+
+        <ImageView
+            android:layout_width="172dp"
+            android:layout_height="142dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="1dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginTop="590dp"
+            app:srcCompat="@drawable/forest" />
+
+
+    </RelativeLayout>
 </layout>

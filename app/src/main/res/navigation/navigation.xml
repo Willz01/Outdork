@@ -70,6 +70,15 @@
             app:destination="@id/forgotPasswordFragment" />
     </fragment>
     <fragment
+        android:id="@+id/profileFragment"
+        android:name="dev.samuelmcmurray.ui.profile.ProfileFragment"
+        android:label="User Profile"
+        tools:layout="@layout/fragment_profile_menu">
+    <action
+        android:id="@+id/profilePictureClicked"
+        app:destination="@id/profileFragment"/>
+    </fragment>
+    <fragment
         android:id="@+id/welcomeFragment"
         android:name="dev.samuelmcmurray.ui.welcome.WelcomeFragment"
         android:label="fragment_welcome"

@@ -1,4 +1,4 @@
-package dev.samuelmcmurray
+package dev.samuelmcmurray.ui.find_new_activity.location
 
 import android.graphics.Color
 import android.location.Address
@@ -24,6 +24,8 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
+import dev.samuelmcmurray.R
+import dev.samuelmcmurray.SelectRouteFragmentArgs
 import dev.samuelmcmurray.utilities.directionhelpers.DirectionsParser
 import org.json.JSONException
 import org.json.JSONObject

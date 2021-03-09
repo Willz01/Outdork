@@ -130,7 +130,8 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                 currentLocation = p0
 
                 address = geocode?.getFromLocationName(p0.toString(), 1) as List<Address>
-                val tmp = address[0].featureName.toString()
+                val tmp = address[0].getAddressLine(0).toString()
+                MainActivity.startLocation = tmp
                 Log.d(TAG, "onMapReady: $tmp")
 
                 Toast.makeText(

@@ -1,6 +1,7 @@
 package dev.samuelmcmurray.data.model
 
 import android.media.Image
+import android.net.Uri
 
 
 data class CurrentUser(
@@ -15,7 +16,9 @@ data class CurrentUser(
     val dob: Long
 ) : User(id, firstName, lastName, userName, email, country, state, city, dob) {
     var about: String = ""
-    var activities: List<String>? = null
     var photo: Image? = null
+    var activities: List<String>? = emptyList()
+    var profileResource = "android.resource://${dev.samuelmcmurray.R.drawable.com_facebook_profile_picture_blank_portrait}"
+    var profilePhoto = Uri.parse(profileResource)
     var age: Int = 0
 }

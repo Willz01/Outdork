@@ -11,13 +11,14 @@ import androidx.databinding.DataBindingUtil.inflate
 import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationView
 import dev.samuelmcmurray.R
+import dev.samuelmcmurray.data.singelton.CurrentUserSingleton
 import dev.samuelmcmurray.databinding.FragmentWelcomeBinding
 
 
 private const val TAG = "WelcomeFragment"
+
 class WelcomeFragment : Fragment() {
     private lateinit var binding: FragmentWelcomeBinding
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,27 +31,32 @@ class WelcomeFragment : Fragment() {
         progressBar.progress
         return binding.root
     }
-    /*
-    overide fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val navigationView = requireActivity().findViewById(R.id.nav_view) as NavigationView
         val headerView = navigationView.getHeaderView(0)
-        val navPicture =
-            headerView.findViewById<View>(R.id.profilePicture) as ImageView
-        // future when I can get profile picture
-        //navPicture.setImageResource()
-        val navUsername =
-            headerView.findViewById<View>(R.id.profileName) as TextView
-        // future when I can get profile data
-        navUsername.text = "Username"
-        val navEmail =
-            headerView.findViewById<View>(R.id.profileEmail) as TextView
-        navEmail.text = "Email"
-        // future when I can get profile data
-
-*/
+        try {
+            val imageResource = CurrentUserSingleton.getInstance.currentUser?.profileResource
+            val navPicture =
+                headerView.findViewById<View>(R.id.profilePicture) as ImageView
+            //navPicture.setImageResource()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        try {
+            val navUsername =
+                headerView.findViewById<View>(R.id.profileName) as TextView
+            navUsername.text = CurrentUserSingleton.getInstance.currentUser?.userName
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        try {
+            val navEmail =
+                headerView.findViewById<View>(R.id.profileEmail) as TextView
+            navEmail.text = CurrentUserSingleton.getInstance.currentUser?.email
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
-
 }
-
-

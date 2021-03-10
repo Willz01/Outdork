@@ -10,7 +10,6 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.databinding.FragmentOtherProfileBinding
-import dev.samuelmcmurray.ui.following.feeds.FollowingFeedsFragment
 
 class OtherProfileFragment : Fragment() {
 

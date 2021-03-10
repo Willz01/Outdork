@@ -67,7 +67,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="dev.samuelmcmurray.ui.profile.ProfileFragment"
+        android:name="dev.samuelmcmurray.ui.profile.user.ProfileFragment"
         android:label="User Profile"
         tools:layout="@layout/fragment_profile_menu">
     <action

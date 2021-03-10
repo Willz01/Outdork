@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.followingHolder,
                 R.id.followingListFragment,
                 R.id.profileFragment,
-                R.id.otherProfileFragment
+                R.id.otherProfileFragment,
             )
         ).setOpenableLayout(drawerLayout as Openable).build()
 
@@ -127,6 +127,4 @@ class MainActivity : AppCompatActivity() {
             Log.d("ERROR", e.toString())
         }
     }
-
-
 }

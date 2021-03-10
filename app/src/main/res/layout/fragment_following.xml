@@ -8,7 +8,7 @@
         <variable
             name="viewModel"
             type="dev.samuelmcmurray.ui.following.feeds.FollowingFeedsViewModel" />
-        
+
         <variable
             name="uiController"
             type="dev.samuelmcmurray.ui.following.feeds.FollowingFeedsFragment" />

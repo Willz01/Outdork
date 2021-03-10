@@ -71,12 +71,21 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="dev.samuelmcmurray.ui.profile.ProfileFragment"
+        android:name="dev.samuelmcmurray.ui.profile.user.ProfileFragment"
         android:label="User Profile"
         tools:layout="@layout/fragment_profile_menu">
     <action
         android:id="@+id/profilePictureClicked"
         app:destination="@id/profileFragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/otherProfileFragment"
+        android:name="dev.samuelmcmurray.ui.profile.OtherProfileFragment"
+        android:label="Other User Profile"
+        tools:layout="@layout/fragment_other_profile">
+        <action
+            android:id="@+id/profilePictureClicked"
+            app:destination="@id/otherProfileFragment"/>
     </fragment>
     <fragment
         android:id="@+id/welcomeFragment"

@@ -77,7 +77,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.followingHolder,
                 R.id.followingListFragment, R.id.mapsFragment,
                 R.id.followingListFragment,
-                R.id.profileFragment
+                R.id.profileFragment,
+                R.id.otherProfileFragment
             )
         ).setOpenableLayout(drawerLayout as Openable).build()
 
@@ -103,7 +104,7 @@ class MainActivity : AppCompatActivity() {
         val header = mNavView.getHeaderView(0)
         val profilePic: ImageButton = header.findViewById(R.id.profilePicture)
         profilePic.setOnClickListener {
-            
+            navController.navigate(R.id.profileFragment)
         }
 
         firebaseAuth = FirebaseAuth.getInstance()
@@ -141,6 +142,4 @@ class MainActivity : AppCompatActivity() {
             Log.d("ERROR", e.toString())
         }
     }
-
-
 }

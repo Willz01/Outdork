@@ -1,18 +1,17 @@
 package dev.samuelmcmurray.ui.help
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextClock
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dev.samuelmcmurray.R
@@ -65,6 +64,10 @@ class HelpFragment : Fragment() {
         findActivityText.visibility = TextView.INVISIBLE
         discoveriesText.visibility = TextView.INVISIBLE
 
+        favoritesText.movementMethod = ScrollingMovementMethod()
+        followingText.movementMethod = ScrollingMovementMethod()
+        findActivityText.movementMethod = ScrollingMovementMethod()
+        discoveriesText.movementMethod = ScrollingMovementMethod()
 
             favoritesButton.setOnClickListener() {
                 favoritesText.visibility = if (favoritesText.visibility == TextView.VISIBLE){

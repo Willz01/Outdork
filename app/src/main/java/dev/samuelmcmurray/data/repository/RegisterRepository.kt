@@ -5,11 +5,13 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import dev.samuelmcmurray.data.model.CurrentUser
+import dev.samuelmcmurray.data.singelton.CurrentUserSingleton
+
 
 
 private const val TAG = "RegisterRepository"
@@ -17,10 +19,12 @@ private const val TAG = "RegisterRepository"
 class RegisterRepository {
     private var application: Application
     private var firebaseAuth: FirebaseAuth
+    private val firebaseApplication = FirebaseApp.getInstance()
     var userLiveData: MutableLiveData<FirebaseUser>
     var loggedOutLiveData: MutableLiveData<Boolean>
     var userCreatedLiveData: MutableLiveData<Boolean>
     var emailSentLiveData: MutableLiveData<Boolean>
+
 
     constructor(application: Application) {
         this.application = application
@@ -59,17 +63,17 @@ class RegisterRepository {
 
     fun createUser(
         firstName: String, lastName: String, userName: String, email: String,
-        city: String, state: String, country: String, dob: Long
+        city: String, state: String, country: String, dob: String
     ) {
         var uid = firebaseAuth.currentUser?.uid
         while (uid == null) {
             //TODO: fix so it cant go into an infinite loop
             uid = firebaseAuth.currentUser?.uid
         }
-        val db: DocumentReference = FirebaseFirestore.getInstance().document("Users/${uid}")
-        val currentUser = uid?.let {
+
+        val currentUser =
             CurrentUser(
-                it,
+                uid,
                 firstName,
                 lastName,
                 userName,
@@ -79,7 +83,7 @@ class RegisterRepository {
                 city,
                 dob
             )
-        }
+
         val user = hashMapOf(
             "firstName" to firstName,
             "lastName" to lastName,
@@ -89,20 +93,24 @@ class RegisterRepository {
             "state" to state,
             "city" to city,
             "dateOfBirth" to dob,
-            "about" to currentUser?.about,
-            "activities" to listOf(currentUser?.activities)
+            "about" to currentUser.about,
+            "hasImage" to currentUser.hasImage
         )
+        Log.d(TAG, "createUser: $user")
 
-
-        db.set(user)
-            .addOnSuccessListener (ContextCompat.getMainExecutor(application), { void ->
+        val db = FirebaseFirestore.getInstance(firebaseApplication)
+        db.collection("Users")
+            .document("$uid")
+            .set(user)
+            .addOnSuccessListener {
                 Log.d(
                     TAG,
                     "DocumentSnapshot added with ID: $uid"
                 )
+                CurrentUserSingleton.getInstance.currentUser = currentUser
                 userCreatedLiveData.postValue(true)
-            })
-            .addOnFailureListener { e -> Log.w(TAG, "Error adding document", e)
+            }
+            .addOnFailureListener { e -> Log.i(TAG, "Error adding document $e", e)
                 userCreatedLiveData.postValue(false)}
 
 
@@ -114,7 +122,7 @@ class RegisterRepository {
             //TODO: fix so it cant go into an infinite loop
             user = firebaseAuth.currentUser
         }
-        user!!.sendEmailVerification()
+        user.sendEmailVerification()
             .addOnCompleteListener (ContextCompat.getMainExecutor(application), { task ->
                 if (task.isSuccessful) {
                     Log.d(TAG, "Email sent.")

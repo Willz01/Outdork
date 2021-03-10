@@ -19,7 +19,11 @@
         android:id="@+id/newActivityFragment"
         android:name="dev.samuelmcmurray.ui.find_new_activity.NewActivityFragment"
         android:label="@string/newActivity"
-        tools:layout="@layout/fragment_new_activity" />
+        tools:layout="@layout/fragment_new_activity" >
+        <action
+            android:id="@+id/select_btn_pressed"
+            app:destination="@id/mapsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/favouriteFragment"
         android:name="dev.samuelmcmurray.ui.favorite.FavoriteFragment"
@@ -66,6 +70,15 @@
             app:destination="@id/forgotPasswordFragment" />
     </fragment>
     <fragment
+        android:id="@+id/profileFragment"
+        android:name="dev.samuelmcmurray.ui.profile.ProfileFragment"
+        android:label="User Profile"
+        tools:layout="@layout/fragment_profile_menu">
+    <action
+        android:id="@+id/profilePictureClicked"
+        app:destination="@id/profileFragment"/>
+    </fragment>
+    <fragment
         android:id="@+id/welcomeFragment"
         android:name="dev.samuelmcmurray.ui.welcome.WelcomeFragment"
         android:label="fragment_welcome"
@@ -96,6 +109,22 @@
         <action
             android:id="@+id/action_forgotPasswordFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="dev.samuelmcmurray.ui.find_new_activity.location.MapsFragment"
+        android:label="Route area" >
+        <action
+            android:id="@+id/action_mapsFragment_to_selectRouteFragment"
+            app:destination="@id/selectRouteFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/selectRouteFragment"
+        android:name="dev.samuelmcmurray.SelectRouteFragment"
+        android:label="Pick route" >
+        <argument
+            android:name="origin"
+            app:argType="string" />
     </fragment>
 
 </navigation>

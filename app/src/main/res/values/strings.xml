@@ -10,7 +10,7 @@
     <string name="discoveries">Discoveries</string>
     <string name="following">Following</string>
     <string name="newActivity">New Activity</string>
-    <string name="find_activity">Find activity</string>
+    <string name="add_activity">Find activity</string>
     <string name="settings">Settings</string>
     <string name="add_new_activity">Add new activity</string>
     <string name="about">About</string>
@@ -59,7 +59,7 @@
     <string name="first_name_hint">First Name</string>
     <string name="last_name_hint">Last Name</string>
     <string name="user_name_hint">User Name</string>
-    <string name="dob_hint">Date of Birth MM/DD/YYYY</string>
+    <string name="dob_hint">Date of Birth MM-DD-YYYY</string>
     <string name="location_hint">City</string>
     <string name="country_hint">Country</string>
     <string name="state_hint">State/Providence</string>
@@ -90,9 +90,18 @@
     <string name="date_sample">11/04/21</string>
     <string name="image">IMAGE</string>
     <string name="comment">COMMENT</string>
-    <string name="select_button">Select</string>
+    <string name="search_button">Search</string>
     <string name="activity_content">Activity content</string>
-    <string name="post_hint">Post</string>
+    <string name="post_hint">Make a new post</string>
+    <string name="post_action">Post</string>
+
+    <!-- places sdk -->
+    <string name="places_api">AIzaSyD5j72Gj-fVrhakRcmVZkEevRgAqdQtggE</string>
+    <string name="search_location">Search location</string>
+    <string name="seekbar_min">500</string>
+    <string name="seekbar_max">5000</string>
+    <string name="seekbar_mid">2750</string>
+    <string name="select_button">Select</string>
 
     <!-- Permissions -->
     <string name="permission_result_pending">Waiting for result…</string>

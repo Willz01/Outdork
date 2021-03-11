@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.databinding.FragmentNewActivityBinding
 import dev.samuelmcmurray.sampleactivities.Activities
-import dev.samuelmcmurray.ui.find_new_activity.location.MapsFragmentDirections
 import dev.samuelmcmurray.ui.main.MainActivity
 import dev.samuelmcmurray.utilities.InjectorUtils
 
@@ -45,7 +44,7 @@ class NewActivityFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_new_activity, container, false)
         binding.lifecycleOwner = this
 
-        val activities = Activities.returnActivities()
+        val activities = Activities.returnActivitiesHolder()
         val adapters : List<ContentExpandableAdapter> = activities.map { activity -> ContentExpandableAdapter(activity) }
 
         val concatAdapterConfig = ConcatAdapter.Config.Builder()

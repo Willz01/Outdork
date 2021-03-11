@@ -19,7 +19,7 @@
         android:id="@+id/newActivityFragment"
         android:name="dev.samuelmcmurray.ui.find_new_activity.NewActivityFragment"
         android:label="@string/newActivity"
-        tools:layout="@layout/fragment_new_activity" >
+        tools:layout="@layout/fragment_new_activity">
         <action
             android:id="@+id/select_btn_pressed"
             app:destination="@id/mapsFragment" />
@@ -74,24 +74,24 @@
         android:name="dev.samuelmcmurray.ui.profile.user.ProfileFragment"
         android:label="User Profile"
         tools:layout="@layout/fragment_profile_menu">
-    <action
-        android:id="@+id/profilePictureClicked"
-        app:destination="@id/profileFragment"/>
-    </fragment>
-    <fragment
-        android:id="@+id/otherProfileFragment"
-        android:name="dev.samuelmcmurray.ui.profile.OtherProfileFragment"
-        android:label="Other User Profile"
-        tools:layout="@layout/fragment_other_profile">
         <action
             android:id="@+id/profilePictureClicked"
-            app:destination="@id/otherProfileFragment"/>
+            app:destination="@id/profileFragment" />
     </fragment>
+    <!--  <fragment
+          android:id="@+id/otherProfileFragment"
+          android:name="dev.samuelmcmurray.ui.profile.OtherProfileFragment"
+          android:label="Other User Profile"
+          tools:layout="@layout/fragment_other_profile">
+          <action
+              android:id="@+id/profilePictureClicked"
+              app:destination="@id/otherProfileFragment"/>
+      </fragment>-->
     <fragment
         android:id="@+id/welcomeFragment"
         android:name="dev.samuelmcmurray.ui.welcome.WelcomeFragment"
         android:label="fragment_welcome"
-        tools:layout="@layout/fragment_welcome"/>
+        tools:layout="@layout/fragment_welcome" />
     <action
         android:id="@+id/action_global_welcomeFragment"
         app:destination="@id/welcomeFragment" />
@@ -114,7 +114,7 @@
         android:id="@+id/forgotPasswordFragment"
         android:name="dev.samuelmcmurray.ui.auth.ForgotPasswordFragment"
         android:label="fragment_forgot_password"
-        tools:layout="@layout/fragment_forgot_password" >
+        tools:layout="@layout/fragment_forgot_password">
         <action
             android:id="@+id/action_forgotPasswordFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
@@ -122,15 +122,15 @@
     <fragment
         android:id="@+id/mapsFragment"
         android:name="dev.samuelmcmurray.ui.find_new_activity.location.MapsFragment"
-        android:label="Route area" >
+        android:label="Route area">
         <action
             android:id="@+id/action_mapsFragment_to_selectRouteFragment"
             app:destination="@id/selectRouteFragment" />
     </fragment>
     <fragment
         android:id="@+id/selectRouteFragment"
-        android:name="dev.samuelmcmurray.SelectRouteFragment"
-        android:label="Pick route" >
+        android:name="dev.samuelmcmurray.ui.find_new_activity.location.SelectRouteFragment"
+        android:label="Pick route">
         <argument
             android:name="origin"
             app:argType="string" />

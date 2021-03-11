@@ -33,8 +33,8 @@ class AddNewActivityFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val factory = InjectorUtils.provideAddNewActivityViewModelFactory()
+     /*   val factory = InjectorUtils.provideAddNewActivityViewModelFactory()
         viewModelProvider = ViewModelProvider(this, factory).get(AddNewActivityViewModel::class.java)
-        viewModel = viewModelProvider
+        viewModel = viewModelProvider*/
     }
 }

@@ -1,19 +1,23 @@
 package dev.samuelmcmurray.data.repository
 
-class AddNewActivityRepository private constructor(private val database : String) {
+import android.app.Activity
+import android.app.Application
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 
-    companion object {
-        @Volatile
-        private var instance : AddNewActivityRepository? = null
+class AddNewActivityRepository{
+    private lateinit var application: Application
+    private var storage: FirebaseStorage? = null
+    private var storageRef: StorageReference? = null
+    private var fireStore : FirebaseFirestore? = null
 
-        /**
-         * Creating a Singleton to pass information from database to
-         * repository or to database from repository. So that we can move data to ViewModel
-         * Repository handles most of the data
-         */
-        fun getInstance(database: String) =
-            instance ?: synchronized(this) {
-                instance ?: AddNewActivityRepository(database).also { instance = it }
-            }
-    }
+
+
+
+
+  /*  fun addActivity(activity: Activity){
+        val activityRef = FirebaseFirestore.getInstance().collection("activity")
+        activityRef.do
+    }*/
 }

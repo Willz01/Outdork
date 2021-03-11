@@ -39,7 +39,6 @@ import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.snackbar.Snackbar
 import dev.samuelmcmurray.R
-import dev.samuelmcmurray.SelectRouteFragment
 import dev.samuelmcmurray.ui.main.MainActivity
 
 private const val AUTOCOMPLETE_REQUEST_CODE = 100
@@ -84,8 +83,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         val autocomplete = view.findViewById<EditText>(R.id.autocomplete_fragment)
         seekBar = requireView().findViewById<SeekBar>(R.id.appCompatSeekBar)
 
-        fusedLocationProviderClient =
-            LocationServices.getFusedLocationProviderClient(requireActivity())
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         fetchLastLocation()
 
         autocomplete.setOnClickListener {
@@ -131,8 +129,8 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
                 address = geocode?.getFromLocationName(p0.toString(), 1) as List<Address>
                 val tmp = address[0].getAddressLine(0).toString()
-                MainActivity.startLocation = tmp
                 Log.d(TAG, "onMapReady: $tmp")
+                MainActivity.startLocation = tmp
 
                 Toast.makeText(
                     requireContext(),
@@ -271,7 +269,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                         // radius max = 1000 from seek bar max value
                         circle?.remove()
                         circle = mMap?.addCircle(
-                            CircleOptions().center(latLng).radius(150.0).strokeColor(
+                            CircleOptions().center(latLng).radius(500.0).strokeColor(
                                 Color.RED
                             ).strokeWidth(7.0F).fillColor(Color.argb(70,150,50,50))
                         )!!

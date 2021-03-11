@@ -25,7 +25,6 @@ import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import dev.samuelmcmurray.R
-import dev.samuelmcmurray.SelectRouteFragmentArgs
 import dev.samuelmcmurray.utilities.directionhelpers.DirectionsParser
 import org.json.JSONException
 import org.json.JSONObject

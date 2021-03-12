@@ -33,8 +33,9 @@ class NewActivityFragment : Fragment() {
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        list.addAll(MainActivity.selectedFilter)
-        Log.d(TAG, "onCreate: $list")
+       /* list.addAll(MainActivity.selectedFilter)
+        Log.d(TAG, "onCreate: $list")*/
+        MainActivity.selectedFilter.clear()
     }
 
     override fun onCreateView(

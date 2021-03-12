@@ -47,6 +47,7 @@ class MainActivity : AppCompatActivity() {
         var selectedFilter = ArrayList<String>()
         var startLocation = String()
         var latLng : Address? = null
+        var alreadyFetchedLocation = false
     }
 
     private lateinit var mNavView: NavigationView

@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
@@ -25,6 +26,9 @@ import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import dev.samuelmcmurray.R
+import dev.samuelmcmurray.data.model.Activity
+import dev.samuelmcmurray.data.repository.SelectRouteRepository
+import dev.samuelmcmurray.ui.main.MainActivity
 import dev.samuelmcmurray.utilities.directionhelpers.DirectionsParser
 import org.json.JSONException
 import org.json.JSONObject
@@ -60,25 +64,12 @@ class SelectRouteFragment : Fragment(), OnMapReadyCallback {
     private var place1: MarkerOptions? = null
     private var place2: MarkerOptions? = null
 
+    private lateinit var viewModel: SelectRouteViewModel
+
+    private var selectRouteRepository: SelectRouteRepository = SelectRouteRepository()
+
     // long list to text list view
-    private var routeArray = arrayOf(
-        "247 Fitness",
-        "ICA maxi",
-        "Kristianstad C",
-        "ICA Kvantum",
-        "247 Fitness",
-        "ICA maxi",
-        "Kristianstad C",
-        "ICA Kvantum",
-        "247 Fitness",
-        "ICA maxi",
-        "Kristianstad C",
-        "ICA Kvantum",
-        "247 Fitness",
-        "ICA maxi",
-        "Kristianstad C",
-        "ICA Kvantum"
-    )
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -100,23 +91,12 @@ class SelectRouteFragment : Fragment(), OnMapReadyCallback {
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(this@SelectRouteFragment)
 
+        viewModel = ViewModelProvider(requireActivity(), defaultViewModelProviderFactory).get(
+            SelectRouteViewModel::class.java
+        )
 
-        val routeAdapter: ArrayAdapter<String> =
-            ArrayAdapter(requireContext(), R.layout.route_option_item, routeArray)
 
-        val routeListView = requireView().findViewById<ListView>(R.id.route_options)
-        routeListView.adapter = routeAdapter
-
-        routeListView.onItemClickListener =
-            AdapterView.OnItemClickListener { parent, view, position, id ->
-                Log.d(TAG, "onItemClick: $position")
-                val selected = parent?.getItemAtPosition(position)
-                Snackbar.make(
-                    requireView(),
-                    "Route: $selected",
-                    Snackbar.LENGTH_SHORT
-                ).show()
-            }
+        setListView()
 
 
         geocode = Geocoder(requireContext())
@@ -150,7 +130,7 @@ class SelectRouteFragment : Fragment(), OnMapReadyCallback {
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
                 mMap.mapType = GoogleMap.MAP_TYPE_HYBRID
 
-                mMap.setOnMapClickListener { latLng1 ->
+               /* mMap.setOnMapClickListener { latLng1 ->
                     if (listLatLng.size == 1) {
                         listLatLng.clear()
                         mMap.clear()
@@ -175,7 +155,7 @@ class SelectRouteFragment : Fragment(), OnMapReadyCallback {
 
                     // Direction between markers
                     if (listLatLng.size == 1) {
-                        if (place1 == place2){
+                        if (place1 == place2) {
                             Log.d(TAG, "updateMap: YH, equal")
                         } else {
                             Log.d(TAG, "updateMap: Not Equal")
@@ -192,10 +172,10 @@ class SelectRouteFragment : Fragment(), OnMapReadyCallback {
                         Log.d(TAG, "updateMap: Map Clicked")
                         val taskRequestDirections = TaskRequestDirections()
                         taskRequestDirections.execute(url)
-                        /*FetchURL(requireContext()).execute(url, "walking")
-                        MainActivity.mMap = mMap*/
+                        *//*FetchURL(requireContext()).execute(url, "walking")
+                        MainActivity.mMap = mMap*//*
                     }
-                }
+                }*/
 
                 println(locationFromGeo)
             } else {
@@ -322,5 +302,78 @@ class SelectRouteFragment : Fragment(), OnMapReadyCallback {
             return routes
         }
     }
+
+    private fun setListView() {
+        selectRouteRepository.getActivities(object : MyCallback {
+            override fun onCallback(value: ArrayList<Activity>) {
+                Log.d(TAG, "onCallback: ${value.size}")
+
+                val filters = MainActivity.selectedFilter
+
+                Log.d(TAG, "setListView: ${value.size}")
+
+                val activities = value
+                val activityFilter = activities.map { activity -> activity.filter }
+
+
+                Log.d(TAG, "onCallback: $activityFilter")
+
+                val activitiesNameList = value.map { activity -> activity.name }
+
+                val routeArray = activitiesNameList.toTypedArray()
+
+                val routeAdapter: ArrayAdapter<String> =
+                    ArrayAdapter(requireContext(), R.layout.route_option_item, routeArray)
+
+                val routeListView = requireView().findViewById<ListView>(R.id.route_options)
+                routeListView.adapter = routeAdapter
+
+                routeListView.onItemClickListener =
+                    AdapterView.OnItemClickListener { parent, view, position, id ->
+                        Log.d(TAG, "onItemClick: $position")
+                        val selectedActivity = parent?.getItemAtPosition(position)
+
+                        if (listLatLng.size == 1) {
+                            listLatLng.clear()
+                            mMap.clear()
+
+                            mMap.addMarker(place1)
+                        }
+
+                        // save selected point (destination)
+                        listLatLng.add(activities[position].latLng)
+
+                        place2 = MarkerOptions().position(activities[position].latLng).title("Route end")
+
+                        if (listLatLng.size == 0) {
+                            // re add first marker
+                            place2?.icon(
+                                BitmapDescriptorFactory.defaultMarker(
+                                    BitmapDescriptorFactory.HUE_GREEN
+                                )
+                            )
+                        }
+                        mMap.addMarker(place2)
+
+                        val url =
+                            place1?.position?.let {
+                                getRequestUrl(
+                                    it,
+                                    activities[position].latLng,
+                                    "walking"
+                                )
+                            }
+                        val taskRequestDirections = TaskRequestDirections()
+                        taskRequestDirections.execute(url)
+                        Snackbar.make(
+                            requireView(),
+                            "Route: $selectedActivity",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
+            }
+        })
+    }
+
 
 }

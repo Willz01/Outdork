@@ -265,14 +265,15 @@ class SelectRouteFragment : Fragment(), OnMapReadyCallback {
 
                 Log.d(TAG, "setListView: ${value.size}")
 
-                val activities = value
+                val activities = listRunner(value, MainActivity.selectedFilter)
+
+                // test
                 val activityFilter = activities.map { activity -> activity.filter }
-
-
                 Log.d(TAG, "onCallback: $activityFilter")
 
-                val activitiesNameList = value.map { activity -> activity.name }
-
+                // map out the names of each activity
+                val activitiesNameList = activities.map { activity -> activity.name }
+                Log.d(TAG, "onCallback: $activitiesNameList")
                 val routeArray = activitiesNameList.toTypedArray()
 
                 val routeAdapter: ArrayAdapter<String> =
@@ -296,7 +297,8 @@ class SelectRouteFragment : Fragment(), OnMapReadyCallback {
                         // save selected point (destination)
                         listLatLng.add(activities[position].latLng)
 
-                        place2 = MarkerOptions().position(activities[position].latLng).title("Route end")
+                        place2 =
+                            MarkerOptions().position(activities[position].latLng).title("Route end")
 
                         if (listLatLng.size == 0) {
                             // re add first marker
@@ -326,6 +328,34 @@ class SelectRouteFragment : Fragment(), OnMapReadyCallback {
                     }
             }
         })
+    }
+
+    /**
+     * Takes list of {@param activities } from firebase and {@param filter} list
+     * Use filter to stream line activity.filter.forEach()
+     * Add activities that contain at least 2 of the items in the parsed filter list to the
+     * @listViewActivities is converted to a typedArray and used to inflate the list view --> returned
+     */
+    private fun listRunner(
+        activities: ArrayList<Activity>,
+        filter: ArrayList<String>
+    ): Array<Activity> {
+        val listViewActivities = ArrayList<Activity>()
+
+        for (activity in activities) {
+            var counter = 0
+            for (item in filter) {
+                if (item in activity.filter) {
+                    if (counter == (filter.size).div(2)) {
+                        listViewActivities.add(activity)
+                        break
+                    }
+                    counter++
+                }
+            }
+        }
+
+        return listViewActivities.toTypedArray()
     }
 
 

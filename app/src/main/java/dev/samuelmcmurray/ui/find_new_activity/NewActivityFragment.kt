@@ -61,7 +61,7 @@ class NewActivityFragment : Fragment() {
         }
 
         binding.selectFilters.setOnClickListener {
-            println(list)
+            println(MainActivity.selectedFilter)
             val action = NewActivityFragmentDirections.selectBtnPressed()
             Navigation.findNavController(binding.root).navigate(action)
         }

@@ -130,53 +130,6 @@ class SelectRouteFragment : Fragment(), OnMapReadyCallback {
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
                 mMap.mapType = GoogleMap.MAP_TYPE_HYBRID
 
-               /* mMap.setOnMapClickListener { latLng1 ->
-                    if (listLatLng.size == 1) {
-                        listLatLng.clear()
-                        mMap.clear()
-
-                        mMap.addMarker(place1)
-                    }
-
-                    // save selected point (destination)
-                    listLatLng.add(latLng1!!)
-
-                    place2 = MarkerOptions().position(latLng1).title("Route end")
-
-                    if (listLatLng.size == 0) {
-                        // re add first marker
-                        place2?.icon(
-                            BitmapDescriptorFactory.defaultMarker(
-                                BitmapDescriptorFactory.HUE_GREEN
-                            )
-                        )
-                    }
-                    mMap.addMarker(place2)
-
-                    // Direction between markers
-                    if (listLatLng.size == 1) {
-                        if (place1 == place2) {
-                            Log.d(TAG, "updateMap: YH, equal")
-                        } else {
-                            Log.d(TAG, "updateMap: Not Equal")
-                        }
-
-                        val url = place1?.position?.let {
-                            place2?.position?.let { it1 ->
-                                getRequestUrl(
-                                    it,
-                                    it1, "walking"
-                                )
-                            }
-                        }
-                        Log.d(TAG, "updateMap: Map Clicked")
-                        val taskRequestDirections = TaskRequestDirections()
-                        taskRequestDirections.execute(url)
-                        *//*FetchURL(requireContext()).execute(url, "walking")
-                        MainActivity.mMap = mMap*//*
-                    }
-                }*/
-
                 println(locationFromGeo)
             } else {
                 Snackbar.make(

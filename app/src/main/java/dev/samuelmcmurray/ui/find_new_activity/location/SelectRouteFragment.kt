@@ -341,7 +341,7 @@ class SelectRouteFragment : Fragment(), OnMapReadyCallback {
                         // time -- soon
 
 
-                        rating.rating = activities[position].rating
+                        rating.rating = activities[position].rating.toFloat()
 
                         activityDialog.show()
 

@@ -29,6 +29,7 @@ class SelectRouteRepository {
                     val rating = activity.data["rating"]
 
 
+
                     val array = latLng.toString().split(", ")
                     val lat = array[0].toString().substring(10, array[0].toString().length)
                     val long = array[1].toString().substring(10, array[1].toString().length - 1)
@@ -38,7 +39,7 @@ class SelectRouteRepository {
                     activitiesList.add(
                         Activity(
                             name.toString(), UID.toString(),
-                            filters as List<String>, latLngObject, rating as Float
+                            filters as List<String>, latLngObject, rating as Double
                         )
                     )
                 }

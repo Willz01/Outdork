@@ -6,10 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.databinding.FragmentAddNewBinding
-import dev.samuelmcmurray.utilities.InjectorUtils
 
 class AddNewActivityFragment : Fragment() {
 
@@ -21,6 +22,8 @@ class AddNewActivityFragment : Fragment() {
     private lateinit var viewModelProvider : AddNewActivityViewModel
     private lateinit var viewModel: AddNewActivityViewModel
 
+    private lateinit var navController: NavController
+    private lateinit var bottomNavigationView: BottomNavigationView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,6 +31,11 @@ class AddNewActivityFragment : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_new, container, false)
         binding.lifecycleOwner = this
+
+        navController = requireActivity().findNavController(R.id.fragmentContainer)
+        bottomNavigationView = requireActivity().findViewById(R.id.nav)
+        bottomNavigationView.visibility = View.GONE
+
         return binding.root
     }
 

@@ -1,4 +1,4 @@
-package dev.samuelmcmurray.ui.find_new_activity.location
+package dev.samuelmcmurray.utilities
 
 import dev.samuelmcmurray.data.model.Activity
 

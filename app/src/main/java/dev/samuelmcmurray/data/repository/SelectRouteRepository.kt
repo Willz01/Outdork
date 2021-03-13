@@ -4,7 +4,7 @@ import android.util.Log
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.firestore.FirebaseFirestore
 import dev.samuelmcmurray.data.model.Activity
-import dev.samuelmcmurray.ui.find_new_activity.location.MyCallback
+import dev.samuelmcmurray.utilities.MyCallback
 
 private const val TAG = "SelectRouteRepository"
 
@@ -44,8 +44,6 @@ class SelectRouteRepository {
 
                 myCallback.onCallback(activitiesList)
             }
-
-          //  Log.d(TAG, "getActivities -x--> : ${activitiesList.size}")
         }.addOnFailureListener { e ->
             Log.d(
                 TAG,

@@ -11,12 +11,12 @@ private const val TAG = "SelectRouteRepository"
 @Suppress("UNCHECKED_CAST")
 class SelectRouteRepository {
 
-    fun getActivities(myCallback: MyCallback){
+    fun getActivities(myCallback: MyCallback) {
 
         val activitiesRef = FirebaseFirestore.getInstance().collection("activities")
 
         activitiesRef.get().addOnSuccessListener { activities ->
-            if(!activities.isEmpty){
+            if (!activities.isEmpty) {
                 val activitiesList = ArrayList<Activity>()
                 for (activity in activities) {
 
@@ -26,6 +26,7 @@ class SelectRouteRepository {
                     val UID = activity.data["UID"]
                     val filters = activity.data["filters"]
                     val latLng = activity.data["latlng"]
+                    val rating = activity.data["rating"]
 
 
                     val array = latLng.toString().split(", ")
@@ -37,7 +38,7 @@ class SelectRouteRepository {
                     activitiesList.add(
                         Activity(
                             name.toString(), UID.toString(),
-                            filters as List<String>, latLngObject
+                            filters as List<String>, latLngObject, rating as Float
                         )
                     )
                 }

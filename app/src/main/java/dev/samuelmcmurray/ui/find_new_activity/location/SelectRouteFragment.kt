@@ -1,18 +1,20 @@
 package dev.samuelmcmurray.ui.find_new_activity.location
 
+import android.annotation.SuppressLint
+import android.app.Dialog
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.location.Address
 import android.location.Geocoder
+import android.location.Location
+import android.location.LocationManager
 import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.ListView
-import android.widget.Toast
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -25,6 +27,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
+import com.google.maps.android.SphericalUtil
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.data.model.Activity
 import dev.samuelmcmurray.data.repository.SelectRouteRepository
@@ -37,11 +40,17 @@ import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
+import java.math.BigDecimal
+import java.math.RoundingMode
 import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import java.net.URL
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 
 private const val TAG = "SelectRouteFragment"
@@ -259,6 +268,7 @@ class SelectRouteFragment : Fragment(), OnMapReadyCallback {
 
     private fun setListView() {
         selectRouteRepository.getActivities(object : MyCallback {
+            @SuppressLint("SetTextI18n")
             override fun onCallback(value: ArrayList<Activity>) {
                 Log.d(TAG, "onCallback: ${value.size}")
 
@@ -287,6 +297,53 @@ class SelectRouteFragment : Fragment(), OnMapReadyCallback {
                     AdapterView.OnItemClickListener { parent, view, position, id ->
                         Log.d(TAG, "onItemClick: $position")
                         val selectedActivity = parent?.getItemAtPosition(position)
+
+                        // display dialog
+                        val activityDialog = Dialog(requireContext())
+                        activityDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                        activityDialog.setContentView(R.layout.route_dialog)
+
+                        // dialog widgets
+                        val activityName =
+                            activityDialog.findViewById<TextView>(R.id.activity_name_dialog)
+                        val distance = activityDialog.findViewById<TextView>(R.id.distance_tv)
+                        val drivingTime =
+                            activityDialog.findViewById<TextView>(R.id.driving_time_tv)
+                        val walkingTime =
+                            activityDialog.findViewById<TextView>(R.id.walking_time_tv)
+                        val cyclingTime =
+                            activityDialog.findViewById<TextView>(R.id.cycling_time_tv)
+
+                        val rating = activityDialog.findViewById<RatingBar>(R.id.activity_rating)
+
+                        activityName.text = activities[position].name
+                        val loc1 = Location(LocationManager.GPS_PROVIDER)
+                        val loc2 = Location(LocationManager.GPS_PROVIDER)
+
+                        val endLatLng = activities[position].latLng
+
+                        loc1.latitude = place1?.position!!.latitude
+                        loc1.longitude = place1?.position!!.longitude
+
+                        loc2.latitude = endLatLng.latitude
+                        loc2.longitude = endLatLng.longitude
+
+                        /*
+                        distance.text = BigDecimal(
+                            SphericalUtil.computeDistanceBetween(
+                                place1?.position,
+                                endLatLng
+                            )
+                        ).setScale(2, RoundingMode.HALF_EVEN).toString()*/
+
+                        distance.text = "${loc1.distanceTo(loc2).toString()}KM"
+
+                        // time -- soon
+
+
+                        rating.rating = activities[position].rating
+
+                        activityDialog.show()
 
                         if (listLatLng.size == 1) {
                             listLatLng.clear()
@@ -329,6 +386,19 @@ class SelectRouteFragment : Fragment(), OnMapReadyCallback {
                     }
             }
         })
+    }
+
+    fun distance(lat_a: Double, lng_a: Double, lat_b: Double, lng_b: Double): Float {
+        val earthRadius = 3958.75
+        val latDiff = Math.toRadians((lat_b - lat_a))
+        val lngDiff = Math.toRadians((lng_b - lng_a))
+        val a = sin(latDiff / 2) * sin(latDiff / 2) +
+                cos(Math.toRadians(lat_a.toDouble())) * cos(Math.toRadians(lat_b)) *
+                sin(lngDiff / 2) * sin(lngDiff / 2)
+        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
+        val distance = earthRadius * c
+        val meterConversion = 1609
+        return (distance * meterConversion.toFloat()).toFloat()
     }
 
     /**

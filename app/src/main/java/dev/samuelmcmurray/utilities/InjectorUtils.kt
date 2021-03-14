@@ -19,7 +19,7 @@ object InjectorUtils {
         val newActivityRepository = AddNewActivityRepository.getInstance("database.getInstance().AddNewActivityDAO")
         return AddNewActivityViewModelFactory(newActivityRepository)
     }
-    
+
     fun provideFollowingViewModelFactory() : FollowingFeedsViewModelFactory {
         val followingRepository = FollowingFeedsRepository.getInstance("database.getInstance().FollowingDAO")
         return FollowingFeedsViewModelFactory(followingRepository)

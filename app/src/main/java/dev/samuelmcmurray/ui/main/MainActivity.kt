@@ -24,7 +24,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import dev.samuelmcmurray.R
-import dev.samuelmcmurray.data.singelton.MutexLock
 import dev.samuelmcmurray.databinding.ActivityMainBinding
 
 
@@ -112,7 +111,6 @@ class MainActivity : AppCompatActivity() {
             if (firebaseAuth.currentUser == null) {
                 navController.navigate(R.id.loginFragment)
             } else {
-                MutexLock.getInstance.locked = false
                 navController.navigate(R.id.discoveries_fragment)
             }
         }

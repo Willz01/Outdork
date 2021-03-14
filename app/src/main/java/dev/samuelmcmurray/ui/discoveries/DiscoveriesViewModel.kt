@@ -10,6 +10,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dev.samuelmcmurray.data.model.CurrentUser
+import dev.samuelmcmurray.data.model.Post
 import dev.samuelmcmurray.data.repository.DiscoveriesRepository
 import dev.samuelmcmurray.data.singelton.CurrentUserSingleton
 import kotlinx.coroutines.CoroutineScope
@@ -24,12 +25,14 @@ class DiscoveriesViewModel : AndroidViewModel {
     var postCreatedLiveData: MutableLiveData<Boolean>
     var userLiveData: MutableLiveData<CurrentUser>
     val hideBoolean: LiveData<Boolean> get() = newPostVisibilityLiveData
+    var postsListLiveData: MutableLiveData<List<Post>>
     private val filePath: MutableLiveData<Uri>
 
     constructor(application: Application) : super(application) {
         discoveriesRepository = DiscoveriesRepository(application)
         postCreatedLiveData = discoveriesRepository.postCreatedLiveData
         userLiveData = discoveriesRepository.userLiveData
+        postsListLiveData = discoveriesRepository.postsListLiveData
         filePath = MutableLiveData()
     }
 
@@ -74,6 +77,17 @@ class DiscoveriesViewModel : AndroidViewModel {
 
     fun hideNewPostFragment(value: Boolean) {
         newPostVisibilityLiveData.postValue(value)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getPostsList() {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                discoveriesRepository.getPostsList()
+            }catch (exception: Exception) {
+                Log.d(TAG, "getPostsList: $exception")
+            }
+        }
     }
 
 }

@@ -105,7 +105,8 @@ class FollowingFeedsFragment : Fragment() {
             // RecyclerView behavior
             layoutManager = LinearLayoutManager(activity)
             // set the custom adapter to the RecyclerView
-            adapter = PostAdapter(posts, requireContext())
+            //TODO fix here
+            //adapter = PostAdapter(posts, requireContext())
         }
     }
     //viewModel.getAbout().observe(this, Observer {what ever we do})

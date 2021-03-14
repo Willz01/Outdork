@@ -18,6 +18,7 @@ data class CurrentUser(
     var hasImage = false
     var about: String = ""
     var activities: List<String>? = emptyList()
-    var profilePhoto = Uri.parse("android.resource://${dev.samuelmcmurray.R.drawable.com_facebook_profile_picture_blank_portrait}")
+    var profilePhoto: String? = null
     var age: Int = 0
+    var defaultProfileUri = Uri.parse("android.resource://${dev.samuelmcmurray.R.drawable.com_facebook_profile_picture_blank_portrait}")
 }

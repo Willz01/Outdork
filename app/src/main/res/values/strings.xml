@@ -92,7 +92,7 @@
     <string name="comment">COMMENT</string>
     <string name="search_button">Search</string>
     <string name="activity_content">Activity content</string>
-    <string name="post_hint">Make a new post</string>
+    <string name="post_hintFB">Make a new post</string>
     <string name="post_action">Post</string>
 
     <!-- places sdk -->

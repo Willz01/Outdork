@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import dev.samuelmcmurray.R
@@ -51,7 +50,6 @@ class FavoriteAdapter(val context: Context) :
             .setImageResource(currentItem!!.profilePicture)
         holder.itemView.findViewById<ImageView>(R.id.image_post)
             .setImageResource(currentItem!!.image_post)
-        holder.itemView.findViewById<RatingBar>(R.id.rating).rating = currentItem!!.rating.toFloat()
     }
 
 

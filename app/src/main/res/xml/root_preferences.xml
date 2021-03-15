@@ -38,10 +38,11 @@
             app:title="Show my name" />
 
 
-        <EditTextPreference
-            app:key="passwordDelete"
-            app:title="Delete Account"
-            android:hint="Enter your password"/>
+        <Preference
+            android:selectable="true"
+            android:key="delete"
+            android:title="Delete Account"/>
+
 
     </PreferenceCategory>
 

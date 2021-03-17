@@ -47,6 +47,7 @@ class MainActivity : AppCompatActivity() {
         var selectedFilter = ArrayList<String>()
         var startLocation = String()
         var latLng : Address? = null
+        var alreadyFetchedLocation = false
     }
 
     private lateinit var mNavView: NavigationView
@@ -77,8 +78,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.followingHolder,
                 R.id.followingListFragment, R.id.mapsFragment,
                 R.id.followingListFragment,
-                R.id.profileFragment,
-                R.id.otherProfileFragment
+                R.id.profileFragment
             )
         ).setOpenableLayout(drawerLayout as Openable).build()
 

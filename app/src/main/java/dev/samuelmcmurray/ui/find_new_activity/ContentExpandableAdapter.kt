@@ -8,12 +8,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import dev.samuelmcmurray.R
-import dev.samuelmcmurray.data.model.Activity
+import dev.samuelmcmurray.data.model.ActivityHolder
 import dev.samuelmcmurray.ui.main.MainActivity
 import kotlin.properties.Delegates
 import kotlin.reflect.KProperty
 
-class ContentExpandableAdapter(private val activity: Activity) :
+class ContentExpandableAdapter(private val activity: ActivityHolder) :
     RecyclerView.Adapter<ContentExpandableAdapter.ViewHolder>() {
 
 

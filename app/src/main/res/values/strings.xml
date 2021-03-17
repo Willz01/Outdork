@@ -101,6 +101,9 @@
     <string name="seekbar_max">5000</string>
     <string name="seekbar_mid">2750</string>
     <string name="select_button">Select</string>
+    <string name="activity_name">Activity name</string>
+    <string name="dummy_distance">202KM</string>
+    <string name="dummy_time">1hr 30mins</string>
 
 
 </resources>

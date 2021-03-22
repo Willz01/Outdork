@@ -44,20 +44,20 @@ class WelcomeFragment : Fragment() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        try {
+//        try {
             val navUsername =
                 headerView.findViewById<View>(R.id.profileName) as TextView
             navUsername.text = CurrentUserSingleton.getInstance.currentUser?.userName
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        try {
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
+//        try {
             val navEmail =
                 headerView.findViewById<View>(R.id.profileEmail) as TextView
             navEmail.text = CurrentUserSingleton.getInstance.currentUser?.email
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
     }
 }
 

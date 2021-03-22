@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.view.isGone
 import androidx.databinding.DataBindingUtil
@@ -17,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textview.MaterialTextView
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.data.singelton.CurrentUserSingleton
@@ -114,7 +116,23 @@ class DiscoveriesFragment : Fragment() {
         postTextView.setOnClickListener {
             showHide()
         }
+        val navigationView = requireActivity().findViewById(R.id.nav_view) as NavigationView
 
+        val headerView = navigationView.getHeaderView(0)
+        //        try {
+        val navUsername =
+            headerView.findViewById<View>(R.id.profileName) as TextView
+        navUsername.text = CurrentUserSingleton.getInstance.currentUser!!.userName
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
+//        try {
+        val navEmail =
+            headerView.findViewById<View>(R.id.profileEmail) as TextView
+        navEmail.text = CurrentUserSingleton.getInstance.currentUser!!.email
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

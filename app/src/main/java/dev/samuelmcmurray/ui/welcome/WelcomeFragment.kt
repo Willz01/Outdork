@@ -47,7 +47,7 @@ class WelcomeFragment : Fragment() {
 //        try {
             val navUsername =
                 headerView.findViewById<View>(R.id.profileName) as TextView
-            navUsername.text = CurrentUserSingleton.getInstance.currentUser?.userName
+            navUsername.text = CurrentUserSingleton.getInstance.currentUser!!.userName
 //        } catch (e: Exception) {
 //            e.printStackTrace()
 //        }

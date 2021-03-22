@@ -37,10 +37,10 @@ class WelcomeFragment : Fragment() {
         val navigationView = requireActivity().findViewById(R.id.nav_view) as NavigationView
         val headerView = navigationView.getHeaderView(0)
         try {
-            val imageResource = CurrentUserSingleton.getInstance.currentUser?.profileResource
+            val imageResource = CurrentUserSingleton.getInstance.currentUser!!.profilePhoto
             val navPicture =
                 headerView.findViewById<View>(R.id.profilePicture) as ImageView
-            //navPicture.setImageResource()
+            navPicture.setImageURI(imageResource)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -54,7 +54,7 @@ class WelcomeFragment : Fragment() {
 //        try {
             val navEmail =
                 headerView.findViewById<View>(R.id.profileEmail) as TextView
-            navEmail.text = CurrentUserSingleton.getInstance.currentUser?.email
+            navEmail.text = CurrentUserSingleton.getInstance.currentUser!!.email
 //        } catch (e: Exception) {
 //            e.printStackTrace()
 //        }

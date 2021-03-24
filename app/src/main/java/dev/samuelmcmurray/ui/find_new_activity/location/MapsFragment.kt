@@ -26,10 +26,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.Circle
-import com.google.android.gms.maps.model.CircleOptions
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import com.google.android.gms.tasks.Task
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
@@ -58,7 +55,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private var currentLocation: Location? = null
     private var fusedLocationProviderClient: FusedLocationProviderClient? = null
     private var seekBar: SeekBar? = null
-
+    private var marker : Marker? = null
     private var circle: Circle? = null
 
 
@@ -180,8 +177,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
          }*/
 
 
-
-        mMap?.addMarker(MarkerOptions().position(location).title("Location current"))
+        marker = mMap?.addMarker(MarkerOptions().position(location).title("Location current"))
         mMap?.moveCamera(CameraUpdateFactory.newLatLng(location))
         mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 17f))
         // radius max = 5000 from seek bar max value
@@ -264,9 +260,11 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                         latLng = LatLng(location.latitude, location.longitude)
 
                         // update mMap **all
-                        mMap?.addMarker(
+                        marker?.remove()
+                        marker = mMap?.addMarker(
                             MarkerOptions().position(latLng!!).title(location.featureName)
                         )
+
                         mMap?.moveCamera(CameraUpdateFactory.newLatLng(latLng))
                         mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17f))
                         mMap?.mapType = GoogleMap.MAP_TYPE_HYBRID

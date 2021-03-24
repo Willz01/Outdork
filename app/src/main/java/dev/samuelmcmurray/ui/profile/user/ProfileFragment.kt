@@ -6,7 +6,9 @@ import android.app.Activity
 import android.app.Application
 import android.app.Instrumentation
 import android.content.Intent
+import android.icu.lang.UCharacter.getAge
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,21 +17,28 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
+import com.google.android.gms.tasks.Continuation
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.observe
 import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import de.hdodenhof.circleimageview.CircleImageView
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.data.model.CurrentUser
+import dev.samuelmcmurray.data.repository.ProfileRepository
 import dev.samuelmcmurray.data.singelton.CurrentUserSingleton
 import dev.samuelmcmurray.data.singelton.NewPostSingleton
 import dev.samuelmcmurray.databinding.FragmentProfileMenuBinding
 import java.util.*
 
+private const val TAG = "ProfileFragment"
 
 class ProfileFragment : Fragment() {
 
@@ -38,6 +47,7 @@ class ProfileFragment : Fragment() {
     }
 
     private lateinit var viewModel: ProfileViewModel
+    private lateinit var profileRepository: ProfileRepository
     private lateinit var binding: FragmentProfileMenuBinding
     private lateinit var firstNameText: EditText
     private lateinit var lastNameText: EditText
@@ -82,10 +92,13 @@ class ProfileFragment : Fragment() {
         stateText.setText(CurrentUserSingleton.getInstance.currentUser!!.state)
         countryText.setText(CurrentUserSingleton.getInstance.currentUser!!.country)
 
-        val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-            profileImage.setImageURI(uri)
-
-        }
+        val getContent =
+            registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+                profileImage.setImageURI(uri)
+                if (uri != null) {
+                    profileRepository.uploadImageToFirebase(uri)
+                }
+            }
 
 
         profileImage = view.findViewById(R.id.profileImage)
@@ -95,36 +108,18 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun uploadImageToFirebase(contentUri: Uri) {
-        storage = FirebaseStorage.getInstance()
-        storageRef = FirebaseStorage.getInstance().reference
-        NewPostSingleton.getInstance.imageId = UUID.randomUUID().toString()
-        val imageId = NewPostSingleton.getInstance.imageId
-        val image = storageRef!!.child("UserPhotos/$imageId" )
-        val uploadTask = image.putFile(contentUri)
-        val urlTask = uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
-            if (!task.isSuccessful) {
-                Log.d("tag", "Failure: Uploaded Image URi is $contentUri")
-                Toast.makeText(
-                    application.applicationContext,
-                    "Upload Failed.",
-                    Toast.LENGTH_SHORT
-                ).show()
-                task.exception?.let {
-                    throw it
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun getCurrentUser() {
+        if (CurrentUserSingleton.getInstance.loggedIn || CurrentUserSingleton.getInstance.currentUser == null) {
+            viewModel.getCurrentUser()
+            viewModel.userLiveData.observe(viewLifecycleOwner, Observer {
+                val currentUser = it
+                if (currentUser != null) {
+                    Log.d(TAG, "currentUser success: ")
+                } else {
+                    Log.d(TAG, "getCurrentUser: failure")
                 }
-            }
-            return@Continuation image.downloadUrl
-        }).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Toast.makeText(
-                    application.applicationContext,
-                    "Image Is Uploaded.",
-                    Toast.LENGTH_SHORT
-                ).show()
-                val downloadUri = task.result
-                NewPostSingleton.getInstance.downloadURL = downloadUri.toString()
-            }
+            })
         }
     }
 
@@ -143,13 +138,5 @@ class ProfileFragment : Fragment() {
             dob = dobText.text.toString()
         )
 //      Need to update the current user
-    }
-
-    fun pickImage(View: View?) {
-        val intent = Intent()
-        intent.type = "image/*"
-        intent.action = Intent.ACTION_GET_CONTENT
-        intent.addCategory(Intent.CATEGORY_OPENABLE)
-        startActivityForResult(intent, REQUEST_CODE)
     }
 }

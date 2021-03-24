@@ -34,6 +34,10 @@ class ProfileViewModel : AndroidViewModel {
         }
     }
 
+    fun updateProfileImage() {
+        CurrentUserSingleton.getInstance.currentUser.profilePhoto = url
+    }
+
     constructor(application: Application) : super(application) {
         profileRepository = ProfileRepository(application)
         userLiveData = profileRepository.userLiveData

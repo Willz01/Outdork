@@ -45,7 +45,7 @@ class ProfileRepository{
         storageRef = FirebaseStorage.getInstance().reference
         CurrentUserSingleton.getInstance.currentUser!!.id
         val imageId = CurrentUserSingleton.getInstance.currentUser!!.id
-        val image = storageRef!!.child("UserImageURL/$imageId" )
+        val image = storageRef!!.child("User/$imageId" )
         val uploadTask = image.putFile(contentUri)
         val urlTask = uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
             if (!task.isSuccessful) {
@@ -68,9 +68,13 @@ class ProfileRepository{
                     Toast.LENGTH_SHORT
                 ).show()
                 val downloadUri = task.result
-                CurrentUserSingleton.getInstance.currentUser. = downloadUri.toString()
+                CurrentUserSingleton.getInstance.currentUser!!.profilePhoto = downloadUri.toString()
             }
         }
+    }
+
+    fun updateProfileImage() {
+       var downloadUrl
     }
 
 

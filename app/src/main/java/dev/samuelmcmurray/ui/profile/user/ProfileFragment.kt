@@ -143,6 +143,6 @@ class ProfileFragment : Fragment() {
     }
 
     fun updateProfileImage() {
-        CurrentUserSingleton.getInstance.currentUser.profilePhoto
+        CurrentUserSingleton.getInstance.currentUser!!.profilePhoto = url
     }
 }

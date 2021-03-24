@@ -141,4 +141,8 @@ class ProfileFragment : Fragment() {
         )
 //      Need to update the current user
     }
+
+    fun updateProfileImage() {
+        CurrentUserSingleton.getInstance.currentUser.profilePhoto
+    }
 }

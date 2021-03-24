@@ -93,6 +93,16 @@ class AddNewActivityFragment : Fragment() {
             latitude.text = null
             longitude.text = null
 
+            view.findViewById<CheckBox>(R.id.bikingCB).isChecked = false
+            view.findViewById<CheckBox>(R.id.hikingCB).isChecked = false
+            view.findViewById<CheckBox>(R.id.dogWalkingCB).isChecked = false
+            view.findViewById<CheckBox>(R.id.horseRidingCB).isChecked = false
+            view.findViewById<CheckBox>(R.id.swimmingCB).isChecked = false
+            view.findViewById<CheckBox>(R.id.fishingCB).isChecked = false
+            view.findViewById<CheckBox>(R.id.birdWatchingCB).isChecked = false
+            view.findViewById<CheckBox>(R.id.scenicCB).isChecked = false
+
+
         }
 
 

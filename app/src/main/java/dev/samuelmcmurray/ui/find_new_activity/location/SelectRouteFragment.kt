@@ -1,19 +1,22 @@
-package dev.samuelmcmurray
+package dev.samuelmcmurray.ui.find_new_activity.location
 
+import android.annotation.SuppressLint
+import android.app.Dialog
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.location.Address
 import android.location.Geocoder
+import android.location.Location
+import android.location.LocationManager
 import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.ListView
-import android.widget.Toast
+import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
@@ -24,6 +27,12 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
+import com.google.maps.android.SphericalUtil
+import dev.samuelmcmurray.R
+import dev.samuelmcmurray.data.model.Activity
+import dev.samuelmcmurray.data.repository.SelectRouteRepository
+import dev.samuelmcmurray.ui.main.MainActivity
+import dev.samuelmcmurray.utilities.MyCallback
 import dev.samuelmcmurray.utilities.directionhelpers.DirectionsParser
 import org.json.JSONException
 import org.json.JSONObject
@@ -31,11 +40,17 @@ import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
+import java.math.BigDecimal
+import java.math.RoundingMode
 import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import java.net.URL
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 
 private const val TAG = "SelectRouteFragment"
@@ -59,25 +74,12 @@ class SelectRouteFragment : Fragment(), OnMapReadyCallback {
     private var place1: MarkerOptions? = null
     private var place2: MarkerOptions? = null
 
+    private lateinit var viewModel: SelectRouteViewModel
+
+    private var selectRouteRepository: SelectRouteRepository = SelectRouteRepository()
+
     // long list to text list view
-    private var routeArray = arrayOf(
-        "247 Fitness",
-        "ICA maxi",
-        "Kristianstad C",
-        "ICA Kvantum",
-        "247 Fitness",
-        "ICA maxi",
-        "Kristianstad C",
-        "ICA Kvantum",
-        "247 Fitness",
-        "ICA maxi",
-        "Kristianstad C",
-        "ICA Kvantum",
-        "247 Fitness",
-        "ICA maxi",
-        "Kristianstad C",
-        "ICA Kvantum"
-    )
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -99,23 +101,12 @@ class SelectRouteFragment : Fragment(), OnMapReadyCallback {
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(this@SelectRouteFragment)
 
+        viewModel = ViewModelProvider(requireActivity(), defaultViewModelProviderFactory).get(
+            SelectRouteViewModel::class.java
+        )
 
-        val routeAdapter: ArrayAdapter<String> =
-            ArrayAdapter(requireContext(), R.layout.route_option_item, routeArray)
 
-        val routeListView = requireView().findViewById<ListView>(R.id.route_options)
-        routeListView.adapter = routeAdapter
-
-        routeListView.onItemClickListener =
-            AdapterView.OnItemClickListener { parent, view, position, id ->
-                Log.d(TAG, "onItemClick: $position")
-                val selected = parent?.getItemAtPosition(position)
-                Snackbar.make(
-                    requireView(),
-                    "Route: $selected",
-                    Snackbar.LENGTH_SHORT
-                ).show()
-            }
+        setListView()
 
 
         geocode = Geocoder(requireContext())
@@ -148,53 +139,6 @@ class SelectRouteFragment : Fragment(), OnMapReadyCallback {
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng))
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
                 mMap.mapType = GoogleMap.MAP_TYPE_HYBRID
-
-                mMap.setOnMapClickListener { latLng1 ->
-                    if (listLatLng.size == 1) {
-                        listLatLng.clear()
-                        mMap.clear()
-
-                        mMap.addMarker(place1)
-                    }
-
-                    // save selected point (destination)
-                    listLatLng.add(latLng1!!)
-
-                    place2 = MarkerOptions().position(latLng1).title("Route end")
-
-                    if (listLatLng.size == 0) {
-                        // re add first marker
-                        place2?.icon(
-                            BitmapDescriptorFactory.defaultMarker(
-                                BitmapDescriptorFactory.HUE_GREEN
-                            )
-                        )
-                    }
-                    mMap.addMarker(place2)
-
-                    // Direction between markers
-                    if (listLatLng.size == 1) {
-                        if (place1 == place2){
-                            Log.d(TAG, "updateMap: YH, equal")
-                        } else {
-                            Log.d(TAG, "updateMap: Not Equal")
-                        }
-
-                        val url = place1?.position?.let {
-                            place2?.position?.let { it1 ->
-                                getRequestUrl(
-                                    it,
-                                    it1, "walking"
-                                )
-                            }
-                        }
-                        Log.d(TAG, "updateMap: Map Clicked")
-                        val taskRequestDirections = TaskRequestDirections()
-                        taskRequestDirections.execute(url)
-                        /*FetchURL(requireContext()).execute(url, "walking")
-                        MainActivity.mMap = mMap*/
-                    }
-                }
 
                 println(locationFromGeo)
             } else {
@@ -321,5 +265,169 @@ class SelectRouteFragment : Fragment(), OnMapReadyCallback {
             return routes
         }
     }
+
+    private fun setListView() {
+        selectRouteRepository.getActivities(object : MyCallback {
+            @SuppressLint("SetTextI18n")
+            override fun onCallback(value: ArrayList<Activity>) {
+                Log.d(TAG, "onCallback: ${value.size}")
+
+                val filters = MainActivity.selectedFilter
+
+                Log.d(TAG, "setListView: ${value.size}")
+
+                val activities = listRunner(value, MainActivity.selectedFilter)
+
+                // test
+                val activityFilter = activities.map { activity -> activity.filter }
+                Log.d(TAG, "onCallback: $activityFilter")
+
+                // map out the names of each activity
+                val activitiesNameList = activities.map { activity -> activity.name }
+                Log.d(TAG, "onCallback: $activitiesNameList")
+                val routeArray = activitiesNameList.toTypedArray()
+
+                val routeAdapter: ArrayAdapter<String> =
+                    ArrayAdapter(requireContext(), R.layout.route_option_item, routeArray)
+
+                val routeListView = requireView().findViewById<ListView>(R.id.route_options)
+                routeListView.adapter = routeAdapter
+
+                routeListView.onItemClickListener =
+                    AdapterView.OnItemClickListener { parent, view, position, id ->
+                        Log.d(TAG, "onItemClick: $position")
+                        val selectedActivity = parent?.getItemAtPosition(position)
+
+                        // display dialog
+                        val activityDialog = Dialog(requireContext())
+                        activityDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                        activityDialog.setContentView(R.layout.route_dialog)
+
+                        // dialog widgets
+                        val activityName =
+                            activityDialog.findViewById<TextView>(R.id.activity_name_dialog)
+                        val distance = activityDialog.findViewById<TextView>(R.id.distance_tv)
+                        val drivingTime =
+                            activityDialog.findViewById<TextView>(R.id.driving_time_tv)
+                        val walkingTime =
+                            activityDialog.findViewById<TextView>(R.id.walking_time_tv)
+                        val cyclingTime =
+                            activityDialog.findViewById<TextView>(R.id.cycling_time_tv)
+
+                        val rating = activityDialog.findViewById<RatingBar>(R.id.activity_rating)
+
+                        activityName.text = activities[position].name
+                        val loc1 = Location(LocationManager.GPS_PROVIDER)
+                        val loc2 = Location(LocationManager.GPS_PROVIDER)
+
+                        val endLatLng = activities[position].latLng
+
+                        loc1.latitude = place1?.position!!.latitude
+                        loc1.longitude = place1?.position!!.longitude
+
+                        loc2.latitude = endLatLng.latitude
+                        loc2.longitude = endLatLng.longitude
+
+                        /*
+                        distance.text = BigDecimal(
+                            SphericalUtil.computeDistanceBetween(
+                                place1?.position,
+                                endLatLng
+                            )
+                        ).setScale(2, RoundingMode.HALF_EVEN).toString()*/
+
+                        distance.text = "${loc1.distanceTo(loc2).toString()}KM"
+
+                        // time -- soon
+
+
+                        rating.rating = activities[position].rating.toFloat()
+
+                        activityDialog.show()
+
+                        if (listLatLng.size == 1) {
+                            listLatLng.clear()
+                            mMap.clear()
+
+                            mMap.addMarker(place1)
+                        }
+
+                        // save selected point (destination)
+                        listLatLng.add(activities[position].latLng)
+
+                        place2 =
+                            MarkerOptions().position(activities[position].latLng).title("Route end")
+
+                        if (listLatLng.size == 0) {
+                            // re add first marker
+                            place2?.icon(
+                                BitmapDescriptorFactory.defaultMarker(
+                                    BitmapDescriptorFactory.HUE_GREEN
+                                )
+                            )
+                        }
+                        mMap.addMarker(place2)
+
+                        val url =
+                            place1?.position?.let {
+                                getRequestUrl(
+                                    it,
+                                    activities[position].latLng,
+                                    "walking"
+                                )
+                            }
+                        val taskRequestDirections = TaskRequestDirections()
+                        taskRequestDirections.execute(url)
+                        Snackbar.make(
+                            requireView(),
+                            "Route: $selectedActivity",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
+            }
+        })
+    }
+
+    fun distance(lat_a: Double, lng_a: Double, lat_b: Double, lng_b: Double): Float {
+        val earthRadius = 3958.75
+        val latDiff = Math.toRadians((lat_b - lat_a))
+        val lngDiff = Math.toRadians((lng_b - lng_a))
+        val a = sin(latDiff / 2) * sin(latDiff / 2) +
+                cos(Math.toRadians(lat_a.toDouble())) * cos(Math.toRadians(lat_b)) *
+                sin(lngDiff / 2) * sin(lngDiff / 2)
+        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
+        val distance = earthRadius * c
+        val meterConversion = 1609
+        return (distance * meterConversion.toFloat()).toFloat()
+    }
+
+    /**
+     * Takes list of {@param activities } from firebase and {@param filter} list
+     * Use filter to stream line activity.filter.forEach()
+     * Add activities that contain at least 2 of the items in the parsed filter list to the
+     * @listViewActivities is converted to a typedArray and used to inflate the list view --> returned
+     */
+    private fun listRunner(
+        activities: ArrayList<Activity>,
+        filter: ArrayList<String>
+    ): Array<Activity> {
+        val listViewActivities = ArrayList<Activity>()
+
+        for (activity in activities) {
+            var counter = 0
+            for (item in filter) {
+                if (item in activity.filter) {
+                    if (counter == (filter.size).div(2)) {
+                        listViewActivities.add(activity)
+                        break
+                    }
+                    counter++
+                }
+            }
+        }
+
+        return listViewActivities.toTypedArray()
+    }
+
 
 }

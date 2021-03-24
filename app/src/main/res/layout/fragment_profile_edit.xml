@@ -7,11 +7,11 @@
 
         <variable
             name="viewModel"
-            type="dev.samuelmcmurray.ui.profile.ProfileViewModel" />
+            type="dev.samuelmcmurray.ui.profile.user.ProfileViewModel" />
 
         <variable
             name="uiController"
-            type="dev.samuelmcmurray.ui.profile.ProfileFragment" />
+            type="dev.samuelmcmurray.ui.profile.user.ProfileFragment" />
     </data>
 
     <FrameLayout

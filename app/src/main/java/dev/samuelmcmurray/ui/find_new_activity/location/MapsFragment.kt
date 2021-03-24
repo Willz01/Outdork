@@ -39,7 +39,6 @@ import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.snackbar.Snackbar
 import dev.samuelmcmurray.R
-import dev.samuelmcmurray.SelectRouteFragment
 import dev.samuelmcmurray.ui.main.MainActivity
 
 private const val AUTOCOMPLETE_REQUEST_CODE = 100
@@ -60,7 +59,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private var fusedLocationProviderClient: FusedLocationProviderClient? = null
     private var seekBar: SeekBar? = null
 
-    private var circle : Circle? = null
+    private var circle: Circle? = null
 
 
     override fun onCreateView(
@@ -86,7 +85,10 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
         fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(requireActivity())
-        fetchLastLocation()
+        if (!MainActivity.alreadyFetchedLocation){
+            fetchLastLocation()
+        }
+
 
         autocomplete.setOnClickListener {
             val list: List<Place.Field> =
@@ -104,7 +106,8 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         }
 
         requireView().findViewById<Button>(R.id.select_button).setOnClickListener {
-            val action = MapsFragmentDirections.actionMapsFragmentToSelectRouteFragment(MainActivity.startLocation)
+            val action =
+                MapsFragmentDirections.actionMapsFragmentToSelectRouteFragment(MainActivity.startLocation)
             Navigation.findNavController(requireView()).navigate(action)
         }
 
@@ -128,10 +131,12 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         task.addOnSuccessListener { p0 ->
             if (p0 != null) {
                 currentLocation = p0
+                MainActivity.alreadyFetchedLocation = true
 
                 address = geocode?.getFromLocationName(p0.toString(), 1) as List<Address>
-                val tmp = address[0].featureName.toString()
+                val tmp = address[0].getAddressLine(0).toString()
                 Log.d(TAG, "onMapReady: $tmp")
+                MainActivity.startLocation = tmp
 
                 Toast.makeText(
                     requireContext(),
@@ -159,20 +164,20 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
         // defaults map location, as seen on background
         // Add a marker in Sydney and move the camera
-        var location : LatLng? = null
-        location = if (MainActivity.latLng != null){
+        var location: LatLng? = null
+        location = if (MainActivity.latLng != null) {
             LatLng(MainActivity.latLng!!.latitude, MainActivity.latLng!!.longitude)
-        }else{
+        } else {
             com.google.android.gms.maps.model.LatLng(
                 currentLocation!!.latitude,
                 currentLocation!!.longitude
             )
         }
 
-        if (MainActivity.startLocation.isNotEmpty()){
-            requireView().findViewById<EditText>(R.id.autocomplete_fragment)
-                .setText(MainActivity.startLocation.toString())
-        }
+        /* if (MainActivity.startLocation.isNotEmpty()){
+             requireView().findViewById<EditText>(R.id.autocomplete_fragment)
+                 .setText(MainActivity.startLocation.toString())
+         }*/
 
 
 
@@ -183,7 +188,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         circle = mMap?.addCircle(
             CircleOptions().center(location).radius(500.0).strokeColor(
                 Color.RED
-            ).strokeWidth(7.0F).fillColor(Color.argb(70,150,50,50))
+            ).strokeWidth(7.0F).fillColor(Color.argb(70, 150, 50, 50))
         )!!
         mMap?.mapType = GoogleMap.MAP_TYPE_HYBRID
         mMap?.uiSettings?.isMyLocationButtonEnabled = true
@@ -270,9 +275,9 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                         // radius max = 1000 from seek bar max value
                         circle?.remove()
                         circle = mMap?.addCircle(
-                            CircleOptions().center(latLng).radius(150.0).strokeColor(
+                            CircleOptions().center(latLng).radius(500.0).strokeColor(
                                 Color.RED
-                            ).strokeWidth(7.0F).fillColor(Color.argb(70,150,50,50))
+                            ).strokeWidth(7.0F).fillColor(Color.argb(70, 150, 50, 50))
                         )!!
                         seekBar?.setOnSeekBarChangeListener(object :
                             SeekBar.OnSeekBarChangeListener {
@@ -322,6 +327,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
     override fun onDestroyView() {
         super.onDestroyView()
-       circle?.remove()
+        circle?.remove()
     }
 }

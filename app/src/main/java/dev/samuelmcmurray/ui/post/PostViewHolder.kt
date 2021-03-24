@@ -69,7 +69,7 @@ class PostViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         }
         if (post.hasImage) {
             Glide.with(context).load(post.downloadURL).centerCrop().override(1000,240).into(imagePost!!)
-        } else if (post.downloadURL == null ) {
+        } else if (post.downloadURL.isNullOrEmpty()) {
             Glide.with(context).load(post.image).centerCrop().override(1000,240).into(imagePost!!)
         } else {
             imagePost?.visibility = View.GONE

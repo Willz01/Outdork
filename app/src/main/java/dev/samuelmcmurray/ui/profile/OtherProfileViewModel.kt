@@ -33,6 +33,7 @@ class OtherProfileViewModel: AndroidViewModel {
         }
     }
 
+
     fun updateLikes(uid: String, postID: String, likes: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             try {

@@ -94,7 +94,8 @@ class RegisterRepository {
             "city" to city,
             "dateOfBirth" to dob,
             "about" to currentUser.about,
-            "hasImage" to currentUser.hasImage
+            "hasImage" to currentUser.hasImage,
+            "userImageURL" to currentUser.profilePhoto
         )
         Log.d(TAG, "createUser: $user")
 

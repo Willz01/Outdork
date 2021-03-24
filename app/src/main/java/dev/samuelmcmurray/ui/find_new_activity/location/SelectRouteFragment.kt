@@ -1,6 +1,7 @@
 package dev.samuelmcmurray.ui.find_new_activity.location
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -267,6 +268,20 @@ class SelectRouteFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun setListView() {
+        if(MainActivity.selectedFilter.isEmpty()){
+            val builder = AlertDialog.Builder(context)
+            builder.setMessage("No filtered item resulting in an empty list of activities. Go back and choose activities.")
+                .setCancelable(false)
+                .setPositiveButton("Yes") { dialog, id ->
+
+                    view?.findNavController()?.navigate(R.id.newActivityFragment)
+                }
+                .setNegativeButton("No") { dialog, id ->
+                    dialog.dismiss()
+                }
+            val alert = builder.create()
+            alert.show()
+        }
         selectRouteRepository.getActivities(object : MyCallback {
             @SuppressLint("SetTextI18n")
             override fun onCallback(value: ArrayList<Activity>) {

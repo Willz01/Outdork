@@ -26,10 +26,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.Circle
-import com.google.android.gms.maps.model.CircleOptions
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import com.google.android.gms.tasks.Task
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
@@ -58,7 +55,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private var currentLocation: Location? = null
     private var fusedLocationProviderClient: FusedLocationProviderClient? = null
     private var seekBar: SeekBar? = null
-
+    private var marker: Marker? = null
     private var circle: Circle? = null
 
 
@@ -74,7 +71,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         super.onViewCreated(view, savedInstanceState)
         /*val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(this)*/
-
         Places.initialize(requireContext(), "AIzaSyD1hxjN-ALgPdWmeSflMi5-rpDCjO8gmwg")
 
         /// Can be used to fetch photos, not sure how currently
@@ -85,10 +81,9 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
         fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(requireActivity())
-        if (!MainActivity.alreadyFetchedLocation){
+        if (!MainActivity.alreadyFetchedLocation) {
             fetchLastLocation()
         }
-
 
         autocomplete.setOnClickListener {
             val list: List<Place.Field> =
@@ -110,6 +105,27 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                 MapsFragmentDirections.actionMapsFragmentToSelectRouteFragment(MainActivity.startLocation)
             Navigation.findNavController(requireView()).navigate(action)
         }
+
+        seekBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                circle?.radius = progress.toDouble()
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                // TODO("Not yet implemented")
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                if (seekBar != null) {
+                    Snackbar.make(
+                        requireView(),
+                        "Distance range: ${seekBar.progress}",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                };
+            }
+
+        })
 
     }
 
@@ -134,9 +150,11 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                 MainActivity.alreadyFetchedLocation = true
 
                 address = geocode?.getFromLocationName(p0.toString(), 1) as List<Address>
+                MainActivity.latLng = address[0]
                 val tmp = address[0].getAddressLine(0).toString()
                 Log.d(TAG, "onMapReady: $tmp")
                 MainActivity.startLocation = tmp
+
 
                 Toast.makeText(
                     requireContext(),
@@ -166,8 +184,10 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         // Add a marker in Sydney and move the camera
         var location: LatLng? = null
         location = if (MainActivity.latLng != null) {
+            Log.d(TAG, "onMapReady: Lat lng not null")
             LatLng(MainActivity.latLng!!.latitude, MainActivity.latLng!!.longitude)
         } else {
+            Log.d(TAG, "onMapReady: Lat lng null")
             com.google.android.gms.maps.model.LatLng(
                 currentLocation!!.latitude,
                 currentLocation!!.longitude
@@ -180,13 +200,12 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
          }*/
 
 
-
-        mMap?.addMarker(MarkerOptions().position(location).title("Location current"))
+        marker = mMap?.addMarker(MarkerOptions().position(location).title("Location current"))
         mMap?.moveCamera(CameraUpdateFactory.newLatLng(location))
         mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 17f))
         // radius max = 5000 from seek bar max value
         circle = mMap?.addCircle(
-            CircleOptions().center(location).radius(500.0).strokeColor(
+            CircleOptions().center(location).radius(seekBar?.progress!!.toDouble()).strokeColor(
                 Color.RED
             ).strokeWidth(7.0F).fillColor(Color.argb(70, 150, 50, 50))
         )!!
@@ -196,29 +215,21 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
 
         // seek bar handling with default location
-        seekBar?.setOnSeekBarChangeListener(object :
-            SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(
-                seekBar: SeekBar?,
-                progress: Int,
-                fromUser: Boolean
-            ) {
-                Log.d(TAG, "onProgressChanged: $progress")
-                if (seekBar != null) {
-                    circle?.radius = seekBar.progress.toDouble()
-                }
+        seekBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                circle?.radius = progress.toDouble()
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                //   TODO("Not yet implemented")
+                // TODO("Not yet implemented")
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
                 if (seekBar != null) {
-                    Toast.makeText(
-                        requireContext(),
+                    Snackbar.make(
+                        requireView(),
                         "Distance range: ${seekBar.progress}",
-                        Toast.LENGTH_SHORT
+                        Snackbar.LENGTH_SHORT
                     ).show()
                 };
             }
@@ -264,9 +275,11 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                         latLng = LatLng(location.latitude, location.longitude)
 
                         // update mMap **all
-                        mMap?.addMarker(
+                        marker?.remove()
+                        marker = mMap?.addMarker(
                             MarkerOptions().position(latLng!!).title(location.featureName)
                         )
+
                         mMap?.moveCamera(CameraUpdateFactory.newLatLng(latLng))
                         mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17f))
                         mMap?.mapType = GoogleMap.MAP_TYPE_HYBRID
@@ -274,11 +287,14 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
                         // radius max = 1000 from seek bar max value
                         circle?.remove()
+                        if (mMap == null) Log.d(TAG, "onActivityResult: Null here now map")
                         circle = mMap?.addCircle(
-                            CircleOptions().center(latLng).radius(500.0).strokeColor(
-                                Color.RED
-                            ).strokeWidth(7.0F).fillColor(Color.argb(70, 150, 50, 50))
+                            CircleOptions().center(latLng).radius(seekBar?.progress!!.toDouble())
+                                .strokeColor(
+                                    Color.RED
+                                ).strokeWidth(7.0F).fillColor(Color.argb(70, 150, 50, 50))
                         )!!
+                        // seek bar
                         seekBar?.setOnSeekBarChangeListener(object :
                             SeekBar.OnSeekBarChangeListener {
                             override fun onProgressChanged(
@@ -286,17 +302,15 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                                 progress: Int,
                                 fromUser: Boolean
                             ) {
-                                Log.d(TAG, "onProgressChanged: $progress")
-                                if (seekBar != null) {
-                                    circle?.radius = seekBar.progress.toDouble()
-                                }
+                                circle?.radius = progress.toDouble()
                             }
 
                             override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                                //   TODO("Not yet implemented")
+                                // TODO("Not yet implemented")
                             }
 
                             override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                                // TODO("Not yet implemented")
                                 if (seekBar != null) {
                                     Snackbar.make(
                                         requireView(),
@@ -307,7 +321,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                             }
 
                         })
-
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -325,8 +338,30 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
     }
 
+    /**
+     * Debug : mMap returns null after it is detached and re created, kind of weird because the
+     * map should be recreated but it doesn't get recreated. Will come back to this in the future hopefully!
+     */
     override fun onDestroyView() {
+        Log.d(TAG, "onDestroyView: View destroyed")
         super.onDestroyView()
-        circle?.remove()
     }
+
+    override fun onResume() {
+        Log.d(TAG, "onDestroyView: View resumed")
+        mMap = MainActivity.mMap
+        super.onResume()
+    }
+
+    override fun onDetach() {
+        Log.d(TAG, "onDestroyView: View detached")
+        MainActivity.mMap = mMap
+        super.onDetach()
+    }
+
+    override fun onPause() {
+        Log.d(TAG, "onDestroyView: View pause")
+        super.onPause()
+    }
+
 }

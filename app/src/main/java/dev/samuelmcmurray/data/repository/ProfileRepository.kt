@@ -134,6 +134,7 @@ class ProfileRepository{
                 val dateOfBirth = result["dateOfBirth"]
                 val about = result["about"]
                 val hasImage = result["hasImage"]
+                val profileImage = result[]
                 val city = result["city"]
                 val country = result["country"]
                 val state = result["state"]

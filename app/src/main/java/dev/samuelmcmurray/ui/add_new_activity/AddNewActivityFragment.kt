@@ -12,6 +12,7 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.textfield.TextInputEditText
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.data.model.Activity
 import dev.samuelmcmurray.data.singelton.CurrentUserSingleton
@@ -49,9 +50,9 @@ class AddNewActivityFragment : Fragment() {
            viewModelProvider = ViewModelProvider(this, factory).get(AddNewActivityViewModel::class.java)
            viewModel = viewModelProvider*/
 
-        val activityNameTV = binding.activityName
-        val latitude = binding.latitude
-        val longitude = binding.longitude
+        val activityNameTV = view.findViewById<TextInputEditText>(R.id.activity_name_new)
+        val latitude = view.findViewById<TextInputEditText>(R.id.latitude)
+        val longitude = view.findViewById<TextInputEditText>(R.id.longitude)
 
         val listActivities = ArrayList<String>()
         view.findViewById<Button>(R.id.submit_activity).setOnClickListener {
@@ -79,15 +80,21 @@ class AddNewActivityFragment : Fragment() {
             if (view.findViewById<CheckBox>(R.id.scenicCB).isChecked) {
                 listActivities.add(view.findViewById<CheckBox>(R.id.birdWatchingCB).text as String)
             }
+
+            val user = CurrentUserSingleton.getInstance.currentUser?.id
+            val lat = latitude.text.toString().toDouble()
+            val long = longitude.text.toString().toDouble()
+            // using a default rating for now
+            val activity =
+                Activity(activityNameTV.text.toString(), user!!, listActivities, LatLng(lat, long), 3.9)
+
+            Activities.addActivity(activity)
+            activityNameTV.text = null
+            latitude.text = null
+            longitude.text = null
+
         }
 
-        val user = CurrentUserSingleton.getInstance.currentUser?.id
-        val lat = latitude.text.toString().toDouble()
-        val long = longitude.text.toString().toDouble()
-        // using a default rating for now
-        val activity =
-            Activity(activityNameTV.text.toString(), user!!, listActivities, LatLng(lat, long), 3.9)
 
-        Activities.addActivity(activity)
     }
 }

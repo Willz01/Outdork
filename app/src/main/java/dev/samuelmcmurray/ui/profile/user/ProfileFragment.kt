@@ -84,6 +84,7 @@ class ProfileFragment : Fragment() {
         cityText = view.findViewById(R.id.cityText)
         stateText = view.findViewById(R.id.stateText)
         countryText = view.findViewById(R.id.countryText)
+        profileImage = view.findViewById(R.id.profileImage)
 
         getCurrentUser()
         firstNameText.setText(CurrentUserSingleton.getInstance.currentUser!!.firstName)
@@ -93,18 +94,11 @@ class ProfileFragment : Fragment() {
         cityText.setText(CurrentUserSingleton.getInstance.currentUser!!.city)
         stateText.setText(CurrentUserSingleton.getInstance.currentUser!!.state)
         countryText.setText(CurrentUserSingleton.getInstance.currentUser!!.country)
-
+        profileImage.setImageURI(CurrentUserSingleton.getInstance.currentUser!!.profilePhoto)
         val getContent =
             registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
                 profileImage.setImageURI(uri)
-                if (uri != null) {
-                    profileRepository.uploadImageToFirebase(uri)
-                }
             }
-
-
-        profileImage = view.findViewById(R.id.profileImage)
-
         profileImage.setOnClickListener {
             getContent.launch("image/*")
         }

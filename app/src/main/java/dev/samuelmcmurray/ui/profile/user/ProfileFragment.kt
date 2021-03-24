@@ -3,6 +3,7 @@ package dev.samuelmcmurray.ui.profile.user
 //import dev.samuelmcmurray.data.singelton.CurrentUserSingleton
 
 import android.app.Activity
+import android.app.Application
 import android.app.Instrumentation
 import android.content.Intent
 import android.net.Uri
@@ -19,6 +20,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.google.android.gms.tasks.Task
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import de.hdodenhof.circleimageview.CircleImageView
 import dev.samuelmcmurray.R
@@ -45,6 +47,9 @@ class ProfileFragment : Fragment() {
     private lateinit var stateText: EditText
     private lateinit var countryText: EditText
     private lateinit var profileImage: CircleImageView
+    private lateinit var application: Application
+    private var storage: FirebaseStorage? = null
+    private var storageRef: StorageReference? = null
     private val REQUEST_CODE = 1
 
 

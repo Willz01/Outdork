@@ -55,7 +55,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private var currentLocation: Location? = null
     private var fusedLocationProviderClient: FusedLocationProviderClient? = null
     private var seekBar: SeekBar? = null
-    private var marker : Marker? = null
+    private var marker: Marker? = null
     private var circle: Circle? = null
 
 
@@ -71,7 +71,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         super.onViewCreated(view, savedInstanceState)
         /*val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(this)*/
-
         Places.initialize(requireContext(), "AIzaSyD1hxjN-ALgPdWmeSflMi5-rpDCjO8gmwg")
 
         /// Can be used to fetch photos, not sure how currently
@@ -82,10 +81,9 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
         fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(requireActivity())
-        if (!MainActivity.alreadyFetchedLocation){
+        if (!MainActivity.alreadyFetchedLocation) {
             fetchLastLocation()
         }
-
 
         autocomplete.setOnClickListener {
             val list: List<Place.Field> =
@@ -108,7 +106,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
             Navigation.findNavController(requireView()).navigate(action)
         }
 
-        seekBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+        seekBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 circle?.radius = progress.toDouble()
             }
@@ -186,8 +184,10 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         // Add a marker in Sydney and move the camera
         var location: LatLng? = null
         location = if (MainActivity.latLng != null) {
+            Log.d(TAG, "onMapReady: Lat lng not null")
             LatLng(MainActivity.latLng!!.latitude, MainActivity.latLng!!.longitude)
         } else {
+            Log.d(TAG, "onMapReady: Lat lng null")
             com.google.android.gms.maps.model.LatLng(
                 currentLocation!!.latitude,
                 currentLocation!!.longitude
@@ -215,13 +215,13 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
 
         // seek bar handling with default location
-        seekBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+        seekBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 circle?.radius = progress.toDouble()
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
-               // TODO("Not yet implemented")
+                // TODO("Not yet implemented")
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
@@ -287,7 +287,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
                         // radius max = 1000 from seek bar max value
                         circle?.remove()
-                        if (mMap == null) Log.d(TAG, "onActivityResult: NUll here now map")
+                        if (mMap == null) Log.d(TAG, "onActivityResult: Null here now map")
                         circle = mMap?.addCircle(
                             CircleOptions().center(latLng).radius(seekBar?.progress!!.toDouble())
                                 .strokeColor(
@@ -338,7 +338,30 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
     }
 
+    /**
+     * Debug : mMap returns null after it is detached and re created, kind of weird because the
+     * map should be recreated but it doesn't get recreated. Will come back to this in the future hopefully!
+     */
     override fun onDestroyView() {
+        Log.d(TAG, "onDestroyView: View destroyed")
         super.onDestroyView()
     }
+
+    override fun onResume() {
+        Log.d(TAG, "onDestroyView: View resumed")
+        mMap = MainActivity.mMap
+        super.onResume()
+    }
+
+    override fun onDetach() {
+        Log.d(TAG, "onDestroyView: View detached")
+        MainActivity.mMap = mMap
+        super.onDetach()
+    }
+
+    override fun onPause() {
+        Log.d(TAG, "onDestroyView: View pause")
+        super.onPause()
+    }
+
 }

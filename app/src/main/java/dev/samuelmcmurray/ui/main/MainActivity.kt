@@ -49,6 +49,7 @@ class MainActivity : AppCompatActivity() {
         var selectedFilter = ArrayList<String>()
         var startLocation = String()
         var latLng : Address? = null
+        var alreadyFetchedLocation = false
     }
 
     private lateinit var mNavView: NavigationView
@@ -105,7 +106,7 @@ class MainActivity : AppCompatActivity() {
         val header = mNavView.getHeaderView(0)
         val profilePic: ImageButton = header.findViewById(R.id.profilePicture)
         profilePic.setOnClickListener {
-            
+            navController.navigate(R.id.profileFragment)
         }
 
         firebaseAuth = FirebaseAuth.getInstance()

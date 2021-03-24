@@ -8,8 +8,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.databinding.FragmentOtherProfileBinding
+import dev.samuelmcmurray.ui.profile.user.ProfileFragment
 
-class ProfileUserPostsFragment : Fragment() {
+class OtherProfileInfoFragment : Fragment() {
 
     companion object {
         fun newInstance() = ProfileFragment()

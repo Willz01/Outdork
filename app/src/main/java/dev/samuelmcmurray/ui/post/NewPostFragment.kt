@@ -120,33 +120,16 @@ class NewPostFragment : Fragment(){
             if (message.isEmpty()) {
                 Toast.makeText(requireContext(), "The post can not have an empty textfield", Toast.LENGTH_SHORT).show()
             } else {
-                Thread.sleep(2000)
-                viewModel.saveImage()
-                viewModel.downloadURLLiveData.observe(viewLifecycleOwner, Observer {  finished ->
-                    if (finished) {
-                        viewModel.newPost(message)
-                        viewModel.postCreatedLiveData.observe(viewLifecycleOwner, Observer {
-                            val created = it
-                            if (created) {
-                                viewModel.hideNewPostFragment(true)
-                                Toast.makeText(requireContext(), "Posted", Toast.LENGTH_SHORT).show()
-                                hideKeyboard()
-                                binding.root.visibility = View.GONE
-                            } else {
-                                Toast.makeText(requireContext(), "Failed to Post", Toast.LENGTH_SHORT)
-                                    .show()
-                            }
-                        })
-                    }
-                })
+                Thread.sleep(500)
+                if (viewModel.filePath.value == Uri.EMPTY){
+                    storePost(message)
+                } else {
+                    withImage(message)
+                }
             }
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun post(message: String) {
-
-    }
 
     private fun hideKeyboard() {
         val imm: InputMethodManager =
@@ -165,6 +148,33 @@ class NewPostFragment : Fragment(){
         val file = File(cameraCachePath, filename)
         imageUri = FileProvider.getUriForFile(requireContext(), BuildConfig.APPLICATION_ID + ".provider", file)
         return imageUri
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun withImage(message: String) {
+        viewModel.saveImage()
+        viewModel.downloadURLLiveData.observe(viewLifecycleOwner, Observer {  finished ->
+            if (finished) {
+                storePost(message)
+            }
+        })
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun storePost(message: String) {
+        viewModel.newPost(message)
+        viewModel.postCreatedLiveData.observe(viewLifecycleOwner, Observer {
+            val created = it
+            if (created) {
+                viewModel.hideNewPostFragment(true)
+                Toast.makeText(requireContext(), "Posted", Toast.LENGTH_SHORT).show()
+                hideKeyboard()
+                binding.root.visibility = View.GONE
+            } else {
+                Toast.makeText(requireContext(), "Failed to Post", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        })
     }
 
 }

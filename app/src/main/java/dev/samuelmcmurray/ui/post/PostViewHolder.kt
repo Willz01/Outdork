@@ -11,10 +11,11 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.Fragment
+import dev.samuelmcmurray.data.model.Post
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import dev.samuelmcmurray.R
-import dev.samuelmcmurray.data.model.Post
 
 
 private const val TAG = "PostViewHolder"
@@ -30,6 +31,7 @@ class PostViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
     private var commentCount: TextView? = null
     private var profilePicture: ImageView? = null
     private var imagePost: ImageView? = null
+    private var fragment: Fragment? = null
 
 
 
@@ -41,6 +43,7 @@ class PostViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         like = itemView.findViewById(R.id.like_button)
         likeCount = itemView.findViewById(R.id.textViewLikeCount)
         commentCount = itemView.findViewById(R.id.textViewCommentCount)
+        fragment = itemView.findViewById(R.id.discoveries_fragment)
 
         profilePicture = itemView.findViewById(R.id.profile_image)
         imagePost = itemView.findViewById(R.id.image_post)

@@ -11,17 +11,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textview.MaterialTextView
 import dev.samuelmcmurray.R
-import dev.samuelmcmurray.data.model.Post
 import dev.samuelmcmurray.data.singelton.CurrentUserSingleton
 import dev.samuelmcmurray.databinding.DiscoveriesFragmentBinding
 import dev.samuelmcmurray.ui.post.PostAdapter
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 
 
 private const val TAG = "DiscoveriesFragment"
@@ -67,6 +65,17 @@ class DiscoveriesFragment : Fragment() {
                     adapter = PostAdapter(list, requireContext())
 
                 }
+            }
+        })
+
+        viewModel.viewOtherProfileLiveData.observe(viewLifecycleOwner, Observer { viewProfile ->
+            Log.d(TAG, "onViewCreated: $viewProfile")
+            if (viewProfile) {
+                val navHostFragment =
+                    requireActivity().supportFragmentManager.findFragmentById(R.id.fragmentContainer) as NavHostFragment
+                val navController = navHostFragment.navController
+                viewModel.viewOtherProfile(false)
+                navController.navigate(R.id.otherProfileFragment)
             }
         })
 

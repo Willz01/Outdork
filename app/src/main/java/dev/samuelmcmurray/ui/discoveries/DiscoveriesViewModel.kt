@@ -22,12 +22,14 @@ class DiscoveriesViewModel : AndroidViewModel {
     private var discoveriesRepository : DiscoveriesRepository
 
     private val newPostVisibilityLiveData = MutableLiveData<Boolean>()
+    private val switchProfileViewLiveData = MutableLiveData<Boolean>()
     var postCreatedLiveData: MutableLiveData<Boolean>
     var userLiveData: MutableLiveData<CurrentUser>
     val hideBoolean: LiveData<Boolean> get() = newPostVisibilityLiveData
+    val viewOtherProfileLiveData: LiveData<Boolean> get() = switchProfileViewLiveData
     var postsListLiveData: MutableLiveData<List<Post>>
     var downloadURLLiveData: MutableLiveData<Boolean>
-    private val filePath: MutableLiveData<Uri>
+    var filePath: MutableLiveData<Uri>
 
     constructor(application: Application) : super(application) {
         discoveriesRepository = DiscoveriesRepository(application)
@@ -86,6 +88,10 @@ class DiscoveriesViewModel : AndroidViewModel {
                 }
             }
         }
+    }
+
+    fun viewOtherProfile(value: Boolean) {
+        switchProfileViewLiveData.postValue(value)
     }
 
     fun hideNewPostFragment(value: Boolean) {

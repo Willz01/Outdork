@@ -1,6 +1,5 @@
 package dev.samuelmcmurray.ui.following.feeds
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,21 +10,18 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.AccessToken
-import com.facebook.CallbackManager
 import com.facebook.FacebookSdk
-import com.facebook.share.widget.ShareButton
 import com.facebook.share.widget.ShareDialog
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.databinding.FragmentFollowingBinding
-import dev.samuelmcmurray.ui.post.Post
-import dev.samuelmcmurray.ui.post.PostAdapter
+import dev.samuelmcmurray.ui.post.PostLocal
 import dev.samuelmcmurray.utilities.InjectorUtils
 
 
 class FollowingFeedsFragment : Fragment() {
 
     private val posts = listOf(
-        Post(
+        PostLocal(
             0,
             "45444f4f",
             R.drawable.hiker_pp1,
@@ -35,7 +31,7 @@ class FollowingFeedsFragment : Fragment() {
             "21/20/11",
             "Great hike today at the high hill sides, with my great hiking partner @superhiker2324"
         ),
-        Post(
+        PostLocal(
             0,
             "erefe22e",
             R.drawable.hiker_pp2,
@@ -45,7 +41,7 @@ class FollowingFeedsFragment : Fragment() {
             "19/55/62",
             "hello another post"
         ),
-        Post(
+        PostLocal(
             0,
             "er3e3d3e",
             R.drawable.hiker_pp3,
@@ -55,7 +51,7 @@ class FollowingFeedsFragment : Fragment() {
             "14/56/95",
             "another poist"
         ),
-        Post(
+        PostLocal(
             0,
             "efr3d3d33",
             R.drawable.hiker_pp4,

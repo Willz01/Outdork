@@ -1,6 +1,5 @@
 package dev.samuelmcmurray.ui.post
 
-import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
@@ -13,7 +12,7 @@ import androidx.room.PrimaryKey
  */
 
 @Entity(tableName = "favorite_table", indices = [Index(value = ["postID"], unique = true)])
-data class Post(
+data class PostLocal(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "post_id")
     val id: Int = 0,

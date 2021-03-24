@@ -1,3 +1,5 @@
+package dev.samuelmcmurray.ui.profile
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +10,6 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.databinding.FragmentOtherProfileBinding
-import dev.samuelmcmurray.ui.profile.ViewPagerAdapter
 
 class OtherProfileFragment : Fragment() {
 

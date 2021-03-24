@@ -37,7 +37,9 @@
                 android:src="@drawable/hiker_pp1"
                 app:civ_border_color="@color/fui_transparent"
                 android:adjustViewBounds="false"
-                app:civ_border_width="2dp" />
+                android:clickable="true"
+                app:civ_border_width="2dp"
+                android:focusable="true" />
 
             <TextView
                 android:id="@+id/postee_text"

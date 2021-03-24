@@ -45,7 +45,7 @@ class ProfileRepository{
         userLiveData = MutableLiveData()
     }
 
-    fun uploadImageToFirebase(contentUri: Uri) {
+    fun uploadProfileImageToFirebase() {
         var uid = CurrentUserSingleton.getInstance.currentUser!!.id
 
         val user = hashMapOf(

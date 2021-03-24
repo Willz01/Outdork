@@ -136,7 +136,17 @@ class ProfileFragment : Fragment() {
 //      Need to update the current user
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun updateProfileImage() {
-        CurrentUserSingleton.getInstance.currentUser!!.profilePhoto = url
-    }
+        if (CurrentUserSingleton.getInstance.loggedIn || CurrentUserSingleton.getInstance.currentUser == null) {
+            viewModel.updateProfileImage()
+            viewModel.userLiveData.observe(viewLifecycleOwner) {
+                val currentUser = it
+                if (currentUser != null) {
+                    Log.d(TAG, "currentUser success: ")
+                } else {
+                    Log.d(TAG, "getCurrentUser: failure")
+                }
+            }
+        }    }
 }

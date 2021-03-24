@@ -62,7 +62,7 @@ class DiscoveriesRepository {
         Log.d(TAG, "newPost: top ${CurrentUserSingleton.getInstance.currentUser}")
         var downloadURL = NewPostSingleton.getInstance.downloadURL
         var imageId = NewPostSingleton.getInstance.imageId
-        while (downloadURL == null || imageId == null) {
+        while (downloadURL.isNullOrEmpty() || imageId.isNullOrEmpty()) {
             downloadURL = NewPostSingleton.getInstance.downloadURL
             imageId = NewPostSingleton.getInstance.imageId
         }
@@ -177,6 +177,9 @@ class DiscoveriesRepository {
                     userName, email, country, state,
                     city, dateOfBirth
                 )
+                if (hasImage) {
+                    currentUser.profilePhoto = userProfileImageURL
+                }
 
                 if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
                     currentUser.age = getAge(dateOfBirth)

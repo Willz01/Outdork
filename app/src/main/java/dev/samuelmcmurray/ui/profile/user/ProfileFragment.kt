@@ -114,14 +114,14 @@ class ProfileFragment : Fragment() {
     private fun getCurrentUser() {
         if (CurrentUserSingleton.getInstance.loggedIn || CurrentUserSingleton.getInstance.currentUser == null) {
             viewModel.getCurrentUser()
-            viewModel.userLiveData.observe(viewLifecycleOwner, Observer {
+            viewModel.userLiveData.observe(viewLifecycleOwner) {
                 val currentUser = it
                 if (currentUser != null) {
                     Log.d(TAG, "currentUser success: ")
                 } else {
                     Log.d(TAG, "getCurrentUser: failure")
                 }
-            })
+            }
         }
     }
 

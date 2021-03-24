@@ -18,7 +18,7 @@ private const val TAG = "ProfileViewModel"
 class ProfileViewModel : AndroidViewModel {
 
     private lateinit var profileRepository : ProfileRepository
-    var userLiveData: MutableLiveData<CurrentUser> = profileRepository.userLiveData
+    var userLiveData: MutableLiveData<CurrentUser>
     private val filePath: MutableLiveData<Uri>
 
     @RequiresApi(Build.VERSION_CODES.O)

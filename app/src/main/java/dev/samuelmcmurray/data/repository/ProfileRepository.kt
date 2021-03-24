@@ -9,6 +9,7 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.Task
+import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -31,6 +32,10 @@ class ProfileRepository{
     var postCreatedLiveData: MutableLiveData<Boolean>
     var storeImageLiveData: MutableLiveData<Boolean>
     var userLiveData: MutableLiveData<CurrentUser>
+    private lateinit var firebaseAuth: FirebaseAuth
+    private val firebaseApplication = FirebaseApp.getInstance()
+    lateinit var userCreatedLiveData: MutableLiveData<Boolean>
+    lateinit var emailSentLiveData: MutableLiveData<Boolean>
 
 
     constructor(application: Application) {
@@ -71,6 +76,43 @@ class ProfileRepository{
                 CurrentUserSingleton.getInstance.currentUser!!.profilePhoto = downloadUri.toString()
             }
         }
+    }
+
+    fun updateUser(
+        firstName: String, lastName: String, userName: String, email: String,
+        city: String, state: String, country: String, dob: String
+    ) {
+        var uid = CurrentUserSingleton.getInstance.currentUser!!.id
+
+        val user = hashMapOf(
+            "firstName" to firstName,
+            "lastName" to lastName,
+            "userName" to CurrentUserSingleton.getInstance.currentUser!!.userName,
+            "email" to email,
+            "country" to country,
+            "state" to state,
+            "city" to city,
+            "dateOfBirth" to CurrentUserSingleton.getInstance.currentUser!!.dob,
+            "about" to CurrentUserSingleton.getInstance.currentUser!!.about,
+            "hasImage" to CurrentUserSingleton.getInstance.currentUser!!.hasImage
+        )
+        Log.d(TAG, "createUser: $user")
+
+        val db = FirebaseFirestore.getInstance(firebaseApplication)
+        db.collection("Users")
+            .document("$uid")
+            .update(user)
+            .addOnSuccessListener {
+                Log.d(
+                    TAG,
+                    "DocumentSnapshot added with ID: $uid"
+                )
+                userCreatedLiveData.postValue(true)
+            }
+            .addOnFailureListener { e -> Log.i(TAG, "Error adding document $e", e)
+                userCreatedLiveData.postValue(false)}
+
+
     }
 
     fun updateProfileImage() {

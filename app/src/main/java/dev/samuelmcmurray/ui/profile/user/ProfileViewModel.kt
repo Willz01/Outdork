@@ -12,6 +12,8 @@ import androidx.lifecycle.viewModelScope
 import dev.samuelmcmurray.data.model.CurrentUser
 import dev.samuelmcmurray.data.repository.ProfileRepository
 import dev.samuelmcmurray.data.singelton.CurrentUserSingleton
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 private const val TAG = "ProfileViewModel"
@@ -34,8 +36,31 @@ class ProfileViewModel : AndroidViewModel {
         }
     }
 
-    fun updateProfileImage() {
-        CurrentUserSingleton.getInstance.currentUser.profilePhoto = url
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun updateProfileImage(url: String) {
+        CurrentUserSingleton.getInstance.currentUser!!.profilePhoto = url
+    }
+    fun newPost(message: String) {
+        var hasImage : Boolean = false
+        val likes = 0
+        var imageUri = Uri.EMPTY
+        val comments : List<String> = emptyList()
+        if (filePath.value != null) {
+            hasImage = true
+            imageUri = filePath.value
+        }
+        Log.d(dev.samuelmcmurray.ui.profile.TAG, "newPost: $message $likes $hasImage")
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                profileRepository.updateProfileImage(imageUri)
+            } catch (e: Exception) {
+                Log.d(dev.samuelmcmurray.ui.profile.TAG, "newPost: $e")
+            }
+        }
+    }
+
+    fun updateProfileData() {
+
     }
 
     constructor(application: Application) : super(application) {

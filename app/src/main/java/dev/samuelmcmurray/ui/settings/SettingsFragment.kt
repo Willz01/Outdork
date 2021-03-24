@@ -1,6 +1,6 @@
 package dev.samuelmcmurray.ui.settings
 
-import android.app.Activity
+import android.app.AlertDialog
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
@@ -42,12 +42,22 @@ class SettingsFragment : PreferenceFragmentCompat() {
             }
 
 
-        val deletePreference: EditTextPreference? = findPreference("passwordDelete")
+        val deletePreference: Preference? = findPreference("delete")
         deletePreference!!.onPreferenceClickListener =
             Preference.OnPreferenceClickListener { preference ->
-               val password = deletePreference.text
-                println(password)
-
+                val builder = AlertDialog.Builder(context)
+                builder.setMessage("Are you sure you want to delete your account?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes") { dialog, id ->
+                     user?.delete()
+                        println("deleted " + user)
+                        view?.findNavController()?.navigate(R.id.loginFragment)
+                    }
+                    .setNegativeButton("No") { dialog, id ->
+                        dialog.dismiss()
+                    }
+                val alert = builder.create()
+                alert.show()
 
                 true
             }

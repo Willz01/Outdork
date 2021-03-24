@@ -152,9 +152,11 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                 MainActivity.alreadyFetchedLocation = true
 
                 address = geocode?.getFromLocationName(p0.toString(), 1) as List<Address>
+                MainActivity.latLng = address[0]
                 val tmp = address[0].getAddressLine(0).toString()
                 Log.d(TAG, "onMapReady: $tmp")
                 MainActivity.startLocation = tmp
+
 
                 Toast.makeText(
                     requireContext(),
@@ -285,14 +287,21 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
                         // radius max = 1000 from seek bar max value
                         circle?.remove()
+                        if (mMap == null) Log.d(TAG, "onActivityResult: NUll here now map")
                         circle = mMap?.addCircle(
-                            CircleOptions().center(latLng).radius(seekBar?.progress!!.toDouble()).strokeColor(
-                                Color.RED
-                            ).strokeWidth(7.0F).fillColor(Color.argb(70, 150, 50, 50))
+                            CircleOptions().center(latLng).radius(seekBar?.progress!!.toDouble())
+                                .strokeColor(
+                                    Color.RED
+                                ).strokeWidth(7.0F).fillColor(Color.argb(70, 150, 50, 50))
                         )!!
                         // seek bar
-                        seekBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
-                            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                        seekBar?.setOnSeekBarChangeListener(object :
+                            SeekBar.OnSeekBarChangeListener {
+                            override fun onProgressChanged(
+                                seekBar: SeekBar?,
+                                progress: Int,
+                                fromUser: Boolean
+                            ) {
                                 circle?.radius = progress.toDouble()
                             }
 

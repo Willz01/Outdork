@@ -63,39 +63,6 @@ class WelcomeFragment : Fragment() {
 //            e.printStackTrace()
 //        }
     }
-
-    fun getCurrentUser() {
-        val userRef = FirebaseFirestore.getInstance().collection("Users")
-        val userID = FirebaseAuth.getInstance().currentUser?.uid
-        userRef.document(userID.toString()).get()
-            .addOnSuccessListener { result ->
-                val firstName = result["firstName"]
-                val lastName = result["lastName"]
-                val userName = result["userName"]
-                val email = result["email"]
-                val dateOfBirth = result["dateOfBirth"]
-                val about = result["about"]
-                val hasImage = result["hasImage"]
-                val city = result["city"]
-                val country = result["country"]
-                val state = result["state"]
-                Log.d(dev.samuelmcmurray.data.repository.TAG, "getCurrentUser: ${dateOfBirth.toString()}")
-                val currentUser = CurrentUser(
-                    userID.toString(), firstName.toString(), lastName.toString(),
-                    userName.toString(), email.toString(), country.toString(), state.toString(),
-                    city.toString(), dateOfBirth.toString()
-                )
-
-                Log.d(dev.samuelmcmurray.data.repository.TAG, "getCurrentUser: ${currentUser.age}")
-                currentUser.about = about.toString()
-                currentUser.hasImage = hasImage.toString().toBoolean()
-
-                CurrentUserSingleton.getInstance.currentUser = currentUser
-                userLiveData.postValue(currentUser)
-                Log.d(dev.samuelmcmurray.data.repository.TAG, "getCurrentUser: DocumentSnapshot retrieved with ID: $userID")
-            }
-            .addOnFailureListener { e -> Log.w(dev.samuelmcmurray.data.repository.TAG, "Error adding document", e) }
-    }
 }
 
 

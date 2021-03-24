@@ -2,41 +2,34 @@ package dev.samuelmcmurray.ui.profile.user
 
 //import dev.samuelmcmurray.data.singelton.CurrentUserSingleton
 
-import android.app.Activity
 import android.app.Application
-import android.app.Instrumentation
-import android.content.Intent
-import android.icu.lang.UCharacter.getAge
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore.Images
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
-import com.google.android.gms.tasks.Continuation
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
-import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.UploadTask
 import de.hdodenhof.circleimageview.CircleImageView
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.data.model.CurrentUser
 import dev.samuelmcmurray.data.repository.ProfileRepository
 import dev.samuelmcmurray.data.singelton.CurrentUserSingleton
-import dev.samuelmcmurray.data.singelton.NewPostSingleton
 import dev.samuelmcmurray.databinding.FragmentProfileMenuBinding
-import java.util.*
+import java.io.ByteArrayOutputStream
+
 
 private const val TAG = "ProfileFragment"
 
@@ -87,6 +80,10 @@ class ProfileFragment : Fragment() {
         profileImage = view.findViewById(R.id.profileImage)
 
         getCurrentUser()
+
+        profileImage.setOnClickListener {
+            updateProfileData()
+        }
         firstNameText.setText(CurrentUserSingleton.getInstance.currentUser!!.firstName)
         lastNameText.setText(CurrentUserSingleton.getInstance.currentUser!!.lastName)
         dobText.setText(CurrentUserSingleton.getInstance.currentUser!!.dob)
@@ -101,6 +98,7 @@ class ProfileFragment : Fragment() {
             }
         profileImage.setOnClickListener {
             getContent.launch("image/*")
+            updateProfileImage()
         }
     }
 
@@ -119,27 +117,22 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    fun onSaveClicked() {
+    fun updateProfileData() {
 
-        //id, firstName, lastName, userName, email, country, state, city, dob
-        val newUserData = CurrentUser(
-            id = CurrentUserSingleton.getInstance.currentUser!!.id,
-            firstName = firstNameText.text.toString(),
-            lastName = lastNameText.text.toString(),
-            email = emailText.text.toString(),
-            userName = CurrentUserSingleton.getInstance.currentUser!!.userName,
-            country = countryText.text.toString(),
-            state = stateText.text.toString(),
-            city = cityText.text.toString(),
-            dob = dobText.text.toString()
-        )
-//      Need to update the current user
+        val bm: Bitmap = (profileImage.drawable as BitmapDrawable).bitmap
+        val imageURI: Uri = getImageUri(this.requireContext(), bm)
+
+        viewModel.updateProfileData(firstNameText.text.toString(), lastNameText.text.toString(), emailText.text.toString(),
+            cityText.text.toString(), stateText.text.toString(), countryText.text.toString(),
+            imageURI)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun updateProfileImage() {
         if (CurrentUserSingleton.getInstance.loggedIn || CurrentUserSingleton.getInstance.currentUser == null) {
-            viewModel.updateProfileImage()
+            val bm: Bitmap = (profileImage.drawable as BitmapDrawable).bitmap
+            val imageURI: Uri = getImageUri(this.requireContext(), bm)
+            viewModel.updateProfileImage(imageURI)
             viewModel.userLiveData.observe(viewLifecycleOwner) {
                 val currentUser = it
                 if (currentUser != null) {
@@ -148,5 +141,14 @@ class ProfileFragment : Fragment() {
                     Log.d(TAG, "getCurrentUser: failure")
                 }
             }
-        }    }
+        }
+    }
+
+    private fun getImageUri(inContext: Context, inImage: Bitmap): Uri {
+        val bytes = ByteArrayOutputStream()
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path =
+            Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null)
+        return Uri.parse(path)
+    }
 }

@@ -3,7 +3,6 @@ package dev.samuelmcmurray.ui.profile.user
 import android.app.Application
 import android.net.Uri
 import android.os.Build
-import android.provider.ContactsContract
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.AndroidViewModel
@@ -37,30 +36,20 @@ class ProfileViewModel : AndroidViewModel {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun updateProfileImage(url: String) {
-        CurrentUserSingleton.getInstance.currentUser!!.profilePhoto = url
-    }
-    fun newPost(message: String) {
-        var hasImage : Boolean = false
-        val likes = 0
-        var imageUri = Uri.EMPTY
-        val comments : List<String> = emptyList()
-        if (filePath.value != null) {
-            hasImage = true
-            imageUri = filePath.value
-        }
-        Log.d(dev.samuelmcmurray.ui.profile.TAG, "newPost: $message $likes $hasImage")
+    fun updateProfileImage(imageURI: Uri) {
+        Log.d(dev.samuelmcmurray.ui.profile.user.TAG, "profileImage")
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                profileRepository.updateProfileImage(imageUri)
+                profileRepository.updateProfileImage(imageURI)
             } catch (e: Exception) {
-                Log.d(dev.samuelmcmurray.ui.profile.TAG, "newPost: $e")
+                Log.d(dev.samuelmcmurray.ui.profile.user.TAG, "newPost: $e")
             }
         }
     }
 
-    fun updateProfileData() {
-
+    fun updateProfileData(firstName: String, lastName: String, email: String,
+                          city: String, state: String, country: String, ImageURI: Uri) {
+        profileRepository.updateProfileData(firstName, lastName, email, city, state, country, ImageURI)
     }
 
     constructor(application: Application) : super(application) {

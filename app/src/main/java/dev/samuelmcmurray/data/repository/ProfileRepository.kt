@@ -4,24 +4,17 @@ import android.app.Application
 import android.net.Uri
 import android.os.Build
 import android.util.Log
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
-import com.google.android.gms.tasks.Continuation
-import com.google.android.gms.tasks.Task
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.UploadTask
 import dev.samuelmcmurray.data.model.CurrentUser
-import dev.samuelmcmurray.data.model.Post
 import dev.samuelmcmurray.data.singelton.CurrentUserSingleton
 import java.time.LocalDate
 import java.time.Period
-import java.util.*
 
 
 private const val TAG = "ProfileRepository"
@@ -45,7 +38,7 @@ class ProfileRepository{
         userLiveData = MutableLiveData()
     }
 
-    fun uploadProfileImageToFirebase() {
+    fun updateProfileImage(imageURI: Uri) {
         var uid = CurrentUserSingleton.getInstance.currentUser!!.id
 
         val user = hashMapOf(
@@ -59,7 +52,7 @@ class ProfileRepository{
             "dateOfBirth" to CurrentUserSingleton.getInstance.currentUser!!.dob,
             "about" to CurrentUserSingleton.getInstance.currentUser!!.about,
             "hasImage" to CurrentUserSingleton.getInstance.currentUser!!.hasImage,
-            "userImageURL" to CurrentUserSingleton.getInstance.currentUser!!.profilePhoto
+            "userImageURL" to imageURI.toString()
         )
         Log.d(TAG, "createUser: $user")
 
@@ -80,9 +73,9 @@ class ProfileRepository{
 
     }
 
-    fun updateUser(
+    fun updateProfileData(
         firstName: String, lastName: String, email: String,
-        city: String, state: String, country: String
+        city: String, state: String, country: String, ImageURI: Uri
     ) {
         var uid = CurrentUserSingleton.getInstance.currentUser!!.id
 
@@ -97,7 +90,7 @@ class ProfileRepository{
             "dateOfBirth" to CurrentUserSingleton.getInstance.currentUser!!.dob,
             "about" to CurrentUserSingleton.getInstance.currentUser!!.about,
             "hasImage" to CurrentUserSingleton.getInstance.currentUser!!.hasImage,
-            "userImageURL" to CurrentUserSingleton.getInstance.currentUser!!.profilePhoto
+            "userImageURL" to ImageURI.toString()
         )
         Log.d(TAG, "createUser: $user")
 

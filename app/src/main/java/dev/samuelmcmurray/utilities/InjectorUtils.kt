@@ -39,6 +39,6 @@ object InjectorUtils {
         val reportRepository = ReportRepository.getInstance("database.getInstance().ReportDAO")
         return ReportViewModelFactory(reportRepository)
     }
-
+    
 
 }

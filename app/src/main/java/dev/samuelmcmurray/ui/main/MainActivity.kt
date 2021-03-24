@@ -1,10 +1,12 @@
 package dev.samuelmcmurray.ui.main
 
+import android.app.Activity
 import android.content.Intent
 import android.location.Address
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
@@ -112,6 +114,7 @@ class MainActivity : AppCompatActivity() {
             if (firebaseAuth.currentUser == null) {
                 navController.navigate(R.id.loginFragment)
             } else {
+                hideKeyboard()
                 navController.navigate(R.id.discoveries_fragment)
             }
         }
@@ -142,4 +145,11 @@ class MainActivity : AppCompatActivity() {
             Log.d("ERROR", e.toString())
         }
     }
+
+    private fun hideKeyboard() {
+        val imm: InputMethodManager =
+            applicationContext.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(binding.root.windowToken, 0)
+    }
+
 }

@@ -80,7 +80,7 @@
     </fragment>
     <!--  <fragment
           android:id="@+id/otherProfileFragment"
-          android:name="dev.samuelmcmurray.ui.profile.OtherProfileFragment"
+          android:name="dev.samuelmcmurray.ui.profile.dev.samuelmcmurray.ui.profile.OtherProfileFragment"
           android:label="Other User Profile"
           tools:layout="@layout/fragment_other_profile">
           <action
@@ -135,5 +135,9 @@
             android:name="origin"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/otherProfileFragment"
+        android:name="dev.samuelmcmurray.ui.profile.OtherProfileFragment"
+        android:label="OtherProfileFragment" />
 
 </navigation>

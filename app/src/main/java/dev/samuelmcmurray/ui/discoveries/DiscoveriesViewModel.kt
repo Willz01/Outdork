@@ -10,6 +10,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dev.samuelmcmurray.data.model.CurrentUser
+import dev.samuelmcmurray.data.model.Post
 import dev.samuelmcmurray.data.repository.DiscoveriesRepository
 import dev.samuelmcmurray.data.singelton.CurrentUserSingleton
 import kotlinx.coroutines.CoroutineScope
@@ -21,15 +22,21 @@ class DiscoveriesViewModel : AndroidViewModel {
     private var discoveriesRepository : DiscoveriesRepository
 
     private val newPostVisibilityLiveData = MutableLiveData<Boolean>()
+    private val switchProfileViewLiveData = MutableLiveData<Boolean>()
     var postCreatedLiveData: MutableLiveData<Boolean>
     var userLiveData: MutableLiveData<CurrentUser>
     val hideBoolean: LiveData<Boolean> get() = newPostVisibilityLiveData
-    private val filePath: MutableLiveData<Uri>
+    val viewOtherProfileLiveData: LiveData<Boolean> get() = switchProfileViewLiveData
+    var postsListLiveData: MutableLiveData<List<Post>>
+    var downloadURLLiveData: MutableLiveData<Boolean>
+    var filePath: MutableLiveData<Uri>
 
     constructor(application: Application) : super(application) {
         discoveriesRepository = DiscoveriesRepository(application)
         postCreatedLiveData = discoveriesRepository.postCreatedLiveData
         userLiveData = discoveriesRepository.userLiveData
+        postsListLiveData = discoveriesRepository.postsListLiveData
+        downloadURLLiveData = discoveriesRepository.downloadURLLiveData
         filePath = MutableLiveData()
     }
 
@@ -40,15 +47,15 @@ class DiscoveriesViewModel : AndroidViewModel {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun newPost(message: String) {
-        var hasImage : Boolean = false
+        var hasImage = false
         val likes = 0
         var imageUri = Uri.EMPTY
-        val comments : List<String> = emptyList()
         if (filePath.value != null) {
             hasImage = true
             imageUri = filePath.value
         }
         Log.d(TAG, "newPost: $message $likes $hasImage")
+
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 discoveriesRepository.newPost(message, imageUri, hasImage, likes)
@@ -58,11 +65,22 @@ class DiscoveriesViewModel : AndroidViewModel {
         }
     }
 
+    fun saveImage(){
+        if (filePath.value != null) {
+            var imageUri = filePath.value
+            CoroutineScope(Dispatchers.IO).launch {
+                if (imageUri != Uri.EMPTY) {
+                    discoveriesRepository.uploadImageToFirebase(imageUri!!)
+                }
+            }
+        }
+    }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun getCurrentUser()  {
         if (CurrentUserSingleton.getInstance.loggedIn || CurrentUserSingleton.getInstance.currentUser == null) {
-            viewModelScope.launch {
+            CoroutineScope(Dispatchers.IO).launch{
                 try {
                     discoveriesRepository.getCurrentUser()
                 } catch (e: Exception) {
@@ -72,8 +90,32 @@ class DiscoveriesViewModel : AndroidViewModel {
         }
     }
 
+    fun viewOtherProfile(value: Boolean) {
+        switchProfileViewLiveData.postValue(value)
+    }
+
     fun hideNewPostFragment(value: Boolean) {
         newPostVisibilityLiveData.postValue(value)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getPostsList() {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                discoveriesRepository.getPostsList()
+            }catch (exception: Exception) {
+                Log.d(TAG, "getPostsList: $exception")
+            }
+        }
+    }
+
+    fun updateLikes(uid: String, postID: String, likes: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                discoveriesRepository.updateLikes(uid, postID, likes)
+            } catch (e: Exception) {
+                Log.d(TAG, "updateLikes: $e")
+            }
+        }
+    }
 }

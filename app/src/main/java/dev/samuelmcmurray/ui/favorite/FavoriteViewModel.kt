@@ -6,13 +6,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import dev.samuelmcmurray.data.database.FavoriteDatabase
 import dev.samuelmcmurray.data.repository.FavoritesRepository
-import dev.samuelmcmurray.ui.post.Post
+import dev.samuelmcmurray.ui.post.PostLocal
 import kotlinx.coroutines.launch
 
 class FavoriteViewModel(application: Application) : AndroidViewModel(application) {
 
-    val readAllFavorites: LiveData<List<Post>>
-    val readAllPost: List<Post>
+    val readAllFavorites: LiveData<List<PostLocal>>
+    val readAllPost: List<PostLocal>
     private val repository: FavoritesRepository
 
 
@@ -23,13 +23,13 @@ class FavoriteViewModel(application: Application) : AndroidViewModel(application
         readAllPost = repository.readAllPost
     }
 
-    fun addPost(post: Post) {
+    fun addPost(post: PostLocal) {
         viewModelScope.launch {
             repository.addPost(post)
         }
     }
 
-    fun removePost(post: Post) {
+    fun removePost(post: PostLocal) {
         viewModelScope.launch {
             repository.removePost(post)
         }

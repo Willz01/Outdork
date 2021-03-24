@@ -5,7 +5,6 @@ import android.app.Activity
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
-
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -14,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -26,13 +26,15 @@ import dev.samuelmcmurray.R
 import dev.samuelmcmurray.databinding.FragmentNewPostBinding
 import dev.samuelmcmurray.ui.discoveries.DiscoveriesViewModel
 import java.io.File
+import kotlin.concurrent.thread
 
 private const val TAG = "NewPostFragment"
-class NewPostFragment : Fragment() {
+class NewPostFragment : Fragment(){
 
     private lateinit var imageUri: Uri
     private lateinit var binding: FragmentNewPostBinding
     private lateinit var viewModel: DiscoveriesViewModel
+    private lateinit var postText: EditText
 
     companion object {
         fun newInstance() = NewPostFragment()
@@ -92,10 +94,10 @@ class NewPostFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(requireActivity(),defaultViewModelProviderFactory).get(DiscoveriesViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity()).get(DiscoveriesViewModel::class.java)
         val cancelButton = binding.buttonCancel
         val postButton = binding.buttonPost
-        val postText = binding.editTextPost
+        postText = binding.editTextPost
         val photo = binding.imageGallery
         val camera = binding.imageCamera
 
@@ -118,27 +120,16 @@ class NewPostFragment : Fragment() {
             if (message.isEmpty()) {
                 Toast.makeText(requireContext(), "The post can not have an empty textfield", Toast.LENGTH_SHORT).show()
             } else {
-                post(message)
+                Thread.sleep(500)
+                if (viewModel.filePath.value == Uri.EMPTY){
+                    storePost(message)
+                } else {
+                    withImage(message)
+                }
             }
-
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun post(message: String) {
-        viewModel.newPost(message)
-        viewModel.postCreatedLiveData.observe(viewLifecycleOwner, Observer {
-            val created = it
-            if (created) {
-                viewModel.hideNewPostFragment(true)
-                Toast.makeText(requireContext(), "Posted", Toast.LENGTH_SHORT).show()
-                hideKeyboard()
-                binding.root.visibility = View.GONE
-            } else {
-                Toast.makeText(requireContext(), "Failed to Post", Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
 
     private fun hideKeyboard() {
         val imm: InputMethodManager =
@@ -157,6 +148,33 @@ class NewPostFragment : Fragment() {
         val file = File(cameraCachePath, filename)
         imageUri = FileProvider.getUriForFile(requireContext(), BuildConfig.APPLICATION_ID + ".provider", file)
         return imageUri
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun withImage(message: String) {
+        viewModel.saveImage()
+        viewModel.downloadURLLiveData.observe(viewLifecycleOwner, Observer {  finished ->
+            if (finished) {
+                storePost(message)
+            }
+        })
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun storePost(message: String) {
+        viewModel.newPost(message)
+        viewModel.postCreatedLiveData.observe(viewLifecycleOwner, Observer {
+            val created = it
+            if (created) {
+                viewModel.hideNewPostFragment(true)
+                Toast.makeText(requireContext(), "Posted", Toast.LENGTH_SHORT).show()
+                hideKeyboard()
+                binding.root.visibility = View.GONE
+            } else {
+                Toast.makeText(requireContext(), "Failed to Post", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        })
     }
 
 }

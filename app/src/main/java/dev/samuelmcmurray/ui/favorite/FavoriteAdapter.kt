@@ -7,11 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import dev.samuelmcmurray.R
-import dev.samuelmcmurray.ui.post.Post
+import dev.samuelmcmurray.ui.post.PostLocal
 
 private const val TAG = "FavoriteAdapter"
 
@@ -19,9 +18,9 @@ class FavoriteAdapter(val context: Context) :
     RecyclerView.Adapter<FavoriteAdapter.MyViewHolder>() {
 
 
-    private var favorites = ArrayList<Post>()
+    private var favorites = ArrayList<PostLocal>()
     private lateinit var favoriteViewModel: FavoriteViewModel
-    private var currentItem: Post? = null
+    private var currentItem: PostLocal? = null
 
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -51,7 +50,6 @@ class FavoriteAdapter(val context: Context) :
             .setImageResource(currentItem!!.profilePicture)
         holder.itemView.findViewById<ImageView>(R.id.image_post)
             .setImageResource(currentItem!!.image_post)
-        holder.itemView.findViewById<RatingBar>(R.id.rating).rating = currentItem!!.rating.toFloat()
     }
 
 
@@ -59,13 +57,13 @@ class FavoriteAdapter(val context: Context) :
         return favorites.size
     }
 
-    fun setFavorites(bookmarks: ArrayList<Post>): List<Post> {
+    fun setFavorites(bookmarks: ArrayList<PostLocal>): List<PostLocal> {
         this.favorites = bookmarks
         notifyDataSetChanged()
         return bookmarks
     }
 
-    fun getPostAt(position: Int) : Post{
+    fun getPostAt(position: Int) : PostLocal{
         return favorites[position]
     }
 

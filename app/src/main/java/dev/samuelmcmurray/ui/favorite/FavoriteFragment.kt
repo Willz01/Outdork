@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.databinding.FragmentFavoriteBinding
-import dev.samuelmcmurray.ui.post.Post
+import dev.samuelmcmurray.ui.post.PostLocal
 
 
 class FavoriteFragment : Fragment() {
@@ -44,7 +44,7 @@ class FavoriteFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(FavoriteViewModel::class.java)
         viewModel.readAllFavorites.observe(
             viewLifecycleOwner,
-            Observer { posts -> adapter.setFavorites(posts as ArrayList<Post>) })
+            Observer { posts -> adapter.setFavorites(posts as ArrayList<PostLocal>) })
 
         // item swipe helper : swipe to un favorite
         val touchHelper = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {

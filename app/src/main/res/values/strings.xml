@@ -59,10 +59,11 @@
     <string name="first_name_hint">First Name</string>
     <string name="last_name_hint">Last Name</string>
     <string name="user_name_hint">User Name</string>
-    <string name="dob_hint">Date of Birth MM-DD-YYYY</string>
+    <string name="dob_hint">Select Your Birth Date</string>
     <string name="location_hint">City</string>
     <string name="country_hint">Country</string>
     <string name="state_hint">State/Providence</string>
+    <string name="post_hint">Post</string>
 
 
     <!-- Messages -->
@@ -91,7 +92,7 @@
     <string name="comment">COMMENT</string>
     <string name="search_button">Search</string>
     <string name="activity_content">Activity content</string>
-    <string name="post_hint">Make a new post</string>
+    <string name="post_hintFB">Make a new post</string>
     <string name="post_action">Post</string>
 
     <!-- places sdk -->
@@ -104,6 +105,13 @@
     <string name="activity_name">Activity name</string>
     <string name="dummy_distance">202KM</string>
     <string name="dummy_time">1hr 30mins</string>
+
+    <!-- Permissions -->
+    <string name="permission_result_pending">Waiting for result…</string>
+    <string name="permission_result_granted">Permission granted!</string>
+    <string name="permission_result_denied">Permission denied :(</string>
+    <string name="custom_contract_result">Success: %b, message: %s</string>
+    <string name="newPost">Create new post</string>
 
 
 </resources>

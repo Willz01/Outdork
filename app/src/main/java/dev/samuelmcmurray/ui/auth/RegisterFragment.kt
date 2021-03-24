@@ -4,22 +4,24 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.CalendarView
+import android.widget.DatePicker
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.auth.FirebaseUser
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.databinding.FragmentRegisterBinding
 import java.util.concurrent.Executors
+
 
 private const val TAG = "RegisterFragment"
 
@@ -27,7 +29,7 @@ class RegisterFragment : Fragment() {
 
     private lateinit var binding: FragmentRegisterBinding
     private lateinit var viewModel: RegisterViewModel
-    private lateinit var calendarView: CalendarView
+    private lateinit var calendarView: DatePicker
     private lateinit var userID : String
     private lateinit var user: FirebaseUser
 
@@ -85,8 +87,10 @@ class RegisterFragment : Fragment() {
             val passwordConfirm = passwordConfirmText.text.toString()
             val dob = dateOfBirth.text.toString()
 
-            register(firstName, lastName, userName, email, city, state, country,
-                password, passwordConfirm, dob)
+            register(
+                firstName, lastName, userName, email, city, state, country,
+                password, passwordConfirm, dob
+            )
             hideKeyboard()
         }
 
@@ -98,16 +102,27 @@ class RegisterFragment : Fragment() {
             showHide(calendarView)
         }
 
-        calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
-            val theMonth = month + 1
-            dateOfBirth.text = "$theMonth-$dayOfMonth-$year"
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            calendarView.setOnDateChangedListener  { view, year, month, dayOfMonth ->
+                val theMonth = month + 1
+                dateOfBirth.text = "$theMonth-$dayOfMonth-$year"
+            }
         }
 
     }
 
     private fun register(
-        firstName: String, lastName: String, userName: String, email: String,
-        city: String, state: String, country: String, password: String, passwordConfirm: String, dob: String
+        firstName: String,
+        lastName: String,
+        userName: String,
+        email: String,
+        city: String,
+        state: String,
+        country: String,
+        password: String,
+        passwordConfirm: String,
+        dob: String
     ) {
         if (firstName.isNotBlank() && lastName.isNotBlank() && userName.isNotBlank() &&
             email.isNotBlank() && city.isNotBlank() && state.isNotBlank() && country.isNotBlank() &&
@@ -157,7 +172,7 @@ class RegisterFragment : Fragment() {
             val emailSent = it
             if (emailSent) {
                 hideKeyboard()
-                Log.d(TAG, "EmailSent: " )
+                Log.d(TAG, "EmailSent: ")
             }
         })
     }

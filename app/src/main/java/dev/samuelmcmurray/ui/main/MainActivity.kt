@@ -1,10 +1,12 @@
 package dev.samuelmcmurray.ui.main
 
+import android.app.Activity
 import android.content.Intent
 import android.location.Address
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
@@ -20,6 +22,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.facebook.AccessToken
+import com.google.android.gms.maps.GoogleMap
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -49,6 +52,7 @@ class MainActivity : AppCompatActivity() {
         var startLocation = String()
         var latLng : Address? = null
         var alreadyFetchedLocation = false
+        var mMap : GoogleMap? = null
     }
 
     private lateinit var mNavView: NavigationView
@@ -118,6 +122,7 @@ class MainActivity : AppCompatActivity() {
             if (firebaseAuth.currentUser == null) {
                 navController.navigate(R.id.loginFragment)
             } else {
+                hideKeyboard()
                 navController.navigate(R.id.discoveries_fragment)
             }
         }
@@ -148,4 +153,11 @@ class MainActivity : AppCompatActivity() {
             Log.d("ERROR", e.toString())
         }
     }
+
+    private fun hideKeyboard() {
+        val imm: InputMethodManager =
+            applicationContext.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(binding.root.windowToken, 0)
+    }
+
 }

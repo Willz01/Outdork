@@ -135,5 +135,9 @@
             android:name="origin"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/otherProfileFragment"
+        android:name="dev.samuelmcmurray.ui.profile.OtherProfileFragment"
+        android:label="OtherProfileFragment" />
 
 </navigation>

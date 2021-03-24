@@ -159,8 +159,6 @@ object Activities {
         activitiesHolder.add(passive)
 
 
-
-
         return activitiesHolder
     }
 

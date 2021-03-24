@@ -34,7 +34,7 @@
                 android:background="@color/green_dark"
                 android:orientation="vertical">
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/profileImage"
                     android:layout_width="109dp"
                     android:layout_height="109dp"
@@ -178,14 +178,14 @@
         <LinearLayout
 
             android:layout_width="360dp"
-            android:layout_height="315dp"
+            android:layout_height="340dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="305dp"
             android:orientation="vertical">
 
             <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="230dp">
+                android:layout_height="283dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -207,9 +207,9 @@
                             android:text="First Name: "
                             android:textSize="21sp" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/firstNameText"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="21sp" />
                     </LinearLayout>
@@ -233,9 +233,9 @@
                             android:text="Last Name: "
                             android:textSize="21sp" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/lastNameText"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="21sp" />
                     </LinearLayout>
@@ -259,9 +259,9 @@
                             android:text="Date of Birth: "
                             android:textSize="21sp" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/dobText"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="21sp" />
                     </LinearLayout>
@@ -285,9 +285,9 @@
                             android:text="Email Address: "
                             android:textSize="21sp" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/emailText"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="21sp" />
                     </LinearLayout>
@@ -311,9 +311,9 @@
                             android:text="City: "
                             android:textSize="21sp" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/cityText"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="21sp" />
                     </LinearLayout>
@@ -337,9 +337,9 @@
                             android:text="State/Province: "
                             android:textSize="21sp" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/stateText"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="21sp" />
                     </LinearLayout>
@@ -363,18 +363,22 @@
                             android:text="Country: "
                             android:textSize="21sp" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/countryText"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="21sp" />
                     </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        />
                 </LinearLayout>
             </ScrollView>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="80dp"
                 android:gravity="center_horizontal">
 
                 <Button

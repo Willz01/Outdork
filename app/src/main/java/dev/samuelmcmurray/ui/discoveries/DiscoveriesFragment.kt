@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textview.MaterialTextView
+import de.hdodenhof.circleimageview.CircleImageView
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.data.singelton.CurrentUserSingleton
 import dev.samuelmcmurray.databinding.DiscoveriesFragmentBinding
@@ -116,7 +117,7 @@ class DiscoveriesFragment : Fragment() {
         postTextView.setOnClickListener {
             showHide()
         }
-        val navigationView = requireActivity().findViewById(R.id.nav_view) as NavigationView
+/*        val navigationView = requireActivity().findViewById(R.id.nav_view) as NavigationView
 
         val headerView = navigationView.getHeaderView(0)
         //        try {
@@ -132,7 +133,7 @@ class DiscoveriesFragment : Fragment() {
         navEmail.text = CurrentUserSingleton.getInstance.currentUser!!.email
 //        } catch (e: Exception) {
 //            e.printStackTrace()
-//        }
+//        }*/
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

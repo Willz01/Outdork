@@ -23,6 +23,7 @@ import com.facebook.AccessToken
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import de.hdodenhof.circleimageview.CircleImageView
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.databinding.ActivityMainBinding
 
@@ -106,6 +107,11 @@ class MainActivity : AppCompatActivity() {
         profilePic.setOnClickListener {
             navController.navigate(R.id.profileFragment)
         }
+
+//        val profileImage: CircleImageView = header.findViewById(R.id.profile_image)
+//        profileImage.setOnClickListener {
+//            navController.navigate(R.id.otherProfileHolder)
+//        }
 
         firebaseAuth = FirebaseAuth.getInstance()
         firebaseAuth.addAuthStateListener { firebaseAuth ->

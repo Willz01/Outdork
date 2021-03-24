@@ -47,14 +47,14 @@ class WelcomeFragment : Fragment() {
 //        try {
             val navUsername =
                 headerView.findViewById<View>(R.id.profileName) as TextView
-            navUsername.text = CurrentUserSingleton.getInstance.currentUser!!.userName
+            navUsername.text = CurrentUserSingleton.getInstance.currentUser?.userName
 //        } catch (e: Exception) {
 //            e.printStackTrace()
 //        }
 //        try {
             val navEmail =
                 headerView.findViewById<View>(R.id.profileEmail) as TextView
-            navEmail.text = CurrentUserSingleton.getInstance.currentUser!!.email
+            navEmail.text = CurrentUserSingleton.getInstance.currentUser?.email
 //        } catch (e: Exception) {
 //            e.printStackTrace()
 //        }

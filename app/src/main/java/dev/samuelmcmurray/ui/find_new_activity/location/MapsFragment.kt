@@ -108,6 +108,27 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
             Navigation.findNavController(requireView()).navigate(action)
         }
 
+        seekBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                circle?.radius = progress.toDouble()
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                // TODO("Not yet implemented")
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                if (seekBar != null) {
+                    Snackbar.make(
+                        requireView(),
+                        "Distance range: ${seekBar.progress}",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                };
+            }
+
+        })
+
     }
 
     private fun fetchLastLocation() {
@@ -182,7 +203,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 17f))
         // radius max = 5000 from seek bar max value
         circle = mMap?.addCircle(
-            CircleOptions().center(location).radius(500.0).strokeColor(
+            CircleOptions().center(location).radius(seekBar?.progress!!.toDouble()).strokeColor(
                 Color.RED
             ).strokeWidth(7.0F).fillColor(Color.argb(70, 150, 50, 50))
         )!!
@@ -192,29 +213,21 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
 
         // seek bar handling with default location
-        seekBar?.setOnSeekBarChangeListener(object :
-            SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(
-                seekBar: SeekBar?,
-                progress: Int,
-                fromUser: Boolean
-            ) {
-                Log.d(TAG, "onProgressChanged: $progress")
-                if (seekBar != null) {
-                    circle?.radius = seekBar.progress.toDouble()
-                }
+        seekBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                circle?.radius = progress.toDouble()
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                //   TODO("Not yet implemented")
+               // TODO("Not yet implemented")
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
                 if (seekBar != null) {
-                    Toast.makeText(
-                        requireContext(),
+                    Snackbar.make(
+                        requireView(),
                         "Distance range: ${seekBar.progress}",
-                        Toast.LENGTH_SHORT
+                        Snackbar.LENGTH_SHORT
                     ).show()
                 };
             }
@@ -273,28 +286,22 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                         // radius max = 1000 from seek bar max value
                         circle?.remove()
                         circle = mMap?.addCircle(
-                            CircleOptions().center(latLng).radius(500.0).strokeColor(
+                            CircleOptions().center(latLng).radius(seekBar?.progress!!.toDouble()).strokeColor(
                                 Color.RED
                             ).strokeWidth(7.0F).fillColor(Color.argb(70, 150, 50, 50))
                         )!!
-                        seekBar?.setOnSeekBarChangeListener(object :
-                            SeekBar.OnSeekBarChangeListener {
-                            override fun onProgressChanged(
-                                seekBar: SeekBar?,
-                                progress: Int,
-                                fromUser: Boolean
-                            ) {
-                                Log.d(TAG, "onProgressChanged: $progress")
-                                if (seekBar != null) {
-                                    circle?.radius = seekBar.progress.toDouble()
-                                }
+                        // seek bar
+                        seekBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+                            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                                circle?.radius = progress.toDouble()
                             }
 
                             override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                                //   TODO("Not yet implemented")
+                                // TODO("Not yet implemented")
                             }
 
                             override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                                // TODO("Not yet implemented")
                                 if (seekBar != null) {
                                     Snackbar.make(
                                         requireView(),
@@ -305,7 +312,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                             }
 
                         })
-
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }

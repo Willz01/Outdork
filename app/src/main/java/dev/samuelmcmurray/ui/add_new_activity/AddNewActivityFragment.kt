@@ -30,7 +30,6 @@ class AddNewActivityFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_new, container, false)
-        binding.lifecycleOwner = this
 
         navController = requireActivity().findNavController(R.id.fragmentContainer)
         bottomNavigationView = requireActivity().findViewById(R.id.nav)
@@ -44,5 +43,38 @@ class AddNewActivityFragment : Fragment() {
      /*   val factory = InjectorUtils.provideAddNewActivityViewModelFactory()
         viewModelProvider = ViewModelProvider(this, factory).get(AddNewActivityViewModel::class.java)
         viewModel = viewModelProvider*/
+
+        val activityNameTV = binding.activityName
+        val latitude = binding.latitude
+        val longitude = binding.longitude
+
+        val listActivities = ArrayList<String>()
+        binding.submitActivity.setOnClickListener {
+            if (binding.bikingCB.isChecked){
+                listActivities.add(binding.bikingCB.text as String)
+            }
+            if (binding.hikingCB.isChecked){
+                listActivities.add(binding.hikingCB.text as String)
+            }
+            if (binding.dogWalkingCB.isChecked){
+                listActivities.add(binding.dogWalkingCB.text as String)
+            }
+            if (binding.horseRidingCB.isChecked){
+                listActivities.add(binding.horseRidingCB.text as String)
+            }
+            if (binding.swimmingCB.isChecked){
+                listActivities.add(binding.swimmingCB.text as String)
+            }
+            if (binding.fishingCB.isChecked){
+                listActivities.add(binding.fishingCB.text as String)
+            }
+            if (binding.birdWatchingCB.isChecked){
+                listActivities.add(binding.birdWatchingCB.text as String)
+            }
+            if (binding.scenicCB.isChecked){
+                listActivities.add(binding.scenicCB.text as String)
+            }
+        }
+
     }
 }

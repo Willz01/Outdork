@@ -79,13 +79,6 @@
                         android:layout_weight="1"
                         android:src="@android:drawable/ic_menu_gallery" />
 
-                    <ImageView
-                        android:id="@+id/imagePrivate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:src="@android:drawable/ic_lock_lock" />
-
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/buttonCancel"
                         android:layout_width="wrap_content"

@@ -2,26 +2,41 @@ package dev.samuelmcmurray.ui.post
 
 import android.app.Application
 import android.content.Context
+import android.content.res.Resources
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
+import androidx.compose.ui.graphics.imageFromResource
+import androidx.compose.ui.res.integerResource
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.share.model.ShareHashtag
 import com.facebook.share.model.ShareLinkContent
 import com.facebook.share.widget.ShareButton
 import dev.samuelmcmurray.R
+import dev.samuelmcmurray.ui.discoveries.DiscoveriesViewModel
 import dev.samuelmcmurray.ui.favorite.FavoriteViewModel
+import dev.samuelmcmurray.ui.like.Like
+import dev.samuelmcmurray.ui.like.LikeViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.security.acl.Owner
 
 private const val TAG = "PostAdapter"
 
 class PostAdapter(private val list: List<dev.samuelmcmurray.data.model.Post>, var context: Context):
     RecyclerView.Adapter<PostViewHolder>() {
 
+    private val likeList = getLikeList()
 
     var data = listOf<String>()
         set(value) {
@@ -38,14 +53,43 @@ class PostAdapter(private val list: List<dev.samuelmcmurray.data.model.Post>, va
         val post: dev.samuelmcmurray.data.model.Post = list[position]
         val modelPost = list[position]
         //TODO fix this so it actually makes sense these fields need to be changed
-        //val favoritePost = Post(modelPost.id.toInt(), )
-        holder.bindWithoutImage(post, context)
+        //val favoritePost = Post
+        CoroutineScope(Dispatchers.Main).launch {
+            holder.bind(post, context, context.applicationContext as Application)
+        }
+
+        val likeButton = holder.itemView.findViewById<CheckBox>(R.id.like_button)
+        val likes = holder.itemView.findViewById<TextView>(R.id.textViewLikeCount)
+
+        if (checkLikeList(modelPost.userId, modelPost.id)) {
+            likeButton.isChecked = true
+            likeButton.setBackgroundResource(R.drawable.ic_baseline_thumb_up_blue_24)
+        }
 
 
+        likeButton.setOnClickListener {
+
+            if (likeButton.isChecked) {
+                likeButton.setBackgroundResource(R.drawable.ic_baseline_thumb_up_blue_24)
+                modelPost.likes = modelPost.likes + 1
+                likes.text = modelPost.likes.toString()
+                likeButton.isChecked = true
+                updateLikePost(modelPost.userId, modelPost.id, modelPost.likes)
+                addLikeLocal(modelPost.userId, modelPost.id)
+            } else {
+                likeButton.setBackgroundResource(R.drawable.ic_baseline_thumb_up_black_24)
+                modelPost.likes = modelPost.likes -1
+                likes.text = modelPost.likes.toString()
+                likeButton.isChecked = false
+                updateLikePost(modelPost.userId, modelPost.id, modelPost.likes)
+                removeLikeLocal(modelPost.userId, modelPost.id)
+            }
+        }
 
         holder.itemView.findViewById<TextView>(R.id.option_menu_txt).setOnClickListener {
             val popupMenu = PopupMenu(context, holder.itemView.findViewById(R.id.option_menu_txt))
             popupMenu.inflate(R.menu.post_option_menu)
+
 //            popupMenu.setOnMenuItemClickListener { item ->
 //
 //                addToBookmarks(favoritePost, item, context, holder)
@@ -56,7 +100,44 @@ class PostAdapter(private val list: List<dev.samuelmcmurray.data.model.Post>, va
 
     override fun getItemCount(): Int = list.size
 
+    private fun updateLikePost (postUser: String, postId: String, likes: Int) {
+        val viewModel = DiscoveriesViewModel(context.applicationContext as Application)
+        viewModel.updateLikes(postUser, postId, likes)
+    }
 
+    private fun addLikeLocal(uid: String, postID: String){
+        val viewModel = LikeViewModel(context.applicationContext as Application)
+        val like = Like(0, "$uid$postID")
+        viewModel.addLike(like)
+
+    }
+
+    private fun removeLikeLocal(uid: String, postID: String) {
+        val viewModel = LikeViewModel(context.applicationContext as Application)
+        val like = Like(0, "$uid$postID")
+        viewModel.removeLike(like)
+    }
+
+    private fun getLikeList() : List<Like> {
+        val viewModel = LikeViewModel(context.applicationContext as Application)
+        val likes = viewModel.readAllLike
+        if (likes.isEmpty()) {
+            return listOf()
+        }
+        return likes
+    }
+
+    private fun checkLikeList(uid: String, postID: String): Boolean {
+
+        for(item in likeList) {
+            if (item.postID == "$uid$postID") {
+                return true
+            }
+        }
+        return false
+    }
+
+//more generic name
     private fun addToBookmarks(
         post: Post,
         item: MenuItem,

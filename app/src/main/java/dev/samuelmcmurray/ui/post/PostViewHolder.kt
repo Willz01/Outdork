@@ -1,13 +1,10 @@
 package dev.samuelmcmurray.ui.post
 
-import android.R.attr.scaleHeight
-import android.R.attr.scaleWidth
+
+import android.app.Application
+import android.content.ContentResolver
 import android.content.Context
-import android.content.res.Resources
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Matrix
-import android.util.Log
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.data.model.Post
-import java.io.ByteArrayOutputStream
 
 
 private const val TAG = "PostViewHolder"
@@ -50,51 +46,32 @@ class PostViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         imagePost = itemView.findViewById(R.id.image_post)
     }
 
-    fun bindWithoutImage(post: Post, context: Context) {
+    fun bind(post: Post, context: Context, application: Application) {
         mPosterView?.text = post.userName
         mDateView?.text = post.date
         mContentView?.text = post.message
         likeCount?.text = post.likes.toString()
         commentCount?.text = post.comment.toString()
-        if (post.userImageURL != "nothing.com" || !post.userImageURL.equals("")) {
+        if (!post.userImageURL.equals("") && post.userImageURL != null) {
             Glide.with(context).load(post.userImageURL).into(profilePicture!!)
+        } else if (post.defaultProfileImage == null){
+            post.defaultProfileImage = Uri.parse(
+                ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
+                        application.resources.getResourcePackageName(R.drawable.defaultprofile) + '/' +
+                        application.resources.getResourceTypeName(R.drawable.defaultprofile) + '/' +
+                        R.drawable.defaultprofile.toString())
+            Glide.with(context).load(post.defaultProfileImage).into(profilePicture!!)
         } else {
-            getBitmapProfilePicture(post.defaultProfileImage)
+            Glide.with(context).load(post.defaultProfileImage).into(profilePicture!!)
         }
         if (post.hasImage) {
-            Glide.with(context).load(post.downloadURL).into(imagePost!!)
-        } else if (post.downloadURL == "nothing.com" ) {
-            Glide.with(context).load(post.image).into(imagePost!!)
+            Glide.with(context).load(post.downloadURL).centerCrop().override(1000,240).into(imagePost!!)
+        } else if (post.downloadURL == null ) {
+            Glide.with(context).load(post.image).centerCrop().override(1000,240).into(imagePost!!)
         } else {
-            imagePost?.visibility = View.INVISIBLE
+            imagePost?.visibility = View.GONE
         }
     }
 
-
-
-
-    private fun getBitmapProfilePicture(src: Int){
-        val newHeight = 56
-        val newWidth = 56
-        val originalImage = BitmapFactory.decodeResource(Resources.getSystem(), src)
-        var width = originalImage.getWidth()
-        Log.i(TAG,"Old width................ ${width.toString()}")
-        var height = originalImage.getHeight()
-        Log.i(TAG,"Old height................${height.toString()}")
-
-        val matrix = Matrix()
-        val scaleWidth = newWidth as Float / width
-        val scaleHeight = newHeight as Float / height
-        matrix.postScale(scaleWidth, scaleHeight)
-        val resizedBitmap = Bitmap.createBitmap(originalImage, 0, 0, width, height, matrix, true)
-
-        val outputStream = ByteArrayOutputStream()
-        resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-        profilePicture?.setImageBitmap(resizedBitmap)
-        width = resizedBitmap.width
-        Log.i(TAG,"new width................ ${width.toString()}")
-        height = resizedBitmap.height
-        Log.i(TAG,"new height................ ${height.toString()}")
-    }
 
 }

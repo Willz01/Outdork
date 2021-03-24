@@ -20,6 +20,8 @@ import dev.samuelmcmurray.data.model.Post
 import dev.samuelmcmurray.data.singelton.CurrentUserSingleton
 import dev.samuelmcmurray.databinding.DiscoveriesFragmentBinding
 import dev.samuelmcmurray.ui.post.PostAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 
 
 private const val TAG = "DiscoveriesFragment"
@@ -56,7 +58,18 @@ class DiscoveriesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(requireActivity(),defaultViewModelProviderFactory).get(DiscoveriesViewModel::class.java)
 
-        getPostsList()
+        viewModel.getPostsList()
+        viewModel.postsListLiveData.observe(viewLifecycleOwner, Observer { list ->
+            if (list.isNotEmpty()) {
+                val recyclerview = binding.root.findViewById<RecyclerView>(R.id.recycler_view_discoveries)
+                recyclerview.apply {
+                    layoutManager = LinearLayoutManager(activity)
+                    adapter = PostAdapter(list, requireContext())
+
+                }
+            }
+        })
+
         getCurrentUser()
 
         floatingActionButton.setOnClickListener{
@@ -100,21 +113,4 @@ class DiscoveriesFragment : Fragment() {
             }
         })
     }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun getPostsList() {
-        viewModel.getPostsList()
-        viewModel.postsListLiveData.observe(viewLifecycleOwner, Observer { list ->
-            if (list.isNotEmpty()) {
-                list
-                val recyclerview = binding.root.findViewById<RecyclerView>(R.id.recycler_view_discoveries)
-                recyclerview.apply {
-                    layoutManager = LinearLayoutManager(activity)
-                    adapter = PostAdapter(list, requireContext())
-                }
-            }
-        })
-
-    }
-
 }

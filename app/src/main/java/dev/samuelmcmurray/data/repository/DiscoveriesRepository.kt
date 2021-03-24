@@ -1,12 +1,16 @@
 package dev.samuelmcmurray.data.repository
 
 import android.app.Application
+import android.content.ContentResolver
+import android.content.res.Resources
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.net.toUri
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.Task
@@ -14,13 +18,16 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
+import dev.samuelmcmurray.R
 import dev.samuelmcmurray.data.model.CurrentUser
 import dev.samuelmcmurray.data.model.Post
 import dev.samuelmcmurray.data.singelton.CurrentUserSingleton
 import dev.samuelmcmurray.data.singelton.NewPostSingleton
+import kotlinx.coroutines.delay
 import java.time.LocalDate
 import java.time.Period
 import java.util.*
@@ -35,6 +42,7 @@ class DiscoveriesRepository {
     var storeImageLiveData: MutableLiveData<Boolean>
     var userLiveData: MutableLiveData<CurrentUser>
     var postsListLiveData: MutableLiveData<List<Post>>
+    var downloadURLLiveData: MutableLiveData<Boolean>
 
 
     constructor(application: Application) {
@@ -43,15 +51,14 @@ class DiscoveriesRepository {
         storeImageLiveData = MutableLiveData()
         userLiveData = MutableLiveData()
         postsListLiveData = MutableLiveData()
+        downloadURLLiveData = MutableLiveData()
     }
 
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun newPost(message: String, image: Uri, hasImage: Boolean, likes: Int) {
-        if (image != Uri.EMPTY) {
-            uploadImageToFirebase(image)
-        }
-        var userProfileImageURL : String? = null
+    suspend fun newPost(message: String, image: Uri, hasImage: Boolean, likes: Int) {
+        delay(1000)
+        var userProfileImageURL : String? = ""
         Log.d(TAG, "newPost: top ${CurrentUserSingleton.getInstance.currentUser}")
         var downloadURL = NewPostSingleton.getInstance.downloadURL
         var imageId = NewPostSingleton.getInstance.imageId
@@ -86,13 +93,13 @@ class DiscoveriesRepository {
             "date" to date.toString(),
             "id" to id,
             "userID" to uid,
-            "imageUri" to image,
-            "userImageURL" to userProfileImageURL,
+            "imageUri" to image.toString(),
+            "userImageURL" to userProfileImageURL.toString(),
             "comments" to 0,
             "userName" to userName,
             "imageId" to imageId,
             "hasImage" to hasImage,
-            "downloadURL" to downloadURL,
+            "downloadURL" to downloadURL.toString(),
             "timestamp" to FieldValue.serverTimestamp(),
             "likes" to likes
         )
@@ -111,7 +118,7 @@ class DiscoveriesRepository {
 
     }
 
-    private fun uploadImageToFirebase(contentUri: Uri) {
+    fun uploadImageToFirebase(contentUri: Uri) {
         storage = FirebaseStorage.getInstance()
         storageRef = FirebaseStorage.getInstance().reference
         NewPostSingleton.getInstance.imageId = UUID.randomUUID().toString()
@@ -140,6 +147,7 @@ class DiscoveriesRepository {
                 ).show()
                 val downloadUri = task.result
                 NewPostSingleton.getInstance.downloadURL = downloadUri.toString()
+                downloadURLLiveData.postValue(true)
             }
         }
     }
@@ -209,7 +217,7 @@ class DiscoveriesRepository {
     fun getPostsList() {
         var posts: MutableList<Post> = mutableListOf()
         val postRef = FirebaseFirestore.getInstance().collection("Posts")
-        postRef.orderBy("timestamp").get().addOnSuccessListener { result ->
+        postRef.orderBy("timestamp", Query.Direction.DESCENDING).get().addOnSuccessListener { result ->
             var i = 0
             for (document in result) {
                 val comments = document["comments"].toString()
@@ -236,57 +244,81 @@ class DiscoveriesRepository {
                 "Great hike today at the high hill sides, with my great hiking partner @superhiker2324",
                 "12/23/89",
                 "1987kdasdf823",
-                Uri.parse("${dev.samuelmcmurray.R.drawable.hike_image1}"),
+                Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
+                        application.resources.getResourcePackageName(R.drawable.hike_image1) + '/' +
+                        application.resources.getResourceTypeName(R.drawable.hike_image1) + '/' +
+                        R.drawable.hike_image1.toString()),
                 false,
                 "jdsioje309u3ijkew",
                 5,
                 "Mr Darcy",
-                "nothing.com",
+                null,
                 "jkdsyu89jkdu9")
-            post1.defaultProfileImage = dev.samuelmcmurray.R.drawable.hiker_pp1
+            post1.defaultProfileImage = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
+                    application.resources.getResourcePackageName(R.drawable.hiker_pp1) + '/' +
+                    application.resources.getResourceTypeName(R.drawable.hiker_pp1) + '/' +
+                    R.drawable.hiker_pp1.toString())
             posts.add(i++, post1)
 
             val post2 = Post(
                 "hello another post",
                 "19/55/62",
                 "djkshe983kljdf",
-                Uri.parse("${dev.samuelmcmurray.R.drawable.hike_image2}"),
+                Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
+                        application.resources.getResourcePackageName(R.drawable.hike_image2) + '/' +
+                        application.resources.getResourceTypeName(R.drawable.hike_image2) + '/' +
+                        R.drawable.hike_image2.toString()),
                 false,
                 "sd89ajio89kf89sd",
                 5,
                 "superhiker2324",
-                "nothing.com",
+                null,
                 "jdsiojodifwerjijklsd"
                 )
-            post2.defaultProfileImage = dev.samuelmcmurray.R.drawable.hiker_pp2
+            post2.defaultProfileImage = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
+                    application.resources.getResourcePackageName(R.drawable.hiker_pp2) + '/' +
+                    application.resources.getResourceTypeName(R.drawable.hiker_pp2) + '/' +
+                    R.drawable.hiker_pp2.toString())
             posts.add(i++, post2)
             val post3 = Post(
                 "another poist",
                 "14/56/95",
                 "djkshedsfjdf",
-                Uri.parse("dev.samuelmcmurray.R.drawable.hike_image3"),
+                Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
+                        application.resources.getResourcePackageName(R.drawable.hike_image3) + '/' +
+                        application.resources.getResourceTypeName(R.drawable.hike_image3) + '/' +
+                        R.drawable.hike_image3.toString()),
                 false,
                 "sd89ajio89kfsdfd89sd",
                 1,
                 "mY dOg",
-                "nothing.com",
+                null,
                 "jdsiojodifwedklsd"
                 )
-            post3.defaultProfileImage = dev.samuelmcmurray.R.drawable.hiker_pp3
+            post3.defaultProfileImage = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
+                    application.resources.getResourcePackageName(R.drawable.hiker_pp3) + '/' +
+                    application.resources.getResourceTypeName(R.drawable.hiker_pp3) + '/' +
+                    R.drawable.hiker_pp3.toString())
             posts.add(i++, post3)
             val post4 = Post(
                 "the last post",
                 "21/15/13",
                 "djkshedsfjdf",
-                Uri.parse("${dev.samuelmcmurray.R.drawable.hike_image4}"),
+                Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
+                        application.resources.getResourcePackageName(R.drawable.hike_image4) + '/' +
+                        application.resources.getResourceTypeName(R.drawable.hike_image4) + '/' +
+                        R.drawable.hike_image4.toString()),
                 false,
                 "sd899kfsdfd89sd",
                 1,
                 "Superman",
-                "nothing.com",
+                null,
                 "jdsdifwedklsd"
                 )
-            post3.defaultProfileImage = dev.samuelmcmurray.R.drawable.hiker_pp4
+            post4.defaultProfileImage = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
+                    application.resources.getResourcePackageName(R.drawable.hiker_pp4) + '/' +
+                    application.resources.getResourceTypeName(R.drawable.hiker_pp4) + '/' +
+                    R.drawable.hiker_pp4.toString())
             posts.add(i, post4)
             postsListLiveData.postValue(posts)
 
@@ -303,6 +335,17 @@ class DiscoveriesRepository {
                 Toast.LENGTH_SHORT
             ).show()
         }
+    }
+
+    fun updateLikes(uid: String, postID: String, likes: Int) {
+        val db = FirebaseFirestore.getInstance().collection("Posts")
+            .document("$uid$postID")
+            db.update("likes", likes)
+                .addOnSuccessListener {
+                Log.d(TAG, "updateLikes: Success")
+            }.addOnFailureListener {
+                Log.d(TAG, "updateLikes: Failed $it")
+            }
     }
 }
 

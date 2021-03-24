@@ -110,14 +110,14 @@ dependencies {
 
     implementation "androidx.cardview:cardview:1.0.0"
 
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.30"
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3-native-mt'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3-native-mt'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.31'
 
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.google.code.gson:gson:2.8.6'
 
-    implementation 'org.kodein.di:kodein-di:7.3.0'
+    implementation 'org.kodein.di:kodein-di:7.4.0'
 
     implementation "androidx.room:room-runtime:2.2.6"
     kapt "androidx.room:room-compiler:2.2.6"
@@ -134,7 +134,7 @@ dependencies {
     // Find the latest Facebook SDK releases here: https://goo.gl/Ce5L94
     //implementation 'com.facebook.android:facebook-android-sdk:4.0'
 
-    implementation 'com.facebook.android:facebook-share:5.15.3'
+    implementation 'com.facebook.android:facebook-share:9.0.0'
     implementation 'com.facebook.android:facebook-login:9.0.0'
 
     // circular image view
@@ -143,5 +143,5 @@ dependencies {
     implementation 'com.google.android.libraries.places:places:2.4.0'
 
     implementation 'com.github.bumptech.glide:glide:4.12.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+    kapt 'com.github.bumptech.glide:compiler:4.12.0'
 }

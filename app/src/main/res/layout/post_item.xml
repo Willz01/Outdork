@@ -108,7 +108,7 @@
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:scaleType="fitXY"
-                android:adjustViewBounds="false"
+                android:adjustViewBounds="true"
                 android:src="@drawable/hike_image1" />
 
             <LinearLayout

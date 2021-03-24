@@ -7,11 +7,8 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseUser
 import dev.samuelmcmurray.data.repository.RegisterRepository
 import dev.samuelmcmurray.data.singelton.CurrentUserSingleton
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 private const val TAG = "RegisterViewModel"
 class RegisterViewModel : AndroidViewModel{
@@ -34,12 +31,14 @@ class RegisterViewModel : AndroidViewModel{
 
     fun register(firstName: String, lastName: String, userName: String, email: String,
                  city: String, state: String, country: String, password: String, dob: String) {
-        myCoroutineScope.launch {
-            try {
-                registerUser(email, password)
-            } catch (e: Exception) {
 
-            }
+        myCoroutineScope.launch {
+                try {
+                    registerUser(email, password)
+                } catch (e: Exception) {
+
+                }
+
         }
         myCoroutineScope.launch {
             try {

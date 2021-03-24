@@ -73,6 +73,7 @@ class ProfileFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -84,6 +85,7 @@ class ProfileFragment : Fragment() {
         stateText = view.findViewById(R.id.stateText)
         countryText = view.findViewById(R.id.countryText)
 
+        getCurrentUser()
         firstNameText.setText(CurrentUserSingleton.getInstance.currentUser!!.firstName)
         lastNameText.setText(CurrentUserSingleton.getInstance.currentUser!!.lastName)
         dobText.setText(CurrentUserSingleton.getInstance.currentUser!!.dob)

@@ -117,23 +117,6 @@ class DiscoveriesFragment : Fragment() {
         postTextView.setOnClickListener {
             showHide()
         }
-/*        val navigationView = requireActivity().findViewById(R.id.nav_view) as NavigationView
-
-        val headerView = navigationView.getHeaderView(0)
-        //        try {
-        val navUsername =
-            headerView.findViewById<View>(R.id.profileName) as TextView
-        navUsername.text = CurrentUserSingleton.getInstance.currentUser!!.userName
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//        }
-//        try {
-        val navEmail =
-            headerView.findViewById<View>(R.id.profileEmail) as TextView
-        navEmail.text = CurrentUserSingleton.getInstance.currentUser!!.email
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//        }*/
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

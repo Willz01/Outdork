@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.CheckBox
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -14,6 +16,7 @@ import dev.samuelmcmurray.R
 import dev.samuelmcmurray.data.model.Activity
 import dev.samuelmcmurray.data.singelton.CurrentUserSingleton
 import dev.samuelmcmurray.databinding.FragmentAddNewBinding
+import dev.samuelmcmurray.sampleactivities.Activities
 
 class AddNewActivityFragment : Fragment() {
 
@@ -32,13 +35,12 @@ class AddNewActivityFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_new, container, false)
 
         navController = requireActivity().findNavController(R.id.fragmentContainer)
         bottomNavigationView = requireActivity().findViewById(R.id.nav)
         bottomNavigationView.visibility = View.GONE
+        return inflater.inflate(R.layout.fragment_add_new, container, false)
 
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,30 +54,30 @@ class AddNewActivityFragment : Fragment() {
         val longitude = binding.longitude
 
         val listActivities = ArrayList<String>()
-        binding.submitActivity.setOnClickListener {
-            if (binding.bikingCB.isChecked) {
-                listActivities.add(binding.bikingCB.text as String)
+        view.findViewById<Button>(R.id.submit_activity).setOnClickListener {
+            if (view.findViewById<CheckBox>(R.id.bikingCB).isChecked) {
+                listActivities.add(view.findViewById<CheckBox>(R.id.bikingCB).text as String)
             }
-            if (binding.hikingCB.isChecked) {
-                listActivities.add(binding.hikingCB.text as String)
+            if (view.findViewById<CheckBox>(R.id.hikingCB).isChecked) {
+                listActivities.add(view.findViewById<CheckBox>(R.id.hikingCB).text as String)
             }
-            if (binding.dogWalkingCB.isChecked) {
-                listActivities.add(binding.dogWalkingCB.text as String)
+            if (view.findViewById<CheckBox>(R.id.dogWalkingCB).isChecked) {
+                listActivities.add(view.findViewById<CheckBox>(R.id.dogWalkingCB).text as String)
             }
-            if (binding.horseRidingCB.isChecked) {
-                listActivities.add(binding.horseRidingCB.text as String)
+            if (view.findViewById<CheckBox>(R.id.horseRidingCB).isChecked) {
+                listActivities.add(view.findViewById<CheckBox>(R.id.horseRidingCB).text as String)
             }
-            if (binding.swimmingCB.isChecked) {
-                listActivities.add(binding.swimmingCB.text as String)
+            if (view.findViewById<CheckBox>(R.id.swimmingCB).isChecked) {
+                listActivities.add(view.findViewById<CheckBox>(R.id.swimmingCB).text as String)
             }
-            if (binding.fishingCB.isChecked) {
-                listActivities.add(binding.fishingCB.text as String)
+            if (view.findViewById<CheckBox>(R.id.fishingCB).isChecked) {
+                listActivities.add(view.findViewById<CheckBox>(R.id.fishingCB).text as String)
             }
-            if (binding.birdWatchingCB.isChecked) {
-                listActivities.add(binding.birdWatchingCB.text as String)
+            if (view.findViewById<CheckBox>(R.id.birdWatchingCB).isChecked) {
+                listActivities.add(view.findViewById<CheckBox>(R.id.birdWatchingCB).text as String)
             }
-            if (binding.scenicCB.isChecked) {
-                listActivities.add(binding.scenicCB.text as String)
+            if (view.findViewById<CheckBox>(R.id.scenicCB).isChecked) {
+                listActivities.add(view.findViewById<CheckBox>(R.id.birdWatchingCB).text as String)
             }
         }
 
@@ -85,5 +87,7 @@ class AddNewActivityFragment : Fragment() {
         // using a default rating for now
         val activity =
             Activity(activityNameTV.text.toString(), user!!, listActivities, LatLng(lat, long), 3.9)
+
+        Activities.addActivity(activity)
     }
 }

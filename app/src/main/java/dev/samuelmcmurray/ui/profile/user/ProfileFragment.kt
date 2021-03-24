@@ -7,19 +7,26 @@ import android.app.Instrumentation
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.google.android.gms.tasks.Task
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.UploadTask
 import de.hdodenhof.circleimageview.CircleImageView
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.data.model.CurrentUser
 import dev.samuelmcmurray.data.singelton.CurrentUserSingleton
+import dev.samuelmcmurray.data.singelton.NewPostSingleton
 import dev.samuelmcmurray.databinding.FragmentProfileMenuBinding
+import java.util.*
 
 
 class ProfileFragment : Fragment() {
@@ -80,6 +87,39 @@ class ProfileFragment : Fragment() {
 
         profileImage.setOnClickListener {
             getContent.launch("image/*")
+        }
+    }
+
+    private fun uploadImageToFirebase(contentUri: Uri) {
+        storage = FirebaseStorage.getInstance()
+        storageRef = FirebaseStorage.getInstance().reference
+        NewPostSingleton.getInstance.imageId = UUID.randomUUID().toString()
+        val imageId = NewPostSingleton.getInstance.imageId
+        val image = storageRef!!.child("UserPhotos/$imageId" )
+        val uploadTask = image.putFile(contentUri)
+        val urlTask = uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
+            if (!task.isSuccessful) {
+                Log.d("tag", "Failure: Uploaded Image URi is $contentUri")
+                Toast.makeText(
+                    application.applicationContext,
+                    "Upload Failed.",
+                    Toast.LENGTH_SHORT
+                ).show()
+                task.exception?.let {
+                    throw it
+                }
+            }
+            return@Continuation image.downloadUrl
+        }).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Toast.makeText(
+                    application.applicationContext,
+                    "Image Is Uploaded.",
+                    Toast.LENGTH_SHORT
+                ).show()
+                val downloadUri = task.result
+                NewPostSingleton.getInstance.downloadURL = downloadUri.toString()
+            }
         }
     }
 

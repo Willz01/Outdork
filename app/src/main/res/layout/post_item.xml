@@ -48,7 +48,7 @@
                 android:layout_gravity="start"
                 android:layout_weight="1"
                 android:paddingStart="16dp"
-                android:textColor="?attr/colorOnPrimary"
+                android:textColor="?attr/colorOnSecondary"
                 android:textAppearance="@style/titlefont"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -58,7 +58,7 @@
                 android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:textColor="?attr/colorOnPrimary"
+                android:textColor="?attr/colorOnSecondary"
                 android:text="@string/_8942"
                 android:textAppearance="?android:textAppearanceLarge" />
 
@@ -87,7 +87,7 @@
                 android:layout_gravity="center"
                 android:text="post content"
                 android:textAlignment="gravity"
-                android:textColor="?attr/colorOnPrimary"
+                android:textColor="?attr/colorOnSecondary"
                 android:textAppearance="@style/bodyfont" />
 
             <TextView
@@ -97,7 +97,7 @@
                 android:layout_gravity="end"
                 android:text="@string/date_sample"
                 android:textAlignment="textEnd"
-                android:textColor="?attr/colorOnPrimary"
+                android:textColor="?attr/colorOnSecondary"
                 android:textAppearance="@style/bodyfont"
                 android:textStyle="italic" />
 

@@ -101,26 +101,28 @@ class ProfileFragment : Fragment() {
                     .load(CurrentUserSingleton.getInstance.currentUser?.profilePhoto)
                     .into(profileImage)
             }
-        }else {
-                val defaultProfile = Uri.parse(
-                    ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
-                            requireActivity().resources.getResourcePackageName(R.drawable.defaultprofile) + '/' +
-                            requireActivity().resources.getResourceTypeName(R.drawable.defaultprofile) + '/' +
-                            R.drawable.defaultprofile.toString())
-            context?.let { GlideApp.with(it.applicationContext).load(defaultProfile).into(profileImage) }
+        } else {
+            val defaultProfile = Uri.parse(
+                ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
+                        requireActivity().resources.getResourcePackageName(R.drawable.defaultprofile) + '/' +
+                        requireActivity().resources.getResourceTypeName(R.drawable.defaultprofile) + '/' +
+                        R.drawable.defaultprofile.toString()
+            )
+            context?.let {
+                GlideApp.with(it.applicationContext).load(defaultProfile).into(profileImage)
+            }
         }
+
 
         val getContent =
             registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
                 profileImage.setImageURI(uri)
-                if (uri != null) {
-                    profileImageURI = uri
-                }
+                profileImageURI = uri!!
                 CurrentUserSingleton.getInstance.currentUser!!.profilePhoto = uri.toString()
             }
         profileImage.setOnClickListener {
             getContent.launch("image/*")
-            updateProfileImage(profileImageURI)
+            updateProfileImage()
         }
     }
 
@@ -156,9 +158,9 @@ class ProfileFragment : Fragment() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun updateProfileImage(imageURI: Uri) {
+    fun updateProfileImage() {
         if (CurrentUserSingleton.getInstance.loggedIn || CurrentUserSingleton.getInstance.currentUser == null) {
-            viewModel.updateProfileImage(imageURI)
+            viewModel.updateProfileImage(profileImageURI)
             viewModel.userLiveData.observe(viewLifecycleOwner) {
                 val currentUser = it
                 if (currentUser != null) {

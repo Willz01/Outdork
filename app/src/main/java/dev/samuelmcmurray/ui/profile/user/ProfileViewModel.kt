@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 private const val TAG = "ProfileViewModel"
 class ProfileViewModel : AndroidViewModel {
 
-    private lateinit var profileRepository : ProfileRepository
+    private var profileRepository : ProfileRepository
     var userLiveData: MutableLiveData<CurrentUser>
     private val filePath: MutableLiveData<Uri>
 
@@ -37,7 +37,8 @@ class ProfileViewModel : AndroidViewModel {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun updateProfileImage(imageURI: Uri) {
-        Log.d(dev.samuelmcmurray.ui.profile.user.TAG, "profileImage")
+        Log.d(TAG, "profileImage")
+        CurrentUserSingleton.getInstance.currentUser?.hasImage = false
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 profileRepository.updateProfileImage(imageURI)

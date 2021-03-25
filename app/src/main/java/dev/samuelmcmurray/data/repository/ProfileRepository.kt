@@ -18,6 +18,7 @@ import com.google.firebase.storage.UploadTask
 import dev.samuelmcmurray.data.model.CurrentUser
 import dev.samuelmcmurray.data.singelton.CurrentUserSingleton
 import dev.samuelmcmurray.data.singelton.NewPostSingleton
+import kotlinx.coroutines.delay
 import java.time.LocalDate
 import java.time.Period
 import java.util.*
@@ -33,7 +34,7 @@ class ProfileRepository{
     var userLiveData: MutableLiveData<CurrentUser>
     private lateinit var firebaseAuth: FirebaseAuth
     private val firebaseApplication = FirebaseApp.getInstance()
-    lateinit var userCreatedLiveData: MutableLiveData<Boolean>
+    var userCreatedLiveData: MutableLiveData<Boolean>
     lateinit var emailSentLiveData: MutableLiveData<Boolean>
 
 
@@ -42,11 +43,14 @@ class ProfileRepository{
         postCreatedLiveData = MutableLiveData()
         storeImageLiveData = MutableLiveData()
         userLiveData = MutableLiveData()
+        userCreatedLiveData = MutableLiveData()
     }
 
-    fun updateProfileImage(imageURI: Uri) {
+    suspend fun updateProfileImage(imageURI: Uri) {
         uploadToFireStorage(imageURI)
-
+        while (CurrentUserSingleton.getInstance.currentUser?.hasImage == false) {
+            delay(1000)
+        }
         var uid = CurrentUserSingleton.getInstance.currentUser!!.id
         val user = mapOf<String, Any?>(
             "firstName" to CurrentUserSingleton.getInstance.currentUser!!.firstName,
@@ -108,6 +112,7 @@ class ProfileRepository{
                     Toast.LENGTH_SHORT
                 ).show()
                 CurrentUserSingleton.getInstance.currentUser!!.profilePhoto = task.result.toString()
+                CurrentUserSingleton.getInstance.currentUser!!.hasImage = true
             }
         }
     }

@@ -67,7 +67,7 @@ class ProfileRepository{
         val db = FirebaseFirestore.getInstance(firebaseApplication)
         db.collection("Users")
             .document(uid)
-            .update(user)
+            .set(user)
             .addOnSuccessListener {
                 Log.d(
                     TAG,

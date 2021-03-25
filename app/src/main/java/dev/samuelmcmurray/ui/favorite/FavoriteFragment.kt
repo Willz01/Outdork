@@ -34,14 +34,14 @@ class FavoriteFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_favorite, container, false)
         binding.lifecycleOwner = this
 
-        val adapter = FavoriteAdapter(requireContext())
+        val adapter = FavoriteAdapter(requireContext(), requireActivity().application)
         val recyclerView = binding.bookmarksRv
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         recyclerView.adapter = adapter
 
         // view model
-        viewModel = ViewModelProvider(this).get(FavoriteViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity(),defaultViewModelProviderFactory).get(FavoriteViewModel::class.java)
         viewModel.readAllFavorites.observe(
             viewLifecycleOwner,
             Observer { posts -> adapter.setFavorites(posts as ArrayList<PostLocal>) })

@@ -3,14 +3,9 @@
     <color name="green_light">#A5A58D</color>
     <color name="green_dark">#6B705C</color>
     <color name="beige_dark">#CB997E</color>
-    <color name="beige_ligher">#FFE8D6</color>
+    <color name="beige_lighter">#FFE8D6</color>
     <color name="beige_light">#DDBEA9</color>
 
-    <color name="green_dark_light">#7E7E63</color>
-    <color name="green_dark_dark">#414337</color>
-    <color name="beige_dark_dark">#B97550</color>
-    <color name="beige_dark_light">#C5906D</color>
-    <color name="beige_dark_lighter">#FFBA85</color>
 
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>

@@ -21,8 +21,8 @@
     </style>
 
     <style name="ActionBarDark" parent="@style/Widget.AppCompat.Light.ActionBar">
-        <item name="android:background">@color/green_dark_dark </item>
-        <item name="background">@color/green_dark_dark </item>
+        <item name="android:background">@color/green_dark </item>
+        <item name="background">@color/green_dark </item>
         <item name="android:titleTextStyle">@style/titlefont</item>
         <item name="titleTextStyle">@style/titlefont</item>
     </style>

@@ -17,10 +17,13 @@ data class PostLocal(
     @ColumnInfo(name = "post_id")
     val id: Int = 0,
     val postID: String,
-    val profilePicture: Int,
-    val image_post: Int,
-    var rating: Double,
-    val poster: String,
+    var profilePicture: Int,
+    var image_post: Int,
+    var hasImage: Boolean,
+    val userName: String,
     val date: String,
-    val content: String
+    val message: String,
+    val postDownloadUrl: String,
+    val profileDownloadUrl: String,
+    val userId: String
 )

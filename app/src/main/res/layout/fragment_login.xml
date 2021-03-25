@@ -33,7 +33,7 @@
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp"
             android:layout_margin="15dp"
-            android:background="@color/beige_ligher"
+            android:background="@color/beige_dark"
             app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout

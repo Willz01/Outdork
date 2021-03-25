@@ -17,13 +17,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/green_light"
+        android:background="?attr/colorPrimary"
         android:layout_gravity="center"
         tools:context=".BookmarksFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/bookmarks_rv"
-            android:background="@color/green_light"
+            android:background="?attr/colorPrimary"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 

@@ -1,5 +1,7 @@
 package dev.samuelmcmurray.ui.discoveries
 
+import android.content.ContentResolver
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -18,6 +20,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textview.MaterialTextView
@@ -26,6 +29,12 @@ import dev.samuelmcmurray.R
 import dev.samuelmcmurray.data.singelton.CurrentUserSingleton
 import dev.samuelmcmurray.databinding.DiscoveriesFragmentBinding
 import dev.samuelmcmurray.ui.post.PostAdapter
+import dev.samuelmcmurray.utilities.AppGlideModule
+import dev.samuelmcmurray.utilities.GlideApp
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 private const val TAG = "DiscoveriesFragment"
@@ -86,7 +95,9 @@ class DiscoveriesFragment : Fragment() {
         })
 
         getCurrentUser()
-
+        CoroutineScope(Dispatchers.Main).launch {
+            loadImagesAndUserName()
+        }
         floatingActionButton.setOnClickListener{
             showHide()
         }
@@ -119,6 +130,8 @@ class DiscoveriesFragment : Fragment() {
             if (it) {
                 postTextView.visibility = View.VISIBLE
                 fragment.visibility = View.GONE
+                parentFragmentManager.beginTransaction().detach(this)
+                    .attach(this).commit()
                 floatingActionButton.show()
             } else {
                 postTextView.visibility = View.GONE
@@ -134,10 +147,22 @@ class DiscoveriesFragment : Fragment() {
         val navigationView = requireActivity().findViewById(R.id.nav_view) as NavigationView
         val headerView = navigationView.getHeaderView(0)
         try {
-            val imageResource = CurrentUserSingleton.getInstance.currentUser!!.profilePhoto
             val navPicture =
-                headerView.findViewById<View>(R.id.profilePicture) as ImageButton
-            context?.let { Glide.with(it.applicationContext).load(imageResource).into(navPicture) }
+                headerView.findViewById<View>(R.id.profilePicture) as ImageView
+            if (CurrentUserSingleton.getInstance.currentUser!!.hasImage) {
+                val imageResource = CurrentUserSingleton.getInstance.currentUser!!.profilePhoto
+                context?.let { GlideApp.with(it.applicationContext).load(imageResource).override(100).into(navPicture) }
+            } else {
+                val imageResource = Uri.parse(
+                    ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
+                            requireActivity().resources.getResourcePackageName(R.drawable.defaultprofile) + '/' +
+                            requireActivity().resources.getResourceTypeName(R.drawable.defaultprofile) + '/' +
+                            R.drawable.defaultprofile.toString())
+                context?.let {
+                    GlideApp.with(it.applicationContext).load(imageResource).override(100).into(navPicture)
+                }
+            }
+
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -145,10 +170,10 @@ class DiscoveriesFragment : Fragment() {
         val navUsername =
             headerView.findViewById<View>(R.id.profileName) as TextView
         navUsername.text = CurrentUserSingleton.getInstance.currentUser!!.userName
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        try {
+////        } catch (e: Exception) {
+////            e.printStackTrace()
+////        }
+////        try {
         val navEmail =
             headerView.findViewById<View>(R.id.profileEmail) as TextView
         navEmail.text = CurrentUserSingleton.getInstance.currentUser!!.email

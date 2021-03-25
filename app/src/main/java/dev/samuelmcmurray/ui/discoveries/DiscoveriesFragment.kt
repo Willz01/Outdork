@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
@@ -124,5 +126,34 @@ class DiscoveriesFragment : Fragment() {
                 floatingActionButton.hide()
             }
         })
+    }
+    private suspend fun loadImagesAndUserName() {
+        while (CurrentUserSingleton.getInstance.currentUser == null){
+            delay(1000)
+        }
+        val navigationView = requireActivity().findViewById(R.id.nav_view) as NavigationView
+        val headerView = navigationView.getHeaderView(0)
+        try {
+            val imageResource = CurrentUserSingleton.getInstance.currentUser!!.profilePhoto
+            val navPicture =
+                headerView.findViewById<View>(R.id.profilePicture) as ImageButton
+            context?.let { Glide.with(it.applicationContext).load(imageResource).into(navPicture) }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        try {
+        val navUsername =
+            headerView.findViewById<View>(R.id.profileName) as TextView
+        navUsername.text = CurrentUserSingleton.getInstance.currentUser!!.userName
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        try {
+        val navEmail =
+            headerView.findViewById<View>(R.id.profileEmail) as TextView
+        navEmail.text = CurrentUserSingleton.getInstance.currentUser!!.email
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }

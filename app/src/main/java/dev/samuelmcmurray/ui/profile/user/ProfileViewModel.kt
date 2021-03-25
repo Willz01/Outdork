@@ -42,14 +42,20 @@ class ProfileViewModel : AndroidViewModel {
             try {
                 profileRepository.updateProfileImage(imageURI)
             } catch (e: Exception) {
-                Log.d(dev.samuelmcmurray.ui.profile.user.TAG, "newPost: $e")
+                Log.d(dev.samuelmcmurray.ui.profile.user.TAG, "updateUserImage: $e")
             }
         }
     }
 
     fun updateProfileData(firstName: String, lastName: String, email: String,
                           city: String, state: String, country: String, ImageURI: Uri) {
-        profileRepository.updateProfileData(firstName, lastName, email, city, state, country, ImageURI)
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                profileRepository.updateProfileData(firstName, lastName, email, city, state, country, ImageURI)
+            } catch (e: Exception) {
+                Log.d(dev.samuelmcmurray.ui.profile.user.TAG, "updateUserData: $e")
+            }
+        }
     }
 
     constructor(application: Application) : super(application) {

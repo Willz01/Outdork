@@ -24,7 +24,6 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import de.hdodenhof.circleimageview.CircleImageView
 import dev.samuelmcmurray.R
-import dev.samuelmcmurray.data.model.CurrentUser
 import dev.samuelmcmurray.data.repository.ProfileRepository
 import dev.samuelmcmurray.data.singelton.CurrentUserSingleton
 import dev.samuelmcmurray.databinding.FragmentProfileMenuBinding
@@ -50,6 +49,7 @@ class ProfileFragment : Fragment() {
     private lateinit var stateText: EditText
     private lateinit var countryText: EditText
     private lateinit var profileImage: CircleImageView
+    private lateinit var profileImageURI: Uri
     private lateinit var application: Application
     private var storage: FirebaseStorage? = null
     private var storageRef: StorageReference? = null
@@ -91,14 +91,33 @@ class ProfileFragment : Fragment() {
         cityText.setText(CurrentUserSingleton.getInstance.currentUser!!.city)
         stateText.setText(CurrentUserSingleton.getInstance.currentUser!!.state)
         countryText.setText(CurrentUserSingleton.getInstance.currentUser!!.country)
-        profileImage.setImageURI(CurrentUserSingleton.getInstance.currentUser!!.profilePhoto)
+        if (CurrentUserSingleton.getInstance.currentUser!!.hasImage) {
+            context?.let {
+                Glide.with(it.applicationContext)
+                    .load(CurrentUserSingleton.getInstance.currentUser?.profilePhoto)
+                    .into(profileImage)
+            }
+        } else {
+            val defaultProfile = Uri.parse(
+                ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
+                        requireActivity().resources.getResourcePackageName(R.drawable.defaultprofile) + '/' +
+                        requireActivity().resources.getResourceTypeName(R.drawable.defaultprofile) + '/' +
+                        R.drawable.defaultprofile.toString()
+            )
+            context?.let {
+                Glide.with(it.applicationContext).load(defaultProfile).into(profileImage)
+            }
+        }
         val getContent =
             registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
                 profileImage.setImageURI(uri)
+                if (uri != null) {
+                    profileImageURI = uri
+                }
             }
         profileImage.setOnClickListener {
             getContent.launch("image/*")
-            updateProfileImage()
+            updateProfileImage(profileImageURI)
         }
     }
 
@@ -118,20 +137,24 @@ class ProfileFragment : Fragment() {
     }
 
     fun updateProfileData() {
-
-        val bm: Bitmap = (profileImage.drawable as BitmapDrawable).bitmap
-        val imageURI: Uri = getImageUri(this.requireContext(), bm)
-
-        viewModel.updateProfileData(firstNameText.text.toString(), lastNameText.text.toString(), emailText.text.toString(),
+        viewModel.updateProfileData(
+            firstNameText.text.toString(), lastNameText.text.toString(), emailText.text.toString(),
             cityText.text.toString(), stateText.text.toString(), countryText.text.toString(),
-            imageURI)
+            profileImageURI
+        )
+        viewModel.userLiveData.observe(viewLifecycleOwner) {
+            val currentUser = it
+            if (currentUser != null) {
+                Log.d(TAG, "currentUser success: ")
+            } else {
+                Log.d(TAG, "getCurrentUser: failure")
+            }
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun updateProfileImage() {
+    fun updateProfileImage(imageURI: Uri) {
         if (CurrentUserSingleton.getInstance.loggedIn || CurrentUserSingleton.getInstance.currentUser == null) {
-            val bm: Bitmap = (profileImage.drawable as BitmapDrawable).bitmap
-            val imageURI: Uri = getImageUri(this.requireContext(), bm)
             viewModel.updateProfileImage(imageURI)
             viewModel.userLiveData.observe(viewLifecycleOwner) {
                 val currentUser = it

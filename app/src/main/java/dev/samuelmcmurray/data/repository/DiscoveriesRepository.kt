@@ -211,10 +211,10 @@ class DiscoveriesRepository {
     }
 
     private fun getRelativeAge(dob: String) {
-        //val parts = dob.split("-")
-        //val year = parts[2]
-        //val day = parts[1]
-        //val month = parts[0]
+        val parts = dob.split("-")
+        val year = parts[2]
+        val day = parts[1]
+        val month = parts[0]
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

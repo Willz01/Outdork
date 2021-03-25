@@ -23,5 +23,7 @@ data class PostLocal(
     val userName: String,
     val date: String,
     val message: String,
+    val postDownloadUrl: String,
+    val profileDownloadUrl: String,
     val userId: String
 )

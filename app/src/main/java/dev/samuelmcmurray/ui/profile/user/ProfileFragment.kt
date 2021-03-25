@@ -31,6 +31,7 @@ import dev.samuelmcmurray.data.model.CurrentUser
 import dev.samuelmcmurray.data.repository.ProfileRepository
 import dev.samuelmcmurray.data.singelton.CurrentUserSingleton
 import dev.samuelmcmurray.databinding.FragmentProfileMenuBinding
+import dev.samuelmcmurray.utilities.GlideApp
 import java.io.ByteArrayOutputStream
 
 
@@ -96,7 +97,7 @@ class ProfileFragment : Fragment() {
         countryText.setText(CurrentUserSingleton.getInstance.currentUser!!.country)
         if (CurrentUserSingleton.getInstance.currentUser!!.hasImage) {
             context?.let {
-                Glide.with(it.applicationContext)
+                GlideApp.with(it.applicationContext)
                     .load(CurrentUserSingleton.getInstance.currentUser?.profilePhoto)
                     .into(profileImage)
             }
@@ -106,12 +107,13 @@ class ProfileFragment : Fragment() {
                             requireActivity().resources.getResourcePackageName(R.drawable.defaultprofile) + '/' +
                             requireActivity().resources.getResourceTypeName(R.drawable.defaultprofile) + '/' +
                             R.drawable.defaultprofile.toString())
-            context?.let { Glide.with(it.applicationContext).load(defaultProfile).into(profileImage) }
+            context?.let { GlideApp.with(it.applicationContext).load(defaultProfile).into(profileImage) }
         }
 
         val getContent =
             registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
                 profileImage.setImageURI(uri)
+                CurrentUserSingleton.getInstance.currentUser!!.profilePhoto = uri.toString()
             }
         profileImage.setOnClickListener {
             getContent.launch("image/*")

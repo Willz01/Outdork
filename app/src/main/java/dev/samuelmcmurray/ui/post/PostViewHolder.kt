@@ -16,6 +16,7 @@ import dev.samuelmcmurray.data.model.Post
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import dev.samuelmcmurray.R
+import dev.samuelmcmurray.utilities.GlideApp
 
 
 private const val TAG = "PostViewHolder"
@@ -56,16 +57,16 @@ class PostViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         likeCount?.text = post.likes.toString()
         commentCount?.text = post.comment.toString()
         if (!post.userImageURL.equals("") && post.userImageURL != null) {
-            Glide.with(context).load(post.userImageURL).into(profilePicture!!)
+            GlideApp.with(context).load(post.userImageURL).into(profilePicture!!)
         } else if (post.defaultProfileImage == null){
             post.defaultProfileImage = Uri.parse(
                 ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
                         application.resources.getResourcePackageName(R.drawable.defaultprofile) + '/' +
                         application.resources.getResourceTypeName(R.drawable.defaultprofile) + '/' +
                         R.drawable.defaultprofile.toString())
-            Glide.with(context).load(post.defaultProfileImage).into(profilePicture!!)
+            GlideApp.with(context).load(post.defaultProfileImage).into(profilePicture!!)
         } else {
-            Glide.with(context).load(post.defaultProfileImage).into(profilePicture!!)
+            GlideApp.with(context).load(post.defaultProfileImage).into(profilePicture!!)
         }
         if (post.hasImage) {
             Glide.with(context).load(post.downloadURL).centerCrop().override(400,240).into(imagePost!!)

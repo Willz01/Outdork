@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.ui.image.ImageViewModel
 import dev.samuelmcmurray.ui.post.PostLocal
+import dev.samuelmcmurray.utilities.GlideApp
 import dev.samuelmcmurray.utilities.ImageBitmapString
 
 private const val TAG = "FavoriteAdapter"
@@ -54,19 +55,19 @@ class FavoriteAdapter(val context: Context, val application: Application) :
         Log.d(TAG, "getBitmapPost: ${currentItem!!.userId}")
         Log.d(TAG, "getBitmapPost: ${currentItem!!.profilePicture}")
         val profileImage = holder.itemView.findViewById<ImageView>(R.id.profile_image)
-        if (currentItem!!.profileDownloadUrl.isNullOrEmpty()) {
-            Glide.with(context).load(currentItem!!.profileDownloadUrl).into(profileImage)
+        if (currentItem!!.profileDownloadUrl.isEmpty()) {
+            GlideApp.with(context).load(currentItem!!.profileDownloadUrl).override(56).into(profileImage)
         } else {
             val defaultProfileImage = Uri.parse(
                 ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
                         application.resources.getResourcePackageName(R.drawable.defaultprofile) + '/' +
                         application.applicationContext.resources.getResourceTypeName(R.drawable.defaultprofile) + '/' +
                         R.drawable.defaultprofile.toString())
-            Glide.with(context).load(defaultProfileImage).into(profileImage)
+            GlideApp.with(context).load(defaultProfileImage).override(56).into(profileImage)
         }
 
         val postImage = holder.itemView.findViewById<ImageView>(R.id.image_post)
-        Glide.with(context).load(currentItem!!.postDownloadUrl).centerCrop()
+        GlideApp.with(context).load(currentItem!!.postDownloadUrl).centerCrop()
             .override(400, 240).into(postImage)
     }
 

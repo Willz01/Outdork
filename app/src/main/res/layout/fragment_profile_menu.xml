@@ -18,20 +18,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:background="@color/green_light"
+        android:background="?attr/colorPrimary"
         tools:context=".ProfileFragment">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/green_light"
+            android:background="?attr/colorPrimary"
             android:orientation="vertical">
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="275dp"
-                android:background="@color/green_dark"
+                android:background="?attr/colorPrimaryVariant"
                 android:orientation="vertical">
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -139,7 +139,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="5dp"
-                        android:background="@color/green_dark" />
+                        android:background="?attr/colorPrimaryVariant" />
 
                     <LinearLayout
                         android:layout_width="100dp"
@@ -153,6 +153,7 @@
                             android:layout_marginTop="5dp"
                             android:text="Posts"
                             android:textAlignment="center"
+                            android:textColor="?attr/colorOnPrimary"
                             android:textSize="15sp" />
 
                         <ImageView
@@ -167,6 +168,7 @@
                             android:layout_height="20dp"
                             android:text="# of posts"
                             android:textAlignment="center"
+                            android:textColor="?attr/colorOnPrimary"
                             android:textSize="15sp" />
                     </LinearLayout>
 
@@ -219,7 +221,7 @@
                         android:layout_height="2dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
-                        android:background="@color/green_dark" />
+                        android:background="?attr/colorPrimaryVariant" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -231,12 +233,14 @@
                             android:layout_width="145dp"
                             android:layout_height="wrap_content"
                             android:text="Last Name: "
+                            android:textColor="?attr/colorOnPrimary"
                             android:textSize="21sp" />
 
                         <EditText
                             android:id="@+id/lastNameText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textColor="?attr/colorOnPrimary"
                             android:textSize="21sp" />
                     </LinearLayout>
 
@@ -257,12 +261,14 @@
                             android:layout_width="145dp"
                             android:layout_height="wrap_content"
                             android:text="Date of Birth: "
+                            android:textColor="?attr/colorOnPrimary"
                             android:textSize="21sp" />
 
                         <TextView
                             android:id="@+id/dobText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textColor="?attr/colorOnPrimary"
                             android:textSize="21sp" />
                     </LinearLayout>
 
@@ -271,7 +277,7 @@
                         android:layout_height="2dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
-                        android:background="@color/green_dark" />
+                        android:background="?attr/colorPrimaryVariant" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -283,12 +289,14 @@
                             android:layout_width="145dp"
                             android:layout_height="wrap_content"
                             android:text="Email Address: "
+                            android:textColor="?attr/colorOnPrimary"
                             android:textSize="21sp" />
 
                         <EditText
                             android:id="@+id/emailText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textColor="?attr/colorOnPrimary"
                             android:textSize="21sp" />
                     </LinearLayout>
 
@@ -309,12 +317,14 @@
                             android:layout_width="145dp"
                             android:layout_height="wrap_content"
                             android:text="City: "
+                            android:textColor="?attr/colorOnPrimary"
                             android:textSize="21sp" />
 
                         <EditText
                             android:id="@+id/cityText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textColor="?attr/colorOnPrimary"
                             android:textSize="21sp" />
                     </LinearLayout>
 
@@ -335,12 +345,14 @@
                             android:layout_width="145dp"
                             android:layout_height="wrap_content"
                             android:text="State/Province: "
+                            android:textColor="?attr/colorOnPrimary"
                             android:textSize="21sp" />
 
                         <EditText
                             android:id="@+id/stateText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textColor="?attr/colorOnPrimary"
                             android:textSize="21sp" />
                     </LinearLayout>
 
@@ -361,12 +373,14 @@
                             android:layout_width="145dp"
                             android:layout_height="wrap_content"
                             android:text="Country: "
+                            android:textColor="?attr/colorOnPrimary"
                             android:textSize="21sp" />
 
                         <EditText
                             android:id="@+id/countryText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textColor="?attr/colorOnPrimary"
                             android:textSize="21sp" />
                     </LinearLayout>
                     <LinearLayout

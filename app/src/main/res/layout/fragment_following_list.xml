@@ -6,7 +6,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/green_light"
+        android:background="?attr/colorPrimary"
         tools:context=".ui.following.followinglist.FollowingListFragment">
 
 

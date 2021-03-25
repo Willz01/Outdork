@@ -12,7 +12,7 @@ import dev.samuelmcmurray.ui.like.Like
 import dev.samuelmcmurray.utilities.ImageBitmapString
 
 
-@Database(entities = [Image::class], version = 1, exportSchema = false)
+@Database(entities = [Image::class], version = 5, exportSchema = false)
 @TypeConverters(ImageBitmapString::class)
 abstract class ImageDatabase : RoomDatabase() {
 

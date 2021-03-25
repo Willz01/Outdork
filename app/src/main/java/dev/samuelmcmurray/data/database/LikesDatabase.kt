@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import dev.samuelmcmurray.data.dao.LikesDAO
 import dev.samuelmcmurray.ui.like.Like
 
-@Database(entities = [Like::class],version = 5, exportSchema = false)
+@Database(entities = [Like::class],version = 6, exportSchema = false)
 abstract class LikesDatabase : RoomDatabase(){
 
     abstract fun likesDAO(): LikesDAO

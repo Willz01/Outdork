@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
@@ -139,7 +140,6 @@ class DiscoveriesFragment : Fragment() {
             }
         })
     }
-
     private suspend fun loadImagesAndUserName() {
         while (CurrentUserSingleton.getInstance.currentUser == null){
             delay(1000)
@@ -147,7 +147,6 @@ class DiscoveriesFragment : Fragment() {
         val navigationView = requireActivity().findViewById(R.id.nav_view) as NavigationView
         val headerView = navigationView.getHeaderView(0)
         try {
-
             val navPicture =
                 headerView.findViewById<View>(R.id.profilePicture) as ImageView
             if (CurrentUserSingleton.getInstance.currentUser!!.hasImage) {
@@ -182,5 +181,4 @@ class DiscoveriesFragment : Fragment() {
             e.printStackTrace()
         }
     }
-
 }

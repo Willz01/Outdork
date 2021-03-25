@@ -4,17 +4,23 @@ import android.app.Application
 import android.net.Uri
 import android.os.Build
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
+import com.google.android.gms.tasks.Continuation
+import com.google.android.gms.tasks.Task
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
 import dev.samuelmcmurray.data.model.CurrentUser
 import dev.samuelmcmurray.data.singelton.CurrentUserSingleton
+import dev.samuelmcmurray.data.singelton.NewPostSingleton
 import java.time.LocalDate
 import java.time.Period
+import java.util.*
 
 
 private const val TAG = "ProfileRepository"
@@ -39,9 +45,10 @@ class ProfileRepository{
     }
 
     fun updateProfileImage(imageURI: Uri) {
-        var uid = CurrentUserSingleton.getInstance.currentUser!!.id
+        uploadToFireStorage(imageURI)
 
-        val user = hashMapOf(
+        var uid = CurrentUserSingleton.getInstance.currentUser!!.id
+        val user = mapOf<String, Any?>(
             "firstName" to CurrentUserSingleton.getInstance.currentUser!!.firstName,
             "lastName" to CurrentUserSingleton.getInstance.currentUser!!.lastName,
             "userName" to CurrentUserSingleton.getInstance.currentUser!!.userName,
@@ -51,10 +58,11 @@ class ProfileRepository{
             "city" to CurrentUserSingleton.getInstance.currentUser!!.city,
             "dateOfBirth" to CurrentUserSingleton.getInstance.currentUser!!.dob,
             "about" to CurrentUserSingleton.getInstance.currentUser!!.about,
-            "hasImage" to CurrentUserSingleton.getInstance.currentUser!!.hasImage,
-            "userImageURL" to imageURI.toString()
+            "hasImage" to true,
+            "userImageURL" to CurrentUserSingleton.getInstance.currentUser!!.profilePhoto
         )
-        Log.d(TAG, "createUser: $user")
+        Log.d(TAG, "updateImage: $user")
+
 
         val db = FirebaseFirestore.getInstance(firebaseApplication)
         db.collection("Users")
@@ -73,13 +81,46 @@ class ProfileRepository{
 
     }
 
+    fun uploadToFireStorage(userImage: Uri) {
+        storage = FirebaseStorage.getInstance()
+        storageRef = FirebaseStorage.getInstance().reference
+        val uid = CurrentUserSingleton.getInstance.currentUser!!.id
+        val userprofileImage = storageRef!!.child("userImage/$uid" )
+        val uploadTaskImage = userprofileImage.putFile(userImage)
+        val urlTask = uploadTaskImage.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
+            if (!task.isSuccessful) {
+                Log.d("tag", "Failure: Uploaded Image URi is $userImage")
+                Toast.makeText(
+                    application.applicationContext,
+                    "Upload Failed.",
+                    Toast.LENGTH_SHORT
+                ).show()
+                task.exception?.let {
+                    throw it
+                }
+            }
+            return@Continuation userprofileImage.downloadUrl
+        }).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Toast.makeText(
+                    application.applicationContext,
+                    "User Is Updated.",
+                    Toast.LENGTH_SHORT
+                ).show()
+                CurrentUserSingleton.getInstance.currentUser!!.profilePhoto = task.result.toString()
+            }
+        }
+    }
+
     fun updateProfileData(
         firstName: String, lastName: String, email: String,
         city: String, state: String, country: String, ImageURI: Uri
     ) {
         var uid = CurrentUserSingleton.getInstance.currentUser!!.id
+        storage = FirebaseStorage.getInstance()
+        storageRef = FirebaseStorage.getInstance().reference
 
-        val user = hashMapOf(
+        val user = mapOf<String, Any>(
             "firstName" to firstName,
             "lastName" to lastName,
             "userName" to CurrentUserSingleton.getInstance.currentUser!!.userName,
@@ -92,12 +133,12 @@ class ProfileRepository{
             "hasImage" to CurrentUserSingleton.getInstance.currentUser!!.hasImage,
             "userImageURL" to ImageURI.toString()
         )
-        Log.d(TAG, "createUser: $user")
+        Log.d(TAG, "UpdateData: $user")
 
         val db = FirebaseFirestore.getInstance(firebaseApplication)
         db.collection("Users")
-            .document(uid)
-            .set(user)
+            .document("$uid")
+            .update(user)
             .addOnSuccessListener {
                 Log.d(
                     TAG,

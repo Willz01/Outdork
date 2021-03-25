@@ -27,7 +27,6 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import de.hdodenhof.circleimageview.CircleImageView
 import dev.samuelmcmurray.R
-import dev.samuelmcmurray.data.model.CurrentUser
 import dev.samuelmcmurray.data.repository.ProfileRepository
 import dev.samuelmcmurray.data.singelton.CurrentUserSingleton
 import dev.samuelmcmurray.databinding.FragmentProfileMenuBinding
@@ -54,6 +53,7 @@ class ProfileFragment : Fragment() {
     private lateinit var stateText: EditText
     private lateinit var countryText: EditText
     private lateinit var profileImage: CircleImageView
+    private lateinit var profileImageURI: Uri
     private lateinit var application: Application
     private var storage: FirebaseStorage? = null
     private var storageRef: StorageReference? = null
@@ -117,7 +117,7 @@ class ProfileFragment : Fragment() {
             }
         profileImage.setOnClickListener {
             getContent.launch("image/*")
-            updateProfileImage()
+            updateProfileImage(profileImageURI)
         }
     }
 
@@ -137,20 +137,24 @@ class ProfileFragment : Fragment() {
     }
 
     fun updateProfileData() {
-
-        val bm: Bitmap = (profileImage.drawable as BitmapDrawable).bitmap
-        val imageURI: Uri = getImageUri(this.requireContext(), bm)
-
-        viewModel.updateProfileData(firstNameText.text.toString(), lastNameText.text.toString(), emailText.text.toString(),
+        viewModel.updateProfileData(
+            firstNameText.text.toString(), lastNameText.text.toString(), emailText.text.toString(),
             cityText.text.toString(), stateText.text.toString(), countryText.text.toString(),
-            imageURI)
+            profileImageURI
+        )
+        viewModel.userLiveData.observe(viewLifecycleOwner) {
+            val currentUser = it
+            if (currentUser != null) {
+                Log.d(TAG, "currentUser success: ")
+            } else {
+                Log.d(TAG, "getCurrentUser: failure")
+            }
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun updateProfileImage() {
+    fun updateProfileImage(imageURI: Uri) {
         if (CurrentUserSingleton.getInstance.loggedIn || CurrentUserSingleton.getInstance.currentUser == null) {
-            val bm: Bitmap = (profileImage.drawable as BitmapDrawable).bitmap
-            val imageURI: Uri = getImageUri(this.requireContext(), bm)
             viewModel.updateProfileImage(imageURI)
             viewModel.userLiveData.observe(viewLifecycleOwner) {
                 val currentUser = it

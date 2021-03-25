@@ -40,7 +40,7 @@
                     android:layout_height="109dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="30dp"
-                    android:src="@color/white" />
+                    android:src="@drawable/com_facebook_profile_picture_blank_portrait"/>
 
                 <TextView
                     android:id="@+id/usernameField"

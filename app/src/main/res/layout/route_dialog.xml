@@ -57,7 +57,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@color/green_light"
+                android:background="?attr/colorPrimary"
                 android:gravity="center_horizontal"
                 android:paddingStart="10dp"
                 android:text="Time : "

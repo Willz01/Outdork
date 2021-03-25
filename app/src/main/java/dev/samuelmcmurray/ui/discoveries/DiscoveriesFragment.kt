@@ -125,6 +125,8 @@ class DiscoveriesFragment : Fragment() {
             if (it) {
                 postTextView.visibility = View.VISIBLE
                 fragment.visibility = View.GONE
+                parentFragmentManager.beginTransaction().detach(this)
+                    .attach(this).commit()
                 floatingActionButton.show()
             } else {
                 postTextView.visibility = View.GONE
@@ -149,17 +151,17 @@ class DiscoveriesFragment : Fragment() {
             e.printStackTrace()
         }
 //        try {
-        val navUsername =
-            headerView.findViewById<View>(R.id.profileName) as TextView
-        navUsername.text = CurrentUserSingleton.getInstance.currentUser!!.userName
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//        }
-//        try {
-        val navEmail =
-            headerView.findViewById<View>(R.id.profileEmail) as TextView
-        navEmail.text = CurrentUserSingleton.getInstance.currentUser!!.email
-//        } catch (e: Exception) {
+//        val navUsername =
+//            headerView.findViewById<View>(R.id.profileName) as TextView
+//        navUsername.text = CurrentUserSingleton.getInstance.currentUser!!.userName
+////        } catch (e: Exception) {
+////            e.printStackTrace()
+////        }
+////        try {
+//        val navEmail =
+//            headerView.findViewById<View>(R.id.profileEmail) as TextView
+//        navEmail.text = CurrentUserSingleton.getInstance.currentUser!!.email
+////        } catch (e: Exception) {
 //            e.printStackTrace()
 //        }
     }

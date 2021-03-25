@@ -68,9 +68,9 @@ class PostViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
             Glide.with(context).load(post.defaultProfileImage).into(profilePicture!!)
         }
         if (post.hasImage) {
-            Glide.with(context).load(post.downloadURL).centerCrop().override(1000,240).into(imagePost!!)
+            Glide.with(context).load(post.downloadURL).centerCrop().override(400,240).into(imagePost!!)
         } else if (post.downloadURL.isNullOrEmpty()) {
-            Glide.with(context).load(post.image).centerCrop().override(1000,240).into(imagePost!!)
+            Glide.with(context).load(post.image).centerCrop().override(400,240).into(imagePost!!)
         } else {
             imagePost?.visibility = View.GONE
         }

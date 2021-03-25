@@ -30,7 +30,7 @@ class FollowingFeedsFragment : Fragment() {
             "Mr Darcy",
             "21/20/11",
             "Great hike today at the high hill sides, with my great hiking partner @superhiker2324",
-            "1232321"
+            "","", "dfdsf"
         ),
         PostLocal(
             0,
@@ -41,7 +41,8 @@ class FollowingFeedsFragment : Fragment() {
             "superhiker2324",
             "19/55/62",
             "hello another post",
-            "23432432"
+            "",
+            "","dfdfsdsfw"
         ),
         PostLocal(
             0,
@@ -52,7 +53,8 @@ class FollowingFeedsFragment : Fragment() {
             "mY dOg",
             "14/56/95",
             "another poist",
-            "32423t5465"
+            "",
+            "","dsfdfdsdfew"
         ),
         PostLocal(
             0,
@@ -63,7 +65,8 @@ class FollowingFeedsFragment : Fragment() {
             "Superman",
             "21/15/13",
             "the last post",
-            "dsfdsreer"
+            "",
+            "","sdfdgrear"
         )
     )
 

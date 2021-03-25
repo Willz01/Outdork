@@ -119,7 +119,7 @@ class PostAdapter(private val list: List<Post>, var context: Context):
             popupMenu.setOnMenuItemClickListener { item ->
                 postLocal = PostLocal(0,"${modelPost.userId}${modelPost.id}", 0,
                 0, modelPost.hasImage, modelPost.userName, modelPost.date, modelPost.message,
-                modelPost.userId)
+                 modelPost.downloadURL.toString(), modelPost.userImageURL.toString(),modelPost.userId)
                 handlePopupMenu(postLocal, item, context, holder, profileBitmap!!, postedImageBitmap!!)
             }
             popupMenu.show()

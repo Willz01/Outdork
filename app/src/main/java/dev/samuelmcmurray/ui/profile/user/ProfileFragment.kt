@@ -113,6 +113,9 @@ class ProfileFragment : Fragment() {
         val getContent =
             registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
                 profileImage.setImageURI(uri)
+                if (uri != null) {
+                    profileImageURI = uri
+                }
                 CurrentUserSingleton.getInstance.currentUser!!.profilePhoto = uri.toString()
             }
         profileImage.setOnClickListener {

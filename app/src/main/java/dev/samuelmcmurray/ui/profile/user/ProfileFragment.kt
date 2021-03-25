@@ -3,6 +3,7 @@ package dev.samuelmcmurray.ui.profile.user
 //import dev.samuelmcmurray.data.singelton.CurrentUserSingleton
 
 import android.app.Application
+import android.content.ContentResolver
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
@@ -15,11 +16,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
+import com.bumptech.glide.Glide
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import de.hdodenhof.circleimageview.CircleImageView
@@ -44,7 +47,7 @@ class ProfileFragment : Fragment() {
     private lateinit var binding: FragmentProfileMenuBinding
     private lateinit var firstNameText: EditText
     private lateinit var lastNameText: EditText
-    private lateinit var dobText: EditText
+    private lateinit var dobText: TextView
     private lateinit var emailText: EditText
     private lateinit var cityText: EditText
     private lateinit var stateText: EditText
@@ -91,7 +94,21 @@ class ProfileFragment : Fragment() {
         cityText.setText(CurrentUserSingleton.getInstance.currentUser!!.city)
         stateText.setText(CurrentUserSingleton.getInstance.currentUser!!.state)
         countryText.setText(CurrentUserSingleton.getInstance.currentUser!!.country)
-        profileImage.setImageURI(CurrentUserSingleton.getInstance.currentUser!!.profilePhoto)
+        if (CurrentUserSingleton.getInstance.currentUser!!.hasImage) {
+            context?.let {
+                Glide.with(it.applicationContext)
+                    .load(CurrentUserSingleton.getInstance.currentUser?.profilePhoto)
+                    .into(profileImage)
+            }
+        }else {
+                val defaultProfile = Uri.parse(
+                    ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
+                            requireActivity().resources.getResourcePackageName(R.drawable.defaultprofile) + '/' +
+                            requireActivity().resources.getResourceTypeName(R.drawable.defaultprofile) + '/' +
+                            R.drawable.defaultprofile.toString())
+            context?.let { Glide.with(it.applicationContext).load(defaultProfile).into(profileImage) }
+        }
+
         val getContent =
             registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
                 profileImage.setImageURI(uri)

@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import dev.samuelmcmurray.data.dao.FavoriteDao
 import dev.samuelmcmurray.ui.post.PostLocal
 
-@Database(entities = [PostLocal::class], version = 5, exportSchema = false)
+@Database(entities = [PostLocal::class], version = 6, exportSchema = false)
 abstract class FavoriteDatabase : RoomDatabase() {
 
     abstract fun bookmarkDao(): FavoriteDao

@@ -32,7 +32,11 @@ import kotlinx.coroutines.launch
 import android.graphics.drawable.BitmapDrawable
 
 import android.R.attr.bitmap
+import android.app.Dialog
 import android.graphics.Bitmap
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.ViewModel
 import dev.samuelmcmurray.ui.image.Image
 import dev.samuelmcmurray.ui.image.ImageViewModel

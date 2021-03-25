@@ -1,22 +1,12 @@
 package dev.samuelmcmurray.ui.welcome
 
-import android.media.Image
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.databinding.DataBindingUtil.inflate
 import androidx.fragment.app.Fragment
-import com.bumptech.glide.Glide
-import com.google.android.material.navigation.NavigationView
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import dev.samuelmcmurray.R
-import dev.samuelmcmurray.data.model.CurrentUser
-import dev.samuelmcmurray.data.singelton.CurrentUserSingleton
 import dev.samuelmcmurray.databinding.FragmentWelcomeBinding
 
 

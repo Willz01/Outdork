@@ -1,5 +1,6 @@
 package dev.samuelmcmurray.ui.post
 
+import android.R.attr
 import android.app.Application
 import android.content.Context
 import android.content.Intent
@@ -28,6 +29,15 @@ import dev.samuelmcmurray.ui.profile.OtherProfileFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import android.graphics.drawable.BitmapDrawable
+
+import android.R.attr.bitmap
+import android.graphics.Bitmap
+import androidx.lifecycle.ViewModel
+import dev.samuelmcmurray.ui.image.Image
+import dev.samuelmcmurray.ui.image.ImageViewModel
+import dev.samuelmcmurray.utilities.ImageBitmapString
+
 
 private const val TAG = "PostAdapter"
 
@@ -53,20 +63,27 @@ class PostAdapter(private val list: List<Post>, var context: Context):
         val modelPost = list[position]
 
         //TODO fix this so it actually makes sense these fields need to be changed
-        //val favoritePost = Post
+        var postLocal: PostLocal
         CoroutineScope(Dispatchers.Main).launch {
             holder.bind(post, context, context.applicationContext as Application)
         }
 
-
+        val postImage = holder.itemView.findViewById<ImageView>(R.id.image_post)
 
         val profileImage = holder.itemView.findViewById<ImageView>(R.id.profile_image)
         profileImage.setOnClickListener {
             val intent = Intent(context, OtherProfileFragment::class.java)
-            val otherUser = OtherUser(post.userId, "", "", post.userName, "",
-                "", "", "", "")
+            val otherUser = OtherUser(
+                post.userId, "", "", post.userName, "",
+                "", "", "", ""
+            )
             OtherUserSingleton.getInstance.otherUser = otherUser
         }
+
+
+        val profileBitmap = (profileImage.drawable as BitmapDrawable?)?.bitmap
+
+        val postedImageBitmap = (postImage.drawable as BitmapDrawable?)?.bitmap
 
         val likeButton = holder.itemView.findViewById<CheckBox>(R.id.like_button)
         val likes = holder.itemView.findViewById<TextView>(R.id.textViewLikeCount)
@@ -78,7 +95,6 @@ class PostAdapter(private val list: List<Post>, var context: Context):
 
 
         likeButton.setOnClickListener {
-
             if (likeButton.isChecked) {
                 likeButton.setBackgroundResource(R.drawable.ic_baseline_thumb_up_blue_24)
                 modelPost.likes = modelPost.likes + 1
@@ -100,11 +116,13 @@ class PostAdapter(private val list: List<Post>, var context: Context):
             val popupMenu = PopupMenu(context, holder.itemView.findViewById(R.id.option_menu_txt))
             popupMenu.inflate(R.menu.post_option_menu)
 
-//            popupMenu.setOnMenuItemClickListener { item ->
-//
-//                addToBookmarks(favoritePost, item, context, holder)
-//            }
-//            popupMenu.show()
+            popupMenu.setOnMenuItemClickListener { item ->
+                postLocal = PostLocal(0,"${modelPost.userId}${modelPost.id}", 0,
+                0, modelPost.hasImage, modelPost.userName, modelPost.date, modelPost.message,
+                modelPost.userId)
+                handlePopupMenu(postLocal, item, context, holder, profileBitmap!!, postedImageBitmap!!)
+            }
+            popupMenu.show()
         }
     }
 
@@ -112,13 +130,15 @@ class PostAdapter(private val list: List<Post>, var context: Context):
 
     private fun viewOtherProfile(post: Post) {
         val viewModel = DiscoveriesViewModel(context.applicationContext as Application)
-        val otherUser = OtherUser(post.userId, "", "", post.userName, "",
-        "", "", "", "")
+        val otherUser = OtherUser(
+            post.userId, "", "", post.userName, "",
+            "", "", "", ""
+        )
         OtherUserSingleton.getInstance.otherUser = otherUser
 
     }
 
-    private fun updateLikePost (postUser: String, postId: String, likes: Int) {
+    private fun updateLikePost(postUser: String, postId: String, likes: Int) {
         val viewModel = DiscoveriesViewModel(context.applicationContext as Application)
         viewModel.updateLikes(postUser, postId, likes)
     }
@@ -155,13 +175,15 @@ class PostAdapter(private val list: List<Post>, var context: Context):
         return false
     }
 
-//more generic name
-    private fun addToBookmarks(
+
+    private fun handlePopupMenu(
     post: PostLocal,
     item: MenuItem,
     context: Context,
-    holder: PostViewHolder
-    ): Boolean {
+    holder: PostViewHolder,
+    profileBitmap: Bitmap,
+    postedImageBitmap: Bitmap
+): Boolean {
         val bookmarksViewModel =
             FavoriteViewModel(context.applicationContext as Application)
 
@@ -184,6 +206,25 @@ class PostAdapter(private val list: List<Post>, var context: Context):
                         )
                             .show()
                     } else {
+                        val imageBitmapString = ImageBitmapString()
+                        if (imageExist("${post.userId}${post.id}")) {
+                            val postedImageString = imageBitmapString
+                                .BitMapToString(postedImageBitmap!!)
+                            val postImage = Image(0,true,"${post.userId}${post.id}", postedImageString)
+                            post.image_post = postImage.id
+                        }
+
+
+                        if (imageExist("${post.userId}")) {
+                            val profileImageString =
+                                imageBitmapString.BitMapToString(profileBitmap!!)
+                            val profileImage = Image(0,true,"${post.userId}", profileImageString)
+                            post.profilePicture = profileImage.id
+                        }
+                        val profileImageString =
+                            imageBitmapString.BitMapToString(profileBitmap!!)
+
+
                         bookmarksViewModel.addPost(post)
                         Toast.makeText(context, "Added to favourites", Toast.LENGTH_SHORT)
                             .show()
@@ -208,7 +249,7 @@ class PostAdapter(private val list: List<Post>, var context: Context):
 
                     val shareLinkContent =
                         ShareLinkContent.Builder()
-                            .setQuote(post.content.trim())
+                            .setQuote(post.message.trim())
                             .setContentUrl(Uri.parse("https://www.youtube.com/"))
                             .setShareHashtag(
                                 ShareHashtag.Builder().setHashtag("#OUTDORK").build()
@@ -227,6 +268,18 @@ class PostAdapter(private val list: List<Post>, var context: Context):
 
     }
 
-
+    private fun imageExist(fullId: String): Boolean {
+        val viewModel = ImageViewModel(context.applicationContext as Application)
+        val images: List<Image?> = viewModel.readAllImages
+        if (images == null) {
+            return true
+        }
+        for (item in images) {
+            if (item?.fullId == fullId) {
+                return false
+            }
+        }
+        return true
+    }
 
 }

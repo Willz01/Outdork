@@ -26,40 +26,44 @@ class FollowingFeedsFragment : Fragment() {
             "45444f4f",
             R.drawable.hiker_pp1,
             R.drawable.hike_image1,
-            5.0,
+            false,
             "Mr Darcy",
             "21/20/11",
-            "Great hike today at the high hill sides, with my great hiking partner @superhiker2324"
+            "Great hike today at the high hill sides, with my great hiking partner @superhiker2324",
+            "1232321"
         ),
         PostLocal(
             0,
             "erefe22e",
             R.drawable.hiker_pp2,
             R.drawable.hike_image2,
-            3.7,
+            false,
             "superhiker2324",
             "19/55/62",
-            "hello another post"
+            "hello another post",
+            "23432432"
         ),
         PostLocal(
             0,
             "er3e3d3e",
             R.drawable.hiker_pp3,
             R.drawable.hike_image3,
-            3.3,
+            false,
             "mY dOg",
             "14/56/95",
-            "another poist"
+            "another poist",
+            "32423t5465"
         ),
         PostLocal(
             0,
             "efr3d3d33",
             R.drawable.hiker_pp4,
             R.drawable.hike_image4,
-            2.6,
+            false,
             "Superman",
             "21/15/13",
-            "the last post"
+            "the last post",
+            "dsfdsreer"
         )
     )
 

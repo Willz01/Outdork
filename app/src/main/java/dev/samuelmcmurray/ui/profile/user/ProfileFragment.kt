@@ -1,18 +1,37 @@
 package dev.samuelmcmurray.ui.profile.user
 
+//import dev.samuelmcmurray.data.singelton.CurrentUserSingleton
+
+import android.app.Application
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore.Images
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.EditText
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.observe
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import de.hdodenhof.circleimageview.CircleImageView
 import dev.samuelmcmurray.R
 import dev.samuelmcmurray.data.model.CurrentUser
-import dev.samuelmcmurray.data.model.User
-//import dev.samuelmcmurray.data.singelton.CurrentUserSingleton
+import dev.samuelmcmurray.data.repository.ProfileRepository
+import dev.samuelmcmurray.data.singelton.CurrentUserSingleton
 import dev.samuelmcmurray.databinding.FragmentProfileMenuBinding
+import java.io.ByteArrayOutputStream
 
+
+private const val TAG = "ProfileFragment"
 
 class ProfileFragment : Fragment() {
 
@@ -21,14 +40,21 @@ class ProfileFragment : Fragment() {
     }
 
     private lateinit var viewModel: ProfileViewModel
+    private lateinit var profileRepository: ProfileRepository
     private lateinit var binding: FragmentProfileMenuBinding
-    private lateinit var firstNameText: TextView
-    private lateinit var lastNameText: TextView
-    private lateinit var dobText: TextView
-    private lateinit var emailText: TextView
-    private lateinit var cityText: TextView
-    private lateinit var stateText: TextView
-    private lateinit var countryText: TextView
+    private lateinit var firstNameText: EditText
+    private lateinit var lastNameText: EditText
+    private lateinit var dobText: EditText
+    private lateinit var emailText: EditText
+    private lateinit var cityText: EditText
+    private lateinit var stateText: EditText
+    private lateinit var countryText: EditText
+    private lateinit var profileImage: CircleImageView
+    private lateinit var application: Application
+    private var storage: FirebaseStorage? = null
+    private var storageRef: StorageReference? = null
+    private val REQUEST_CODE = 1
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,6 +66,7 @@ class ProfileFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -50,14 +77,78 @@ class ProfileFragment : Fragment() {
         cityText = view.findViewById(R.id.cityText)
         stateText = view.findViewById(R.id.stateText)
         countryText = view.findViewById(R.id.countryText)
+        profileImage = view.findViewById(R.id.profileImage)
+
+        getCurrentUser()
+
+        profileImage.setOnClickListener {
+            updateProfileData()
+        }
+        firstNameText.setText(CurrentUserSingleton.getInstance.currentUser!!.firstName)
+        lastNameText.setText(CurrentUserSingleton.getInstance.currentUser!!.lastName)
+        dobText.setText(CurrentUserSingleton.getInstance.currentUser!!.dob)
+        emailText.setText(CurrentUserSingleton.getInstance.currentUser!!.email)
+        cityText.setText(CurrentUserSingleton.getInstance.currentUser!!.city)
+        stateText.setText(CurrentUserSingleton.getInstance.currentUser!!.state)
+        countryText.setText(CurrentUserSingleton.getInstance.currentUser!!.country)
+        profileImage.setImageURI(CurrentUserSingleton.getInstance.currentUser!!.profilePhoto)
+        val getContent =
+            registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+                profileImage.setImageURI(uri)
+            }
+        profileImage.setOnClickListener {
+            getContent.launch("image/*")
+            updateProfileImage()
+        }
     }
-/*
-    fun onSaveClicked() {
-        val newUserData = CurrentUser.copy(firstName = firstNameText.text.toString(),
-            lastName = lastNameText.text.toString(), dob = dobText.text.toString(), email = emailText.text.toString(),
-        city = cityText.text.toString(), state = stateText.text.toString(), country = countryText.text.toString())
-        CurrentUserSingleton = newUserData
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun getCurrentUser() {
+        if (CurrentUserSingleton.getInstance.loggedIn || CurrentUserSingleton.getInstance.currentUser == null) {
+            viewModel.getCurrentUser()
+            viewModel.userLiveData.observe(viewLifecycleOwner) {
+                val currentUser = it
+                if (currentUser != null) {
+                    Log.d(TAG, "currentUser success: ")
+                } else {
+                    Log.d(TAG, "getCurrentUser: failure")
+                }
+            }
+        }
     }
-    
- */
+
+    fun updateProfileData() {
+
+        val bm: Bitmap = (profileImage.drawable as BitmapDrawable).bitmap
+        val imageURI: Uri = getImageUri(this.requireContext(), bm)
+
+        viewModel.updateProfileData(firstNameText.text.toString(), lastNameText.text.toString(), emailText.text.toString(),
+            cityText.text.toString(), stateText.text.toString(), countryText.text.toString(),
+            imageURI)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun updateProfileImage() {
+        if (CurrentUserSingleton.getInstance.loggedIn || CurrentUserSingleton.getInstance.currentUser == null) {
+            val bm: Bitmap = (profileImage.drawable as BitmapDrawable).bitmap
+            val imageURI: Uri = getImageUri(this.requireContext(), bm)
+            viewModel.updateProfileImage(imageURI)
+            viewModel.userLiveData.observe(viewLifecycleOwner) {
+                val currentUser = it
+                if (currentUser != null) {
+                    Log.d(TAG, "currentUser success: ")
+                } else {
+                    Log.d(TAG, "getCurrentUser: failure")
+                }
+            }
+        }
+    }
+
+    private fun getImageUri(inContext: Context, inImage: Bitmap): Uri {
+        val bytes = ByteArrayOutputStream()
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path =
+            Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null)
+        return Uri.parse(path)
+    }
 }

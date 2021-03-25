@@ -199,14 +199,15 @@ class DiscoveriesRepository {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun getAge(dob: String) : Int {
-        val parts = dob.split("-")
-        val year = parts[2]
-        val day = parts[1]
-        val month = parts[0]
-        return Period.between(
-            LocalDate.of(year.toInt(), month.toInt(), day.toInt()),
-            LocalDate.now()
-        ).years
+//        val parts = dob.split("-")
+//        val year = parts[2]
+//        val day = parts[1]
+//        val month = parts[0]
+        return 21
+//        Period.between(
+//            LocalDate.of(year.toInt(), month.toInt(), day.toInt()),
+//            LocalDate.now()
+//        ).years
     }
 
     private fun getRelativeAge(dob: String) {

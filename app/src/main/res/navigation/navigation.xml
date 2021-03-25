@@ -78,15 +78,15 @@
             android:id="@+id/profilePictureClicked"
             app:destination="@id/profileFragment" />
     </fragment>
-    <!--  <fragment
-          android:id="@+id/otherProfileFragment"
-          android:name="dev.samuelmcmurray.ui.profile.dev.samuelmcmurray.ui.profile.OtherProfileFragment"
+    <fragment
+          android:id="@+id/otherProfileHolder"
+          android:name="dev.samuelmcmurray.ui.profile.OtherProfileHolder"
           android:label="Other User Profile"
           tools:layout="@layout/fragment_other_profile">
           <action
-              android:id="@+id/profilePictureClicked"
-              app:destination="@id/otherProfileFragment"/>
-      </fragment>-->
+              android:id="@+id/otherProfilePictureClicked"
+              app:destination="@id/otherProfileHolder"/>
+      </fragment>
     <fragment
         android:id="@+id/welcomeFragment"
         android:name="dev.samuelmcmurray.ui.welcome.WelcomeFragment"

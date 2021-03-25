@@ -21,6 +21,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import com.bumptech.glide.Glide
 import com.google.firebase.storage.FirebaseStorage
@@ -53,7 +54,7 @@ class ProfileFragment : Fragment() {
     private lateinit var stateText: EditText
     private lateinit var countryText: EditText
     private lateinit var profileImage: CircleImageView
-    private lateinit var profileImageURI: Uri
+    private var profileImageURI: Uri? = null
     private lateinit var application: Application
     private var storage: FirebaseStorage? = null
     private var storageRef: StorageReference? = null
@@ -73,6 +74,7 @@ class ProfileFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
 
         firstNameText = view.findViewById(R.id.firstNameText)
         lastNameText = view.findViewById(R.id.lastNameText)
@@ -112,12 +114,15 @@ class ProfileFragment : Fragment() {
 
         val getContent =
             registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+                profileImageURI = uri!!
+                Log.d(TAG, "onViewCreated: $uri")
                 profileImage.setImageURI(uri)
                 CurrentUserSingleton.getInstance.currentUser!!.profilePhoto = uri.toString()
+                updateProfileImage(uri)
             }
         profileImage.setOnClickListener {
             getContent.launch("image/*")
-            updateProfileImage(profileImageURI)
+
         }
     }
 
@@ -140,7 +145,7 @@ class ProfileFragment : Fragment() {
         viewModel.updateProfileData(
             firstNameText.text.toString(), lastNameText.text.toString(), emailText.text.toString(),
             cityText.text.toString(), stateText.text.toString(), countryText.text.toString(),
-            profileImageURI
+            profileImageURI!!
         )
         viewModel.userLiveData.observe(viewLifecycleOwner) {
             val currentUser = it
@@ -154,7 +159,7 @@ class ProfileFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun updateProfileImage(imageURI: Uri) {
-        if (CurrentUserSingleton.getInstance.loggedIn || CurrentUserSingleton.getInstance.currentUser == null) {
+        if (CurrentUserSingleton.getInstance.currentUser !=null) {
             viewModel.updateProfileImage(imageURI)
             viewModel.userLiveData.observe(viewLifecycleOwner) {
                 val currentUser = it
